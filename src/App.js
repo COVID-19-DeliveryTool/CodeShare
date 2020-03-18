@@ -1,25 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import Home from './components/Home'
+import MenuBar from './components/MenuBar'
+import RequestModule from './components/RequestModule/RequestModuleHome'
+import './css/App.css';
+import './css/bootstrap.min.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {/* <MenuBar/> */}
+      {/* <Sidebar/> */}
+      <ToastContainer
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+      />
+
+      <Switch>
+          {/* If url points to our home page, determine the correct home page to show*/}
+          <Route exact={true} path="/" render={(props) => <Home {...props}/>}/>
+          <Route exact={true} path="/request" render={(props) => <RequestModule {...props}/>}/>
+          {/* <Route path="/dashboard" render={(props) => shouldRedirectFromDashboard()}/> */}
+      </Switch>
+    </BrowserRouter>
   );
 }
 
