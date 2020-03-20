@@ -51,3 +51,16 @@ export async function getOrders(){
         return e
     }
 }
+
+export async function putOrder(){
+    try{
+        //get our default app client
+        const client = intializeStitchClient()
+        var result = await client.callFunction("HelloWorld", []);
+        console.log(result)
+        if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
+        else return true
+    } catch(e){
+        return {errorCode: '002', errorMessage: e.toString()}
+    }
+}
