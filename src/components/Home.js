@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import {ChevronRight} from 'react-feather'
+import {getOrders} from '../lib/StitchFunctions'
 
 export default function Home(props){
     return (
@@ -22,11 +23,12 @@ export default function Home(props){
                 <p className="lead" style={{fontSize:'1.25rem'}}>Dispatchers & Deliverers  <ChevronRight size={18}/></p>
             </div>
 
+            <button onClick={() => getOrders()} className="btn col-10" style={{color:'white',backgroundColor:'#480d63',fontSize:'1.25rem',paddingRight:50,paddingLeft:50,paddingTop:10,paddingBottom:10}}>test stitch</button>
+
             <nav class="navbar fixed-bottom" style={{backgroundColor: '#6f2c8e',paddingBottom:15}}>
                 <div className="mr-auto ml-auto">
                     <a style={{fontSize:11,color:'white'}} href="#">StayNeighbor is a community-built platform.  <b style={{color:'yellow'}}>GET INVOLVED</b></a>
                 </div>
-                
             </nav>
         </div>
     )
