@@ -6,7 +6,7 @@ export default function MenuBar(props){
     const location = window.location.pathname.replace('/', '');
     var pageTitle = location.charAt(0).toUpperCase() + location.slice(1)
     
-    if(pageTitle == '') pageTitle = 'Home'
+    if(pageTitle === '') pageTitle = 'Home'
 
     return (
         <nav class="navbar navbar-expand-lg navbar-light bg-light">

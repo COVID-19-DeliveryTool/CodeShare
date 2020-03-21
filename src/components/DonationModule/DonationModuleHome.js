@@ -4,11 +4,11 @@ import { toast } from 'react-toastify'
 import { Home } from 'react-feather'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
 
-export default function RequestModuleHome(props) {
+export default function DonationModuleHome(props) {
     var { register, errors, clearError, handleSubmit } = useForm()
     const [step, setStep] = useState(1)
     var [loading, setLoading] = useState(false)
-    var [formData, setFormData] = useState({ requestedItems: [] })
+    var [formData, setFormData] = useState({ donatedItems: [] })
 
     function validateStep1(values) {
         setFormData({ ...formData, values })
@@ -22,7 +22,7 @@ export default function RequestModuleHome(props) {
 
     function validateStep3() {
         setTimeout(() => {
-            toast('Request submitted successfully!')
+            toast('Donation submitted successfully!')
             setStep(1)
         })
     }
@@ -42,8 +42,7 @@ export default function RequestModuleHome(props) {
         { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
     ]
 
-
-    if (step == 1) {
+    if (step === 1) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
@@ -98,14 +97,6 @@ export default function RequestModuleHome(props) {
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group mr-auto ml-auto col-xl-4 col-md-8 mr-auto ml-auto text-center">
-                                    <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">0</span>
-                                    <input ref={register({ required: true, min: 0, max: 10 })} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
-                                    <label className='lead'>People in Household</label>
-                                    {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
-                                </div>
-                            </div>
 
                             {!loading && <button onClick={() => validateStep1()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto ml-auto col-12 btn mt-4">Continue</button>}
                         </form>
@@ -114,8 +105,8 @@ export default function RequestModuleHome(props) {
             </main>
         )
     }
-    console.log(formData.requestedItems)
-    if (step == 2) {
+    console.log(formData.donatedItems)
+    if (step === 2) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
@@ -130,13 +121,10 @@ export default function RequestModuleHome(props) {
 
                 <div className="col-11 mr-auto ml-auto">
                     <div className="text-center" style={{ marginTop: '5rem', color: "rgb(158, 69, 183)", fontFamily: 'sans-serif', fontSize: 28, fontWeight: 'bold' }}>
-                        What can we provide?
+                        What can you donate?
                     </div>
                     <div className="text-center lead" style={{ marginTop: '.3rem', fontFamily: 'sans-serif', fontSize: 14 }}>
-                        Please let us know any essential supplies you might need and our dispatchers will take it from here.
-                    </div>
-                    <div className="text-center lead" style={{ marginTop: '.3rem', fontFamily: 'sans-serif', fontSize: 10 }}>
-                        <i>Please, only select things you or your ones NEED.</i>
+                        Please let us know any supplies you can donate and our dispatchers will take it from here.
                     </div>
                 </div>
 
@@ -146,15 +134,15 @@ export default function RequestModuleHome(props) {
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {itemList.map(item => {
-                                        var itemIndex = formData.requestedItems.findIndex(a => a.value == item.value)
-                                        if (formData.requestedItems && itemIndex > -1) {
-                                            var itemsList = [...formData.requestedItems]
+                                        var itemIndex = formData.donatedItems.findIndex(a => a.value == item.value)
+                                        if (formData.donatedItems && itemIndex > -1) {
+                                            var itemsList = [...formData.donatedItems]
                                             itemsList.splice(itemIndex, 1)
                                             console.log(itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: itemsList })} className="list-group-item"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: [...formData.requestedItems, item] })} className="list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: [...formData.donatedItems, item] })} className="list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -196,7 +184,7 @@ export default function RequestModuleHome(props) {
                         Just a few more details.
                     </div>
                     <div className="text-center lead" style={{ marginTop: '.3rem', fontFamily: 'sans-serif', fontSize: 14 }}>
-                        Now we just need some details for our drivers so they can safely deliver your supplies.
+                        Now we just need some details for our drivers so they can safely pick up your donations.
                     </div>
                 </div>
 
@@ -218,7 +206,7 @@ export default function RequestModuleHome(props) {
 
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <label>Special Instructions</label>
-                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, pick up box from front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
 
