@@ -66,19 +66,22 @@ export async function putOrder(){
     }
 }
 
-export async function checkUserAuth(setAuthStatus, setUserData){
+export async function checkUserAuth(){
     try {
         //get our default app client
         const client = intializeStitchClient()
+
         if(client.auth.isLoggedIn){
-            setAuthStatus(true)
+            return true
         } else {
             if(client.auth.hasRedirectResult()){
-                await client.auth.handleRedirectResult()
+                var result = await client.auth.handleRedirectResult()
+                if(result.isLoggedIn === true) return true
             }
 
             const credential = new GoogleRedirectCredential()
-            client.auth.loginWithRedirect(credential)
+            await client.auth.loginWithRedirect(credential)
+            return null
         }
     } catch (e){
 
@@ -91,6 +94,5 @@ export async function logUserOut(){
 }
 
 export function getUserInfo(){
-    //get our default app client
     return intializeStitchClient().auth.currentUser
 }
