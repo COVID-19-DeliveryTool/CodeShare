@@ -1,47 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
-import { Home } from 'react-feather'
-import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
+import React, { useState, useEffect } from 'react';
+import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather';
+
+const itemList = [
+    { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
+    { id: 2, label: 'Paper Towels', value: 'paper towels' },
+    { id: 3, label: 'Milk', value: 'milk' },
+    { id: 4, label: 'Eggs', value: 'eggs' },
+    { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
+    { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
+];
+
+const dropoff = [
+    { id: 'morning', label: 'Morning', time: '9am - 12pm' },
+    { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
+    { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
+];
 
 export default function RequestModuleHome(props) {
-    var { register, errors, clearError, handleSubmit } = useForm()
-    const [step, setStep] = useState(1)
-    var [loading, setLoading] = useState(false)
-    var [formData, setFormData] = useState({ requestedItems: [] })
-
-    function validateStep1(values) {
-        setFormData({ ...formData, values })
-        setStep(2)
-    }
-
-    function validateStep2() {
-        console.log('here')
-        setStep(3)
-    }
-
-    function validateStep3() {
-        setTimeout(() => {
-            toast('Request submitted successfully!')
-            setStep(1)
-        })
-    }
-
-    var itemList = [
-        { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
-        { id: 2, label: 'Paper Towels', value: 'paper towels' },
-        { id: 3, label: 'Milk', value: 'milk' },
-        { id: 4, label: 'Eggs', value: 'eggs' },
-        { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
-        { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
-    ]
-
-    var dropoff = [
-        { id: 'morning', label: 'Morning', time: '9am - 12pm' },
-        { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
-        { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
-    ]
-
+    const {step, loading, formData, errors} = props.requestContext.state; // provider state values
+    const { register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3} = props.requestContext; // provider functions
 
     if (step == 1) {
         return (
@@ -114,7 +91,7 @@ export default function RequestModuleHome(props) {
             </main>
         )
     }
-    console.log(formData.requestedItems)
+    console.log(formData)
     if (step == 2) {
         return (
             <main>
@@ -147,10 +124,12 @@ export default function RequestModuleHome(props) {
                                 <ul className="list-group list-group-flush">
                                     {itemList.map(item => {
                                         var itemIndex = formData.requestedItems.findIndex(a => a.value == item.value)
+                                        console.log('item is ', item);
+                                        console.log('itemIndex ', itemIndex);
                                         if (formData.requestedItems && itemIndex > -1) {
                                             var itemsList = [...formData.requestedItems]
                                             itemsList.splice(itemIndex, 1)
-                                            console.log(itemsList)
+                                            console.log('item list ', itemsList)
                                             return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
@@ -169,7 +148,7 @@ export default function RequestModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.requestedItems || (formData.requestedItems && formData.requestedItems.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>
@@ -211,7 +190,7 @@ export default function RequestModuleHome(props) {
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {dropoff.map(item => {
-                                        return <li key={item.id} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
+                                        return <li key={item.id} onClick={() => setFormData({...formData, dropoff: item})} className="list-group-item underline-hover">{formData.dropoff === item ? <CheckCircle className="mr-3" size={14} /> : <Circle className="mr-3" size={14} />}{item.label} ({item.time})</li>
                                     })}
                                 </ul>
                             </div>
@@ -222,7 +201,7 @@ export default function RequestModuleHome(props) {
                             </div>
                         </div>
 
-                        {!loading && <button type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
+                        {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
                     </form>
                 </div>
             </main>
