@@ -45,7 +45,9 @@ const RequestProvider = props => {
 
     const formatRequest = () => {
         // todo write logic to format the request object to match the data model given by backend
-        return formData;
+        const copy = {...formData};
+        copy.type = 'REQUEST';
+        return copy;
     };
 
     return (

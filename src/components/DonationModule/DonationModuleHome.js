@@ -3,43 +3,25 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
 
+const dropoff = [
+    { id: 'morning', label: 'Morning', time: '9am - 12pm' },
+    { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
+    { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
+];
+
+const itemList = [
+    { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
+    { id: 2, label: 'Paper Towels', value: 'paper towels' },
+    { id: 3, label: 'Milk', value: 'milk' },
+    { id: 4, label: 'Eggs', value: 'eggs' },
+    { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
+    { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
+];
+
 export default function DonationModuleHome(props) {
-    var { register, errors, clearError, handleSubmit } = useForm()
-    const [step, setStep] = useState(1)
-    var [loading, setLoading] = useState(false)
-    var [formData, setFormData] = useState({ donatedItems: [] })
+    const {step, loading, formData, errors} = props.donationContext.state; // provider state values
+    const { register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3} = props.donationContext; // provider functions
 
-    function validateStep1(values) {
-        setFormData({ ...formData, values })
-        setStep(2)
-    }
-
-    function validateStep2() {
-        console.log('here')
-        setStep(3)
-    }
-
-    function validateStep3() {
-        setTimeout(() => {
-            toast('Donation submitted successfully!')
-            setStep(1)
-        })
-    }
-
-    var itemList = [
-        { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
-        { id: 2, label: 'Paper Towels', value: 'paper towels' },
-        { id: 3, label: 'Milk', value: 'milk' },
-        { id: 4, label: 'Eggs', value: 'eggs' },
-        { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
-        { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
-    ]
-
-    var dropoff = [
-        { id: 'morning', label: 'Morning', time: '9am - 12pm' },
-        { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
-        { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
-    ]
 
     if (step === 1) {
         return (
@@ -153,7 +135,7 @@ export default function DonationModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.donatedItems || (formData.donatedItems && formData.donatedItems.length === 0))} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>
@@ -195,7 +177,7 @@ export default function DonationModuleHome(props) {
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {dropoff.map(item => {
-                                        return <li key={item.id} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
+                                        return <li key={item.id} onClick={() => setFormData({...formData, dropoff: item})} className="list-group-item underline-hover">{formData.dropoff === item ? <CheckCircle className="mr-3" size={14} /> : <Circle className="mr-3" size={14} />}{item.label} ({item.time})</li>
                                     })}
                                 </ul>
                             </div>
@@ -206,7 +188,7 @@ export default function DonationModuleHome(props) {
                             </div>
                         </div>
 
-                        {!loading && <button type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
+                        {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
                     </form>
                 </div>
             </main>
