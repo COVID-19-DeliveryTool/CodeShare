@@ -37,9 +37,10 @@ const RequestProvider = props => {
         //     toast('There was an error submitting your request.');
         // }
         setTimeout(() => {
+            setLoading(false);
             toast('Request submitted successfully!')
             setStep(1)
-        }, 1);
+        }, 250);
     };
 
     const formatRequest = () => {
