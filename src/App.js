@@ -30,7 +30,8 @@ function App() {
           {/* If url points to our home page, determine the correct home page to show*/}
           <Route exact={true} path="/" render={(props) => <Home {...props}/>}/>
           <Route exact={true} path="/request" render={(props) => <RequestModule {...props}/>}/>
-          <Route exact={true} path="/auth" render={(props) => <AuthModule{...props}/> } />
+          <Route exact={true} path="/dispatcher" render={(props) => <AuthModule{...props}/> } />
+          {/* <Route exact={true} path="/dispatcher" render={(props) => <RequestModule{...props}/> } /> */}
           {/* <Route path="/dashboard" render={(props) => shouldRedirectFromDashboard()}/> */}
       </Switch>
     </BrowserRouter>
