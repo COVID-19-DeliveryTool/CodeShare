@@ -7,6 +7,18 @@
   pointer-events: none;
 }
 
+.underline-hover:hover{
+  text-decoration: underline;
+  cursor: pointer;
+  letter-spacing: .03rem;
+  transition: letter-spacing .10s;
+}
+
+.hover:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

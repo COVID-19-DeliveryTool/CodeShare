@@ -51,8 +51,8 @@ export default function RequestModuleHome(props) {
                         <Home className="mr-auto mt-2" style={{color:'white'}}/>
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
-                        <ArrowLeftCircle color="white" className="mr-3" onClick={() => props.history.push('/')} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => props.history.push('/')} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
                 <div className="col-10 mr-auto ml-auto">
@@ -151,10 +151,10 @@ export default function RequestModuleHome(props) {
                                             var itemsList = [...formData.requestedItems]
                                             itemsList.splice(itemIndex, 1)
                                             console.log(itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: [...formData.requestedItems, item] })} className="list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: [...formData.requestedItems, item] })} className="underline-hover list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -211,7 +211,7 @@ export default function RequestModuleHome(props) {
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {dropoff.map(item => {
-                                        return <li key={item.id} className="list-group-item"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
+                                        return <li key={item.id} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
                                     })}
                                 </ul>
                             </div>

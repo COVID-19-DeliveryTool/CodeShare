@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Home } from 'react-feather'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
 
 export default function DonationModuleHome(props) {
@@ -46,12 +45,9 @@ export default function DonationModuleHome(props) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
-                    {/* <div className="col-2">
-                        <Home className="mr-auto mt-2" style={{color:'white'}}/>
-                    </div> */}
                     <div className="col-12 mt-2 mr-auto">
-                        <ArrowLeftCircle color="white" className="mr-3" onClick={() => props.history.push('/')} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <ArrowLeftCircle color="white" className="mr-3 underline-hover" onClick={() => props.history.push('/')} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
                 <div className="col-10 mr-auto ml-auto">
@@ -114,7 +110,7 @@ export default function DonationModuleHome(props) {
                         <Home className="mr-auto mt-2" style={{color:'white'}}/>
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
-                        <ArrowLeftCircle color="white" className="mr-3" onClick={() => setStep(1)} />
+                        <ArrowLeftCircle color="white" className="mr-3 underline-hover" onClick={() => setStep(1)} />
                         <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
                     </div>
                 </nav>
@@ -139,10 +135,10 @@ export default function DonationModuleHome(props) {
                                             var itemsList = [...formData.donatedItems]
                                             itemsList.splice(itemIndex, 1)
                                             console.log(itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: itemsList })} className="list-group-item"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: [...formData.donatedItems, item] })} className="list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: [...formData.donatedItems, item] })} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -199,7 +195,7 @@ export default function DonationModuleHome(props) {
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {dropoff.map(item => {
-                                        return <li key={item.id} className="list-group-item"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
+                                        return <li key={item.id} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
                                     })}
                                 </ul>
                             </div>
