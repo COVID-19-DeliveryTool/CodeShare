@@ -19,7 +19,7 @@ export default function Home(props){
                 </div>
             </div>
             <div style={{marginTop:15}} className="col-12 text-center">
-                <p onClick={() => props.history.push('/dispatch')} className="lead underline-hover" style={{fontSize:'1.25rem'}}>Dispatchers  <ChevronRight size={18}/></p>
+                <p onClick={() => props.history.push('/dispatcher')} className="lead underline-hover" style={{fontSize:'1.25rem'}}>Dispatchers  <ChevronRight size={18}/></p>
             </div>
 
             <nav className="navbar fixed-bottom" style={{backgroundColor: '#6f2c8e',paddingBottom:15}}>
