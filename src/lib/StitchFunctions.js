@@ -16,7 +16,7 @@ function establishMongoDbConnection(){
 
 export function initalizeStitchServiceClient(client){
     try{
-        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('stayneighbor');
+        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('stayneighbor-dev');
     } catch(err){
         return {errorCode: '002', errorMessage: err}
     }
@@ -25,7 +25,7 @@ export function initalizeStitchServiceClient(client){
 export function intializeStitchClient(){
     try {
         //return Stitch.initializeDefaultAppClient('stayneighbor-bjuma');
-        return Stitch.initializeDefaultAppClient('oauth-test-app-gdmyy');
+        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik');
     } catch(err){
         return Stitch.defaultAppClient
     }
