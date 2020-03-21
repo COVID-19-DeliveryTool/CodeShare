@@ -27,7 +27,7 @@ function App() {
           <Route exact={true} path="/" render={(props) => <Home {...props}/>}/>
           <Route exact={true} path="/request" render={(props) => <RequestModule {...props}/>}/>
           <Route exact={true} path="/donate" render={(props) => <DonationModule {...props}/>}/>
-          <Route exact={true} path="/dispatch" render={(props) => <DispatchModuleHome {...props}/>}/>
+          <Route exact={true} path="/dispatcher" render={(props) => <DispatchModuleHome {...props}/>}/>
       </Switch>
     </BrowserRouter>
   );
