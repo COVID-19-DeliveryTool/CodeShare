@@ -12,21 +12,20 @@ export default function Home(props){
             </div>
             <div style={{marginTop:'3rem'}}>
                 <div className="col-xl-6 col-12 text-center mr-auto ml-auto">
-                    <button onClick={() => props.history.push('/request')} className="btn col-10" style={{color:'white',backgroundColor:'#480d63',fontSize:'1.25rem',paddingRight:50,paddingLeft:50,paddingTop:10,paddingBottom:10}}>I <b style={{fontWeight:'bolder'}}>need</b> supplies</button>
+                    <button onClick={() => props.history.push('/request')} className="btn col-10 underline-hover" style={{color:'white',backgroundColor:'#480d63',fontSize:'1.25rem',paddingRight:50,paddingLeft:50,paddingTop:10,paddingBottom:10}}>I <b style={{fontWeight:'bolder'}}>need</b> supplies</button>
                 </div>
                 <div className="col-xl-6 col-12 text-center mt-4 mr-auto ml-auto">
-                    <button onClick={() => props.history.push('/supply')} className="btn col-10" style={{color:'white',backgroundColor:'#480d63',fontSize:'1.25rem',paddingRight:50,paddingLeft:50,paddingTop:10,paddingBottom:10}}>I <b style={{fontWeight:'bolder'}}>have</b> supplies</button>
+                    <button onClick={() => props.history.push('/donate')} className="btn col-10 underline-hover" style={{color:'white',backgroundColor:'#480d63',fontSize:'1.25rem',paddingRight:50,paddingLeft:50,paddingTop:10,paddingBottom:10}}>I <b style={{fontWeight:'bolder'}}>have</b> supplies</button>
                 </div>
             </div>
             <div style={{marginTop:15}} className="col-12 text-center">
-                <p onClick={() => props.history.push('/dispatch')} className="lead" style={{fontSize:'1.25rem'}}>Dispatchers & Deliverers  <ChevronRight size={18}/></p>
+                <p onClick={() => props.history.push('/dispatcher')} className="lead underline-hover" style={{fontSize:'1.25rem'}}>Dispatchers  <ChevronRight size={18}/></p>
             </div>
 
-            <nav class="navbar fixed-bottom" style={{backgroundColor: '#6f2c8e',paddingBottom:15}}>
+            <nav className="navbar fixed-bottom" style={{backgroundColor: '#6f2c8e',paddingBottom:15}}>
                 <div className="mr-auto ml-auto">
-                    <a style={{fontSize:11,color:'white'}} href="#">StayNeighbor is a community-built platform.  <b style={{color:'yellow'}}>GET INVOLVED</b></a>
+                    <a onClick={() => window.location.replace('https://www.stayneighbor.com')} style={{fontSize:11,color:'white'}} href="#">StayNeighbor is a community-built platform.  <b style={{color:'yellow'}}>GET INVOLVED</b></a>
                 </div>
-                
             </nav>
         </div>
     )
