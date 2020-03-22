@@ -16,7 +16,7 @@ function establishMongoDbConnection(){
 
 export function initalizeStitchServiceClient(client){
     try{
-        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('stayneighbor');
+        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('stayneighbor-dev');
     } catch(err){
         return {errorCode: '002', errorMessage: err}
     }

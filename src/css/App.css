@@ -40,6 +40,29 @@
   color: #61dafb;
 }
 
+.request-type{
+  background-color: #ffaf88;
+  color:white;
+  padding: 2px 5px 2px 5px;
+  border-radius: 3px;
+}
+
+.donation-type{
+  background-color: #81b987;
+  color:white;
+  padding: 2px 5px 2px 5px;
+  border-radius: 3px;
+}
+
+.active-order{
+  background-color: #00000021 !important;
+}
+
+.order-list:hover{
+  background-color: #00000021;
+  cursor: pointer;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
