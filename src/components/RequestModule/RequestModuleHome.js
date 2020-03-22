@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather';
+import fulllogo from '../../images/fulllogo.png'
 
 const itemList = [
     { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
@@ -100,8 +101,8 @@ export default function RequestModuleHome(props) {
                         <Home className="mr-auto mt-2" style={{color:'white'}}/>
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
-                        <ArrowLeftCircle color="white" className="mr-3" onClick={() => setStep(1)} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => setStep(1)} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
 
@@ -165,8 +166,8 @@ export default function RequestModuleHome(props) {
                         <Home className="mr-auto mt-2" style={{color:'white'}}/>
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
-                        <ArrowLeftCircle color="white" className="mr-3" onClick={() => setStep(1)} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => setStep(1)} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
 
@@ -203,6 +204,37 @@ export default function RequestModuleHome(props) {
 
                         {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
                     </form>
+                </div>
+            </main>
+        )
+    }
+
+    if(step == 4){
+        return (
+            <main>
+                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+                    {/* <div className="col-2">
+                        <Home className="mr-auto mt-2" style={{color:'white'}}/>
+                    </div> */}
+                    <div className="col-12 mt-2 mr-auto">
+                        <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => props.history.push('/')} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
+                    </div>
+                </nav>
+                <div className="col-xl-6 col-11 mr-auto ml-auto" style={{paddingTop:'8rem'}}>
+                    <div className="mr-auto ml-auto text-center">
+                        <img className="mr-auto ml-auto" style={{width:'25rem'}} src={fulllogo}/>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-4">
+                        <span className="lead" style={{fontSize:'4rem',color:"rgba(0, 0, 0, 0.42)"}}>Help is on the way.</span>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-2 mb-4">
+                        <span className="lead" style={{fontSize:'1.5rem',color:"rgba(0, 0, 0, 0.42)"}}>When your order is assigned to a driver, we will let you know.</span>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-2 mb-4">
+                        <button onClick={() => props.history.push('/')} className="btn btn-outline-brand btn-lg">Home</button>
+                        <button onClick={() => window.location.replace('https://stayneighbor.com')} className="btn btn-outline-brand btn-lg">Learn More</button>
+                    </div>
                 </div>
             </main>
         )

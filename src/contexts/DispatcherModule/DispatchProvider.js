@@ -5,7 +5,8 @@ import { getOrders } from '../../lib/StitchFunctions';
 const DispatchProvider = props => {
     const [orders, setOrders] = useState(false)
     const [selectedOrder, setSelectedOrder] = useState(false)
-    console.log(selectedOrder)
+    const [typeFilter, setTypeFilter] = useState(false)
+    const [statusFilter, setStatusFilter] = useState(false)
 
     const getOrdersForDispatcher = async () =>{
         try{
@@ -23,11 +24,15 @@ const DispatchProvider = props => {
                 state: {
                     // put your state that you want to expose in here
                     orders: orders,
-                    selectedOrder: selectedOrder
+                    selectedOrder: selectedOrder,
+                    typeFilter: typeFilter,
+                    statusFilter: statusFilter
                 },
                 // expose functions here
                 getOrdersForDispatcher: () => getOrdersForDispatcher(),
-                setSelectedOrder: (obj) => setSelectedOrder(obj)
+                setSelectedOrder: (obj) => setSelectedOrder(obj),
+                setTypeFilter: (str) => setTypeFilter(str),
+                setStatusFilter: (str) => setStatusFilter(str)
             }}
         >
             {props.children}

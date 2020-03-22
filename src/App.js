@@ -20,13 +20,15 @@ function App() {
         <BrowserRouter>
         <ToastContainer
             autoClose={5000}
-            hideProgressBar={false}
             newestOnTop
             closeOnClick
             rtl={false}
             pauseOnVisibilityChange
             draggable
             pauseOnHover
+            className='toast-container'
+            toastClassName="toastify-brand"
+            progressClassName="toastify-progress-bar"
         />
 
         <Switch>

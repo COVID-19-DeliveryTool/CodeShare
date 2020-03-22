@@ -41,14 +41,14 @@
 }
 
 .request-type{
-  background-color: #ffaf88;
+  background-color: #3498e1;
   color:white;
   padding: 2px 5px 2px 5px;
   border-radius: 3px;
 }
 
 .donation-type{
-  background-color: #81b987;
+  background-color: #3fb94c;
   color:white;
   padding: 2px 5px 2px 5px;
   border-radius: 3px;
@@ -76,3 +76,56 @@
   color:'black';
   opacity: 1;
 }
+
+.btn-outline-brand{
+  color:#6f2c8e !important;
+  border-color:#6f2c8e !important;
+  border: 1px solid !important;
+  margin: .5rem .5rem .5rem .5rem;
+}
+
+.btn-outline-brand:hover{
+  color:white !important;
+  background-color: #6f2c8e;
+  border-color:#6f2c8e !important;
+  border: 1px solid !important;
+}
+
+.btn-active-brand{
+  background-color:#6f2c8e !important;
+  color:white !important;
+  border-color:#6f2c8e !important;
+  border: 1px solid !important;
+  margin: .5rem .5rem .5rem .5rem;
+}
+
+.toastify-brand{
+  background: 'white'!important;
+  border: 1px solid #6f2c8e !important;
+  border-radius: 5px;
+  color:black;
+}
+
+.toastify-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9999;
+  opacity: 0.7;
+  background-color: rgba(255, 255, 255, 0.7);
+  transform-origin: left; }
+  .Toastify__progress-bar--animated {
+    animation: Toastify__trackProgress linear 1 forwards; }
+  .Toastify__progress-bar--controlled {
+    transition: transform .2s; }
+  .Toastify__progress-bar--rtl {
+    right: 0;
+    left: initial;
+    transform-origin: right; }
+  .Toastify__progress-bar--default {
+    background: #6f2c8e !important;}
+
+/* 
+.btn-outline-brand{color:#6f2c8e;border-color:#6f2c8e}.btn-outline-brand:hover{color:#fff;background-color:#6f2c8e;border-color:#6f2c8e}.btn-outline-brand.focus,.btn-outline-brand:focus{box-shadow:0 0 0 .2rem rgba(0,123,255,.5)}.btn-outline-brand.disabled,.btn-outline-brand:disabled{color:#6f2c8e;background-color:transparent}.btn-outline-brand:not(:disabled):not(.disabled).active,.btn-outline-brand:not(:disabled):not(.disabled):active,.show>.btn-outline-brand.dropdown-toggle{color:#fff;background-color:#6f2c8e;border-color:#6f2c8e}.btn-outline-brand:not(:disabled):not(.disabled).active:focus,.btn-outline-brand:not(:disabled):not(.disabled):active:focus,.show>.btn-outline-brand.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgba(0,123,255,.5)} */
