@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle,LogOut,X,User,CheckCircle,ShoppingCart} from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
 import {toast} from 'react-toastify'
@@ -87,13 +88,13 @@ export default function DispatchModuleHome(props){
                             </div>
                         </div>
                     </div>
-                    <div className={selectedOrder ? "col-6" : 'col-9'}>
-                        <h6>Map</h6>
+                    <div className={selectedOrder ? "col-7" : 'col-9'}>
+                        <MarkerInfoWindowGmapsObj setSelectedOrder={setSelectedOrder}/>
                     </div>
                     
                     {selectedOrder ? 
                         <div style={{width:"20%",fontSize:12}} className="ml-auto pl-2">
-                            <form>
+                            <form className="col-12 mr-auto ml-auto">
                                 <div className="form-row">
                                     <label style={{width:'100%',fontSize:'1.2rem',letterSpacing:'.03rem'}} className="mb-2 pb-0 lead"><u>{selectedOrder.type} Details</u></label>
                                     {/* <span style={{fontWeight:'bolder'}}><u>{selectedOrder.type} Details</u></span> */}
@@ -167,9 +168,6 @@ export default function DispatchModuleHome(props){
                                         <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.additionalInfo}</span>
                                     </div>
                                 </div>
-                                <div className="form-row">
-                                    
-                                </div>
                             </form>
                         </div>
                     : ''}
@@ -178,7 +176,7 @@ export default function DispatchModuleHome(props){
             : ''}
 
             {!isAuthenticated ? 
-                <div className="col-6 text-center mr-auto ml-auto" style={{marginTop:'15rem'}}>
+                <div className="text-center mr-auto ml-auto" style={{marginTop:'15rem',width:'20%'}}>
                     <div>
                         <span className="h5">Select a login partner...</span>
                     </div>

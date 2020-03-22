@@ -1,5 +1,14 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential} from 'mongodb-stitch-browser-sdk'
-import {toast} from 'react-toastify'
+
+function getAppId(){
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
+    if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
+}
+
+function getDb(){
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor'
+    if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
+}
 
 function establishMongoDbConnection(){
     //get our default app client
@@ -16,7 +25,7 @@ function establishMongoDbConnection(){
 
 export function initalizeStitchServiceClient(client){
     try{
-        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('stayneighbor-dev');
+        return client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db(getDb());
     } catch(err){
         return {errorCode: '002', errorMessage: err}
     }
@@ -25,7 +34,7 @@ export function initalizeStitchServiceClient(client){
 export function intializeStitchClient(){
     try {
         //return Stitch.initializeDefaultAppClient('stayneighbor-bjuma');
-        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik');
+        return Stitch.initializeDefaultAppClient(getAppId());
     } catch(err){
         return Stitch.defaultAppClient
     }
@@ -42,14 +51,13 @@ export async function anonymousUserLogin(){
 }
 
 export async function getOrders(){
-    await anonymousUserLogin()
-    var db = establishMongoDbConnection()
+    const client = intializeStitchClient()
 
     try {
-        const orders = await db.collection('orders').find().toArray()
-        return orders
+        var result = await client.callFunction("listOrders", []);
+        if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
+        return result
     } catch(e){
-        console.log(e)
         return e
     }
 }
