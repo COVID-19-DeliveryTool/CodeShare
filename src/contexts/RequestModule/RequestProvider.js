@@ -9,7 +9,8 @@ const RequestProvider = props => {
     
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({ requestedItems: [], dropoff: null });
+    const [formData, setFormData] = useState({ 
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null });
 
     const validateStep1 = (values) => {
         setFormData({ ...formData, values });
@@ -22,30 +23,35 @@ const RequestProvider = props => {
         setStep(3)
     };
 
-    const validateStep3 = () => {
+    const validateStep3 = async() => {
         // todo handle dropoff time validation
         setLoading(true);
         // format put request data
         const formattedData = formatRequest();
-        // to do finish this implentation when function is finished
-        // const promise = await putOrder(formattedData);
-        // setLoading(false);
-        // if(promise.success){
-        //     toast('Request submitted successfully!')
-        //     setStep(1)
-        // } else {
-        //     toast('There was an error submitting your request.');
-        // }
-        setTimeout(() => {
-            setLoading(false);
+        const response = await putOrder(formattedData);
+        setLoading(false);
+        if(response && !response.errorCode){
             toast('Request submitted successfully!')
             setStep(1)
-        }, 250);
+        } else {
+            toast('There was an error submitting your request.');
+        }
     };
 
     const formatRequest = () => {
         // todo write logic to format the request object to match the data model given by backend
-        return formData;
+        const body = {};
+        body.firstName = formData.firstName;
+        body.lastName = formData.lastName;
+        body.address = formData.address;
+        body.phoneNumber =  formData.phoneNumber;
+        body.zipcode = formData.zipcode;
+        body.time = formData.dropoff.id;
+        body.type = 'REQUEST';
+        body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
+        body.additionalInfo = formData.additionalInfo;
+        body.householdNum = formData.householdNum;
+        return body; 
     };
 
     return (
@@ -64,7 +70,7 @@ const RequestProvider = props => {
                 register: () => register(),
                 clearError: () => clearError(),
                 handleSubmit: (e) => handleSubmit(e),
-                validateStep1: (values) => validateStep1(values),
+                validateStep1: () => validateStep1(),
                 validateStep2: () => validateStep2(),
                 validateStep3: () => validateStep3() 
                 // functions you want to expose go here

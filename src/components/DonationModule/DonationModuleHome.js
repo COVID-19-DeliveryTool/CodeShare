@@ -3,43 +3,24 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
 
+const dropoff = [
+    { id: 'morning', label: 'Morning', time: '9am - 12pm' },
+    { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
+    { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
+];
+
+const itemList = [
+    { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
+    { id: 2, label: 'Paper Towels', value: 'paper towels' },
+    { id: 3, label: 'Milk', value: 'milk' },
+    { id: 4, label: 'Eggs', value: 'eggs' },
+    { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
+    { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
+];
+
 export default function DonationModuleHome(props) {
-    var { register, errors, clearError, handleSubmit } = useForm()
-    const [step, setStep] = useState(1)
-    var [loading, setLoading] = useState(false)
-    var [formData, setFormData] = useState({ donatedItems: [] })
-
-    function validateStep1(values) {
-        setFormData({ ...formData, values })
-        setStep(2)
-    }
-
-    function validateStep2() {
-        console.log('here')
-        setStep(3)
-    }
-
-    function validateStep3() {
-        setTimeout(() => {
-            toast('Donation submitted successfully!')
-            setStep(1)
-        })
-    }
-
-    var itemList = [
-        { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
-        { id: 2, label: 'Paper Towels', value: 'paper towels' },
-        { id: 3, label: 'Milk', value: 'milk' },
-        { id: 4, label: 'Eggs', value: 'eggs' },
-        { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
-        { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
-    ]
-
-    var dropoff = [
-        { id: 'morning', label: 'Morning', time: '9am - 12pm' },
-        { id: 'afternoon', label: 'Afternoon', time: '12pm - 4pm' },
-        { id: 'evening', label: 'Evening', time: '4pm - 9pm' },
-    ]
+    const {step, loading, formData, errors} = props.donationContext.state; // provider state values
+    const { register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3} = props.donationContext; // provider functions
 
     if (step === 1) {
         return (
@@ -65,31 +46,31 @@ export default function DonationModuleHome(props) {
                         <form onSubmit={handleSubmit(validateStep1)}>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='firstName' style={{ backgroundColor: "#00000017" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "#00000017" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name"></input>
                                     {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='lastName' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
+                                    <input ref={register({ required: true })} name='lastName' onChange={(e) => setFormData({...formData, lastName: e.target.value})} style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
                                     {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='phoneNumber' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
+                                    <input ref={register({ required: true })} name='phoneNumber' onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='emailAddress' style={{ backgroundColor: "#00000017" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
+                                    <input ref={register({ required: true })} name='emailAddress' onChange={(e) => setFormData({...formData, emailAddress: e.target.value})} style={{ backgroundColor: "#00000017" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='streetAddress' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
+                                    <input ref={register({ required: true })} name='streetAddress' onChange={(e) => setFormData({...formData, address: e.target.value})} style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
                                     {errors.streetAddress && <p style={{ color: 'red', marginBottom: 0 }}>{errors.streetAddress.message || errors.streetAddress.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='zipCode' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
+                                    <input ref={register({ required: true })} name='zipCode' onChange={(e) => setFormData({...formData, zipcode: e.target.value})} style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
@@ -101,7 +82,7 @@ export default function DonationModuleHome(props) {
             </main>
         )
     }
-    console.log(formData.donatedItems)
+
     if (step === 2) {
         return (
             <main>
@@ -130,15 +111,15 @@ export default function DonationModuleHome(props) {
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {itemList.map(item => {
-                                        var itemIndex = formData.donatedItems.findIndex(a => a.value == item.value)
-                                        if (formData.donatedItems && itemIndex > -1) {
-                                            var itemsList = [...formData.donatedItems]
+                                        var itemIndex = formData.items.findIndex(a => a.value == item.value)
+                                        if (formData.items && itemIndex > -1) {
+                                            var itemsList = [...formData.items]
                                             itemsList.splice(itemIndex, 1)
                                             console.log(itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, donatedItems: [...formData.donatedItems, item] })} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -153,7 +134,7 @@ export default function DonationModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.items || (formData.items && formData.items.length === 0))} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>
@@ -195,18 +176,18 @@ export default function DonationModuleHome(props) {
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {dropoff.map(item => {
-                                        return <li key={item.id} className="list-group-item underline-hover"><Circle className="mr-3" size={14} />{item.label} ({item.time})</li>
+                                        return <li key={item.id} onClick={() => setFormData({...formData, dropoff: item})} className="list-group-item underline-hover">{formData.dropoff === item ? <CheckCircle className="mr-3" size={14} /> : <Circle className="mr-3" size={14} />}{item.label} ({item.time})</li>
                                     })}
                                 </ul>
                             </div>
 
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <label>Special Instructions</label>
-                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, pick up box from front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea onChange={e => setFormData({...formData, additionalInfo: e.target.value})} placeholder="Enter any special instructions for our driver, e.g. ring doorbell, pick up box from front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
 
-                        {!loading && <button type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
+                        {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
                     </form>
                 </div>
             </main>

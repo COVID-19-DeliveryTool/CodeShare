@@ -25,7 +25,7 @@ export function initalizeStitchServiceClient(client){
 export function intializeStitchClient(){
     try {
         //return Stitch.initializeDefaultAppClient('stayneighbor-bjuma');
-        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik')
+        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik');
     } catch(err){
         return Stitch.defaultAppClient
     }
@@ -54,11 +54,12 @@ export async function getOrders(){
     }
 }
 
-export async function putOrder(){
+export async function putOrder(body){
+    await anonymousUserLogin();
     try{
         //get our default app client
         const client = intializeStitchClient()
-        var result = await client.callFunction("HelloWorld", []);
+        var result = await client.callFunction("createOrder", [body]);
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         else return true
     } catch(e){

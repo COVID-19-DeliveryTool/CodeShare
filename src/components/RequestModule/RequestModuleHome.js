@@ -47,38 +47,38 @@ export default function RequestModuleHome(props) {
                         <form onSubmit={handleSubmit(validateStep1)}>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='firstName' style={{ backgroundColor: "#00000017" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "#00000017" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name"></input>
                                     {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='lastName' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
                                     {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='phoneNumber' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='emailAddress' style={{ backgroundColor: "#00000017" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "#00000017" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='streetAddress' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
+                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
                                     {errors.streetAddress && <p style={{ color: 'red', marginBottom: 0 }}>{errors.streetAddress.message || errors.streetAddress.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='zipCode' style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
+                                    <input ref={register({ required: true })} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "#00000017" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group mr-auto ml-auto col-xl-4 col-md-8 mr-auto ml-auto text-center">
                                     <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">0</span>
-                                    <input ref={register({ required: true, min: 0, max: 10 })} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
+                                    <input ref={register({ required: true, min: 0, max: 10 })} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
@@ -123,17 +123,17 @@ export default function RequestModuleHome(props) {
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {itemList.map(item => {
-                                        var itemIndex = formData.requestedItems.findIndex(a => a.value == item.value)
+                                        var itemIndex = formData.items.findIndex(a => a.value == item.value)
                                         console.log('item is ', item);
                                         console.log('itemIndex ', itemIndex);
-                                        if (formData.requestedItems && itemIndex > -1) {
-                                            var itemsList = [...formData.requestedItems]
+                                        if (formData.items && itemIndex > -1) {
+                                            var itemsList = [...formData.items]
                                             itemsList.splice(itemIndex, 1)
                                             console.log('item list ', itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: [...formData.requestedItems, item] })} className="underline-hover list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="underline-hover list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -148,7 +148,7 @@ export default function RequestModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.requestedItems || (formData.requestedItems && formData.requestedItems.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.items || (formData.items && formData.items.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>
@@ -197,7 +197,7 @@ export default function RequestModuleHome(props) {
 
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <label>Special Instructions</label>
-                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea onChange={e => setFormData({...formData, additionalInfo: e.target.value})} placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
 
