@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus } from 'react-feather'
+import fulllogo from '../../images/fulllogo.png'
+import headerLogo from '../../images/headerLogo.png'
 
 const dropoff = [
     { id: 'morning', label: 'Morning', time: '9am - 12pm' },
@@ -92,7 +92,7 @@ export default function DonationModuleHome(props) {
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
                         <ArrowLeftCircle color="white" className="mr-3 underline-hover" onClick={() => setStep(1)} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
 
@@ -152,7 +152,7 @@ export default function DonationModuleHome(props) {
                     </div> */}
                     <div className="col-12 mt-2 mr-auto">
                         <ArrowLeftCircle color="white" className="mr-3" onClick={() => setStep(1)} />
-                        <a style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</a>
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
 
@@ -189,6 +189,40 @@ export default function DonationModuleHome(props) {
 
                         {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
                     </form>
+                </div>
+            </main>
+        )
+    }
+
+    if(step == 4){
+        return (
+            <main>
+                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+                    {/* <div className="col-2">
+                        <Home className="mr-auto mt-2" style={{color:'white'}}/>
+                    </div> */}
+                    <div className="col-12 mt-2 mr-auto">
+                        <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => props.history.push('/')} />
+                        <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
+                    </div>
+                </nav>
+                <div className="col-xl-6 col-11 mr-auto ml-auto" style={{paddingTop:'8rem'}}>
+                    <div className="mr-auto ml-auto text-center">
+                        <img className="mr-auto ml-auto" style={{width:'25rem'}} src={fulllogo}/>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-4">
+                        <span className="lead" style={{fontSize:'4rem',color:"rgba(0, 0, 0, 0.42)"}}>Thank you!</span>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-2 mb-4">
+                        <span className="lead" style={{fontSize:'2.0rem',color:"rgba(0, 0, 0, 0.42)"}}>Words cannot express our gratitude.</span>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-2 mb-4">
+                        <span className="lead" style={{fontSize:'1.5rem',color:"rgba(0, 0, 0, 0.42)"}}>A driver will pickup your order and ensure it reaches someone in need.</span>
+                    </div>
+                    <div className="mr-auto ml-auto text-center mt-2 mb-4">
+                        <button onClick={() => props.history.push('/')} className="btn btn-outline-brand btn-lg">Home</button>
+                        <button onClick={() => window.location.replace('https://stayneighbor.com')} className="btn btn-outline-brand btn-lg">Learn More</button>
+                    </div>
                 </div>
             </main>
         )

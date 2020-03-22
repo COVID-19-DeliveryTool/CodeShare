@@ -32,7 +32,7 @@ const RequestProvider = props => {
         setLoading(false);
         if(response && !response.errorCode){
             toast('Request submitted successfully!')
-            setStep(1)
+            setStep(4)
         } else {
             toast('There was an error submitting your request.');
         }
