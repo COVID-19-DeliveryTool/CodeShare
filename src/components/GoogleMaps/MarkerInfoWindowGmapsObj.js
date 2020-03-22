@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {isEmpty} from 'lodash';
+import { isEmpty } from 'lodash';
 
 // examples:
 import GoogleMap from './GoogleMap';
@@ -21,7 +21,7 @@ const getInfoWindowString = place => `
 const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selectedMarker) => {
   const markers = [{}];
   const infowindows = [];
-  
+
   var places = [
     {
       name: "Home",
@@ -56,14 +56,30 @@ const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selecte
     }
   ]
 
+  // for using a custom image as a marker
+  // var image = {
+  //   url: 'https://cdn4.iconfinder.com/data/icons/contact-us-19/48/35-512.png',
+  //   scaledSize: new maps.Size(25, 25),
+  // }
+
   places.forEach((place) => {
     markers.push(new maps.Marker({
       position: {
         lat: place.geometry.location.lat,
-        lng:  place.geometry.location.lng,
+        lng: place.geometry.location.lng,
       },
       map,
-      data: place
+      data: place,
+      // icon: image,
+      icon: place.types.includes('Request') ? {
+        path: maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+        strokeColor: 'red',
+        scale: 5
+      } : {
+          path: maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          strokeColor: 'blue',
+          scale: 5
+        },
     }));
 
     infowindows.push(new maps.InfoWindow({
@@ -75,7 +91,7 @@ const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selecte
     marker.addListener('click', () => {
       infowindows[i].open(map, marker)
       props.setSelectedOrder(marker.data)
-      if(last) last.close()
+      if (last) last.close()
       last = infowindows[i]
     })
   });
@@ -91,15 +107,15 @@ class MarkerInfoWindowGmapsObj extends Component {
     };
   }
 
-  updateSelectedMarker(item){
+  updateSelectedMarker(item) {
     //this.setState({selectedMarker: item})
   }
 
   render() {
-    const { places } = [1,2,3]
+    const { places } = [1, 2, 3]
     return (
-      
-      <div style={{height:'100vh', width:'100%'}}>
+
+      <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMap
           defaultZoom={12}
           defaultCenter={[34.23, -77.94]}
@@ -108,7 +124,7 @@ class MarkerInfoWindowGmapsObj extends Component {
           onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, places, this.props)}
         />
       </div>
-      
+
     );
   }
 }
