@@ -5,6 +5,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from './components/Home'
 import RequestModule from './components/RequestModule/RequestModuleHome'
 import DonationModule from './components/DonationModule/DonationModuleHome'
+import DispatchModule from './components/Dispatch'
+import GoogleMaps from './components/GoogleMaps/GoogleMap'
+import MarkerInfoWindowGmapsObj from './components/GoogleMaps/MarkerInfoWindowGmapsObj'
 import './css/App.css';
 import './css/bootstrap.min.css'
 import DispatchModuleHome from './components/DispatchModule/DispatchModuleHome';

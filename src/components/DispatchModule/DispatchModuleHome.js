@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
-import { ArrowLeftCircle,LogOut,X,User} from 'react-feather'
+import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
+import { ArrowLeftCircle,LogOut,X,User,CheckCircle,ShoppingCart} from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
 import {toast} from 'react-toastify'
 
@@ -21,6 +22,8 @@ export default function DispatchModuleHome(props){
         return orders
     }
 
+    console.log(user)
+
     return (
         <main>
             <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6F2C8E', paddingBottom: 15 }}>
@@ -37,10 +40,10 @@ export default function DispatchModuleHome(props){
             </nav>
 
             {isAuthenticated && user && orders ? 
-                <div className="col-12 row mr-auto ml-auto" style={{marginTop:75}}>
-                    <div className="col-3" style={{paddingLeft:0,paddingRight:0}}>
-                        <div className={{width:'100%'}}>
-                            <div>
+                <div className="col-12 row mr-auto" style={{marginTop:75}}>
+                    <div style={{paddingLeft:0,paddingRight:0,width:'20%'}}>
+                        <div className={{width:'100%',height:"100%"}}>
+                            <div style={{paddingLeft:'1.50rem'}}>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Type</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setTypeFilter('REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({orders.filter(a => a.type === 'REQUEST').length})</button>
@@ -48,7 +51,7 @@ export default function DispatchModuleHome(props){
                                     <X onClick={() => setTypeFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
-                            <div>
+                            <div style={{paddingLeft:'1.50rem'}}>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setStatusFilter('PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Pending ({orders.filter(a => a.status === 'PENDING').length})</button>
@@ -57,27 +60,27 @@ export default function DispatchModuleHome(props){
                                     <X onClick={() => setStatusFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
-                            <div style={{maxHeight:'80vh',overflowY:'auto',paddingLeft:0,paddingRight:0}} className="mt-2">
+                            <div style={{paddingLeft:-50,paddingRight:0,borderRight:"2px solid black"}} className="mt-2">
                                 {orders && applyFilters(orders).map(order => {
                                     return (
-                                        <li style={{fontSize:12,paddingLeft:5,paddingRight:5}} class={`list-group-item order-list ${order == selectedOrder ? 'active-order': ""}`} onClick={() => setSelectedOrder(order)}>
+                                        <li style={{fontSize:12,paddingLeft:'1.5rem',paddingRight:5,paddingBottom:'.25rem'}} class={`list-group-item order-list text-center ${order == selectedOrder ? 'active-order': ""}`} onClick={() => setSelectedOrder(order)}>
                                             <form>
-                                                <div className="form-row">
+                                                <div className="form-row" style={{paddingTop:'.25rem'}}>
                                                     <div className="form-group col-3 mr-2">
-                                                        <label for="exampleInputEmail1"><b>Type</b></label>
-                                                        <span style={{display:'block'}} className={order.type === "REQUEST" ? 'request-type' : 'donation-type'}>{order.type}</span>
+                                                        {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'1.1rem'}}>Type</label> */}
+                                                        <span style={{display:'block',fontSize:'.9rem'}} className={order.type === "REQUEST" ? 'request-type' : 'donation-type'}>{order.type}</span>
                                                     </div>
                                                     <div className="form-group col-4 mr-2">
-                                                        <label for="exampleInputEmail1"><b>Name</b></label>
-                                                        <span type="email" style={{display:'block'}} aria-describedby="emailHelp">{order.firstName} {order.lastName}</span>
+                                                        {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Name</b></label> */}
+                                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{order.firstName} {order.lastName}</span>
                                                     </div>
                                                     {/* <div className="form-group col-2 mr-2">
                                                         <label for="exampleInputEmail1"><b>People</b></label>
                                                         <span type="email" style={{display:'block'}} aria-describedby="emailHelp">{order.householdNum}</span>
                                                     </div> */}
                                                     <div className="form-group col-3 mr-2">
-                                                        <label for="exampleInputEmail1"><b>Status</b></label>
-                                                        <span type="email" style={{display:'block'}} aria-describedby="emailHelp">{order.status}</span>
+                                                        {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Status</b></label> */}
+                                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{order.status}</span>
                                                     </div>
                                                 </div>
                                             </form>
@@ -87,13 +90,13 @@ export default function DispatchModuleHome(props){
                             </div>
                         </div>
                     </div>
-                    <div className={selectedOrder ? "col-6" : 'col-9'}>
-                        <h6>Map</h6>
+                    <div className={selectedOrder ? "col-7" : 'col-9'}>
+                        <MarkerInfoWindowGmapsObj setSelectedOrder={setSelectedOrder}/>
                     </div>
                     
                     {selectedOrder ? 
                         <div style={{width:"20%",fontSize:12}} className="ml-auto pl-2">
-                            <form>
+                            <form className="col-12 mr-auto ml-auto">
                                 <div className="form-row">
                                     <label style={{width:'100%',fontSize:'1.2rem',letterSpacing:'.03rem'}} className="mb-2 pb-0 lead"><u>{selectedOrder.type} Details</u></label>
                                     {/* <span style={{fontWeight:'bolder'}}><u>{selectedOrder.type} Details</u></span> */}
@@ -167,9 +170,6 @@ export default function DispatchModuleHome(props){
                                         <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.additionalInfo}</span>
                                     </div>
                                 </div>
-                                <div className="form-row">
-                                    
-                                </div>
                             </form>
                         </div>
                     : ''}
@@ -178,7 +178,7 @@ export default function DispatchModuleHome(props){
             : ''}
 
             {!isAuthenticated ? 
-                <div className="col-6 text-center mr-auto ml-auto" style={{marginTop:'15rem'}}>
+                <div className="text-center mr-auto ml-auto" style={{marginTop:'15rem',width:'20%'}}>
                     <div>
                         <span className="h5">Select a login partner...</span>
                     </div>
