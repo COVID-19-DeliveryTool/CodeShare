@@ -30,10 +30,10 @@ const DonationProvider = props => {
         const response = await putOrder(formattedData);
         setLoading(false);
         if(response && !response.errorCode){
-            toast('Request submitted successfully!')
+            toast('Donation submitted successfully!')
             setStep(1)
         } else {
-            toast('There was an error submitting your request.');
+            toast('There was an error submitting your donation.');
         }
     };
 
