@@ -9,7 +9,8 @@ const RequestProvider = props => {
     
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({ requestedItems: [], dropoff: null });
+    const [formData, setFormData] = useState({ 
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null });
 
     const validateStep1 = (values) => {
         setFormData({ ...formData, values });
@@ -45,9 +46,16 @@ const RequestProvider = props => {
 
     const formatRequest = () => {
         // todo write logic to format the request object to match the data model given by backend
-        const copy = {...formData};
-        copy.type = 'REQUEST';
-        return copy;
+        const body = {};
+        body.firstName = formData.firstName;
+        body.lastName = formData.lastName;
+        body.address = formData.address;
+        body.phoneNumber =  formData.phoneNumber;
+        body.zipcode = formData.zipcode;
+        body.dropoffTime = formData.dropoff.id;
+        body.type = 'REQUEST';
+        body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
+        return body;
     };
 
     return (

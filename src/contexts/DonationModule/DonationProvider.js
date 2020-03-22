@@ -7,10 +7,11 @@ const DonationProvider = props => {
     var { register, errors, clearError, handleSubmit } = useForm();
     const [step, setStep] = useState(1);
     var [loading, setLoading] = useState(false);
-    var [formData, setFormData] = useState({ donatedItems: [] });
+    const [formData, setFormData] = useState({ 
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null });
 
-    const validateStep1 = (values) => {
-        setFormData({ ...formData, values });
+    const validateStep1 = () => {
+        console.log('forData ', formData);
         // todo handle address validation logic
         setStep(2)
     };
@@ -43,9 +44,17 @@ const DonationProvider = props => {
 
     const formatRequest = () => {
         // todo write logic to format the request object to match the data model given by backend
-        const copy = {...formData};
-        copy.type = 'DONATION';
-        return copy;
+        const body = {};
+        console.log('formData ', formData);
+        body.firstName = formData.firstName;
+        body.lastName = formData.lastName;
+        body.address = formData.address;
+        body.phoneNumber =  formData.phoneNumber;
+        body.zipcode = formData.zipcode;
+        body.dropoffTime = formData.dropoff.id;
+        body.type = 'DONATION';
+        body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
+        return body;
     };
 
     return(
