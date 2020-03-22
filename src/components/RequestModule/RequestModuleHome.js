@@ -123,17 +123,17 @@ export default function RequestModuleHome(props) {
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
                                 <ul className="list-group list-group-flush">
                                     {itemList.map(item => {
-                                        var itemIndex = formData.requestedItems.findIndex(a => a.value == item.value)
+                                        var itemIndex = formData.items.findIndex(a => a.value == item.value)
                                         console.log('item is ', item);
                                         console.log('itemIndex ', itemIndex);
-                                        if (formData.requestedItems && itemIndex > -1) {
-                                            var itemsList = [...formData.requestedItems]
+                                        if (formData.items && itemIndex > -1) {
+                                            var itemsList = [...formData.items]
                                             itemsList.splice(itemIndex, 1)
                                             console.log('item list ', itemsList)
-                                            return <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
+                                            return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckCircle className="mr-3" size={14} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, requestedItems: [...formData.requestedItems, item] })} className="underline-hover list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="underline-hover list-group-item"><Circle className="mr-3" size={14} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -148,7 +148,7 @@ export default function RequestModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.requestedItems || (formData.requestedItems && formData.requestedItems.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.items || (formData.items && formData.items.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>

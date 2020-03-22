@@ -45,7 +45,6 @@ const DonationProvider = props => {
     const formatRequest = () => {
         // todo write logic to format the request object to match the data model given by backend
         const body = {};
-        console.log('formData ', formData);
         body.firstName = formData.firstName;
         body.lastName = formData.lastName;
         body.address = formData.address;
