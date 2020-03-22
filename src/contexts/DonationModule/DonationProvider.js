@@ -73,7 +73,7 @@ const DonationProvider = props => {
                 register: () => register(),
                 clearError: () => clearError(),
                 handleSubmit: (e) => handleSubmit(e),
-                validateStep1: (values) => validateStep1(values),
+                validateStep1: () => validateStep1(),
                 validateStep2: () => validateStep2(),
                 validateStep3: () => validateStep3() 
             }}
