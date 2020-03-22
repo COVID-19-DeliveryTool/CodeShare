@@ -23,25 +23,19 @@ const RequestProvider = props => {
         setStep(3)
     };
 
-    const validateStep3 = () => {
+    const validateStep3 = async() => {
         // todo handle dropoff time validation
         setLoading(true);
         // format put request data
         const formattedData = formatRequest();
-        // to do finish this implentation when function is finished
-        // const promise = await putOrder(formattedData);
-        // setLoading(false);
-        // if(promise.success){
-        //     toast('Request submitted successfully!')
-        //     setStep(1)
-        // } else {
-        //     toast('There was an error submitting your request.');
-        // }
-        setTimeout(() => {
-            setLoading(false);
+        const response = await putOrder(formattedData);
+        setLoading(false);
+        if(response && !response.errorCode){
             toast('Request submitted successfully!')
             setStep(1)
-        }, 250);
+        } else {
+            toast('There was an error submitting your request.');
+        }
     };
 
     const formatRequest = () => {
@@ -52,10 +46,12 @@ const RequestProvider = props => {
         body.address = formData.address;
         body.phoneNumber =  formData.phoneNumber;
         body.zipcode = formData.zipcode;
-        body.dropoffTime = formData.dropoff.id;
+        body.time = formData.dropoff.id;
         body.type = 'REQUEST';
         body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
-        return body;
+        body.additionalInfo = formData.additionalInfo;
+        body.householdNum = formData.householdNum;
+        return body; 
     };
 
     return (

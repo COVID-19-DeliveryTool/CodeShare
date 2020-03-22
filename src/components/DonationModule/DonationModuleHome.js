@@ -183,7 +183,7 @@ export default function DonationModuleHome(props) {
 
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <label>Special Instructions</label>
-                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, pick up box from front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea onChange={e => setFormData({...formData, additionalInfo: e.target.value})} placeholder="Enter any special instructions for our driver, e.g. ring doorbell, pick up box from front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
 

@@ -78,7 +78,7 @@ export default function RequestModuleHome(props) {
                             <div className="form-row">
                                 <div className="form-group mr-auto ml-auto col-xl-4 col-md-8 mr-auto ml-auto text-center">
                                     <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">0</span>
-                                    <input ref={register({ required: true, min: 0, max: 10 })} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
+                                    <input ref={register({ required: true, min: 0, max: 10 })} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
@@ -197,7 +197,7 @@ export default function RequestModuleHome(props) {
 
                             <div className="form-group col-12 mr-auto ml-auto">
                                 <label>Special Instructions</label>
-                                <textarea placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <textarea onChange={e => setFormData({...formData, additionalInfo: e.target.value})} placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
                         </div>
 
