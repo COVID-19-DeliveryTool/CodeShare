@@ -22,8 +22,6 @@ export default function DispatchModuleHome(props){
         return orders
     }
 
-    console.log(user)
-
     return (
         <main>
             <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6F2C8E', paddingBottom: 15 }}>

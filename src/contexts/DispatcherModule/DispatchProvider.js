@@ -9,11 +9,13 @@ const DispatchProvider = props => {
     const [statusFilter, setStatusFilter] = useState(false)
 
     const getOrdersForDispatcher = async () =>{
+
         try{
             const prom = await getOrders()
             if(prom.errorCode) return //set into global error state or local?
             setOrders(prom)
         } catch(e){
+            console.log(e)
             //set error into global state?
         }
     } 
