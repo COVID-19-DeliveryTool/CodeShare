@@ -25,7 +25,7 @@ export function initalizeStitchServiceClient(client){
 export function intializeStitchClient(){
     try {
         //return Stitch.initializeDefaultAppClient('stayneighbor-bjuma');
-        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik');
+        return Stitch.initializeDefaultAppClient('stayneighbor_dev-nszik')
     } catch(err){
         return Stitch.defaultAppClient
     }
