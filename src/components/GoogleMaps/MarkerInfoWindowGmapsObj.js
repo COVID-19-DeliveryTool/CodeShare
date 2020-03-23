@@ -115,7 +115,7 @@ class MarkerInfoWindowGmapsObj extends Component {
     const { places } = [1, 2, 3]
     return (
 
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '90vh', width: '100%' }}>
         <GoogleMap
           defaultZoom={12}
           defaultCenter={[34.23, -77.94]}

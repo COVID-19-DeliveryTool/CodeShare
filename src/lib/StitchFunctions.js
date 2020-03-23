@@ -58,16 +58,20 @@ export async function getOrders(){
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         return result
     } catch(e){
+        console.log(e)
         return e
     }
 }
 
 export async function putOrder(body){
-    await anonymousUserLogin();
+    
     try{
         //get our default app client
         const client = intializeStitchClient()
+        if(!client.auth.isLoggedIn) await anonymousUserLogin()
+
         var result = await client.callFunction("createOrder", [body]);
+        logUserOut()
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         else return true
     } catch(e){
