@@ -6,14 +6,16 @@ import GoogleMap from './GoogleMap';
 
 // consts: [34.0522, -118.2437]
 var last = null
+var selected = false
+var records = ''
 
 const getInfoWindowString = place => `
     <div>
       <div style="font-size: 16px;">
-        ${place.name}
+        ${place.status}
       </div>
       <div style="font-size: 14px; color: grey;">
-        ${place.types[0]}
+        ${place.type}
       </div>
     </div>`
 
@@ -22,39 +24,39 @@ const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selecte
   const markers = [{}];
   const infowindows = [];
 
-  var places = [
-    {
-      name: "Home",
-      types: ['Request'],
-      geometry: {
-        location: {
-          lat: 34.23,
-          lng: -77.94
-        }
-      },
-      address: '2131 S 17th Street'
-    },
-    {
-      name: "Home1",
-      types: ['Donation'],
-      geometry: {
-        location: {
-          lat: 34.148562,
-          lng: -77.935982
-        }
-      }
-    },
-    {
-      name: "Home2",
-      types: ['Request'],
-      geometry: {
-        location: {
-          lat: 34.206362,
-          lng: -77.922413
-        }
-      }
-    }
-  ]
+  // var places = [
+  //   {
+  //     name: "Home",
+  //     types: ['Request'],
+  //     geometry: {
+  //       location: {
+  //         lat: 34.23,
+  //         lng: -77.94
+  //       }
+  //     },
+  //     address: '2131 S 17th Street'
+  //   },
+  //   {
+  //     name: "Home1",
+  //     types: ['Donation'],
+  //     geometry: {
+  //       location: {
+  //         lat: 34.148562,
+  //         lng: -77.935982
+  //       }
+  //     }
+  //   },
+  //   {
+  //     name: "Home2",
+  //     types: ['Request'],
+  //     geometry: {
+  //       location: {
+  //         lat: 34.206362,
+  //         lng: -77.922413
+  //       }
+  //     }
+  //   }
+  // ]
 
   // for using a custom image as a marker
   // var image = {
@@ -65,13 +67,13 @@ const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selecte
   places.forEach((place) => {
     markers.push(new maps.Marker({
       position: {
-        lat: place.geometry.location.lat,
-        lng: place.geometry.location.lng,
+        lat: Number(place.geometry.lat),
+        lng: Number(place.geometry.long),
       },
       map,
       data: place,
       // icon: image,
-      icon: place.types.includes('Request') ? {
+      icon: place.type === 'REQUEST' ? {
         path: maps.SymbolPath.BACKWARD_CLOSED_ARROW,
         strokeColor: 'red',
         scale: 5
@@ -95,6 +97,7 @@ const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selecte
       last = infowindows[i]
     })
   });
+  records = markers
 };
 
 class MarkerInfoWindowGmapsObj extends Component {
@@ -112,17 +115,17 @@ class MarkerInfoWindowGmapsObj extends Component {
   }
 
   render() {
-    const { places } = [1, 2, 3]
+    if(this.props.selectedOrder && this.props.selectedOrder != this.state.selectedMarker) this.setState({selectedMarker: this.props.selectedOrder})
+    console.log(records)
     return (
-
       <div style={{ height: '90vh', width: '100%' }}>
         <GoogleMap
           defaultZoom={12}
           defaultCenter={[34.23, -77.94]}
           bootstrapURLKeys={{ key: "AIzaSyD1t2vfHVpI_2dw0uqllA4lR5Q2Kjw9wdY" }}
           yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, places, this.props)}
-        />
+          onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps, this.props.orders, this.props)}
+        ></GoogleMap>
       </div>
 
     );

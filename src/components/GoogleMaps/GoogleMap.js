@@ -16,7 +16,7 @@ const GoogleMap = ({ children, ...props }) => (
       }}
       {...props}
     >
-      {/* {children} */}
+      {children}
     </GoogleMapReact>
   </Wrapper>
 );
