@@ -110,9 +110,9 @@ export async function getUserInfo(){
     var client = intializeStitchClient()
     var db = establishMongoDbConnection()
 
-    var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
+    await client.auth.refreshCustomData()
 
-    console.log(user)
+    var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
 
     if(user.errorCode) return false
 
