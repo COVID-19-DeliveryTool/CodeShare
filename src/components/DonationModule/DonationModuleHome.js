@@ -20,7 +20,7 @@ const itemList = [
 
 export default function DonationModuleHome(props) {
     const {step, loading, showModal, formData, errors} = props.donationContext.state; // provider state values
-    const { register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3, setShowModal, submitDonation} = props.donationContext; // provider functions
+    const { stepOneIsValid, stepTwoIsValid, stepThreeIsValid, register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3, setShowModal, submitDonation} = props.donationContext; // provider functions
 
     if (step === 1) {
         return (
@@ -46,36 +46,36 @@ export default function DonationModuleHome(props) {
                         <form onSubmit={handleSubmit(validateStep1)}>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name"></input>
+                                    <input onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name" value={formData.firstName}></input>
                                     {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='lastName' onChange={(e) => setFormData({...formData, lastName: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
+                                    <input name='lastName' onChange={(e) => setFormData({...formData, lastName: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name" value={formData.lastName}></input>
                                     {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='phoneNumber' onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
+                                    <input name='phoneNumber' onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number" value={formData.phoneNumber}></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='emailAddress' onChange={(e) => setFormData({...formData, emailAddress: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
+                                    <input name='emailAddress' onChange={(e) => setFormData({...formData, emailAddress: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Email Address" value={formData.emailAddress}></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='streetAddress' onChange={(e) => setFormData({...formData, address: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
+                                    <input name='streetAddress' onChange={(e) => setFormData({...formData, address: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address" value={formData.address}></input>
                                     {errors.streetAddress && <p style={{ color: 'red', marginBottom: 0 }}>{errors.streetAddress.message || errors.streetAddress.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='zipCode' onChange={(e) => setFormData({...formData, zipcode: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
+                                    <input name='zipCode' onChange={(e) => setFormData({...formData, zipcode: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code" value={formData.zipcode}></input>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
 
-                            {!loading && <button onClick={() => validateStep1()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto btn-primary-hover ml-auto col-12 btn mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep1()} disabled={stepOneIsValid()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto btn-primary-hover ml-auto col-12 btn mt-4">Continue</button>}
                         </form>
                     </div>
                 </div>
@@ -87,9 +87,6 @@ export default function DonationModuleHome(props) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
-                    {/* <div className="col-2">
-                        <Home className="mr-auto mt-2" style={{color:'white'}}/>
-                    </div> */}
                     <div className="col-12 mt-2 mr-auto">
                         <ArrowLeftCircle color="white" className="mr-3 underline-hover" onClick={() => setStep(1)} />
                         <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
@@ -115,7 +112,6 @@ export default function DonationModuleHome(props) {
                                         if (formData.items && itemIndex > -1) {
                                             var itemsList = [...formData.items]
                                             itemsList.splice(itemIndex, 1)
-                                            console.log(itemsList)
                                             return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckSquare className="mr-3 brand" size={18} />{item.label}</li>
                                         } else {
                                             return (
@@ -134,7 +130,7 @@ export default function DonationModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.items || (formData.items && formData.items.length === 0))} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn btn-primary-hover text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep2()} disabled={stepTwoIsValid()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn btn-primary-hover text-center mr-auto ml-auto col-xl-6 col-12 mt-4">Continue</button>}
                         </div>
 
                     </form>
@@ -147,9 +143,6 @@ export default function DonationModuleHome(props) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
-                    {/* <div className="col-2">
-                        <Home className="mr-auto mt-2" style={{color:'white'}}/>
-                    </div> */}
                     <div className="col-12 mt-2 mr-auto">
                         <ArrowLeftCircle color="white" className="mr-3" onClick={() => setStep(1)} />
                         <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
@@ -169,7 +162,6 @@ export default function DonationModuleHome(props) {
                     <form onSubmit={handleSubmit(validateStep3)}>
                         <div className="form-row">
                             <span>DROPOFF TIME</span>
-
                         </div>
 
                         <div className="form-row">
@@ -187,7 +179,7 @@ export default function DonationModuleHome(props) {
                             </div>
                         </div>
 
-                        {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} className="btn btn-primary-hover col-12 mt-4">Continue</button>}
+                        {!loading && <button type="submit" disabled={stepThreeIsValid()} className="btn btn-primary-hover col-12 mt-4">Continue</button>}
                     </form>
                 </div>
                 <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
@@ -200,7 +192,10 @@ export default function DonationModuleHome(props) {
                             <div className="col-12 col-xl-5 mr-auto ml-auto">
                                 <div className="border-bottom pb-1 row">
                                     <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Your Info</div>
-                                    <div onClick={() => setStep(1)} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                    <div onClick={() => {
+                                        setStep(1)
+                                        setShowModal(false)
+                                        }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
                                 </div>
                                 <div>
                                     <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.firstName} {formData.lastName}</li>
@@ -213,7 +208,10 @@ export default function DonationModuleHome(props) {
                             <div className="col-12 col-xl-5 mr-auto ml-auto">
                                 <div className="border-bottom pb-1 row">
                                     <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Items</div>
-                                    <div onClick={() => setStep(2)} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                    <div onClick={() => {
+                                        setStep(2)
+                                        setShowModal(false)
+                                        }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
                                 </div>
                                 <div>
                                     {formData.items.map(item => {
@@ -239,13 +237,14 @@ export default function DonationModuleHome(props) {
                             </div>
                             <div className="col-5 mr-auto ml-auto"></div>
                         </div>
-                        <div className="col-12 mr-auto ml-auto mt-4">
+                        <div className="col-12 mr-auto ml-auto mt-4 text-center">
                             {!loading && <button onClick={submitDonation} className="btn col-12 btn-primary-hover" type="button">Send My Donation</button>}
                             {loading && <button className="btn col-12 btn-primary-hover" type="button">
                                 <Spinner animation="border" role="status">
                                     <span className="sr-only">Loading...</span>
                                 </Spinner>
                             </button>}
+                            <span className="text-center mr-auto ml-auto">Please note our pickups are contactless, we will pickup the items from you specify</span>
                         </div>
                     </Modal.Body>
                 </Modal>
