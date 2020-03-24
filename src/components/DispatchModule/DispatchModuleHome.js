@@ -18,14 +18,13 @@ export default function DispatchModuleHome(props){
     }, [isAuthenticated, user, orders])
 
     function applyFilters(orders){
-        console.log(typeFilter, statusFilter)
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
         if(statusFilter) orders = orders.filter(a => a.status === statusFilter)
         return orders
     }
 
     if(orders) filteredOrders = applyFilters(orders)
-
+    console.log(user)
     return (
         <main>
             <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6F2C8E', paddingBottom: 15 }}>

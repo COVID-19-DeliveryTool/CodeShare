@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Modal,Spinner} from 'react-bootstrap'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Check, Square } from 'react-feather';
 import fulllogo from '../../images/fulllogo.png'
 
@@ -18,8 +19,8 @@ const dropoff = [
 ];
 
 export default function RequestModuleHome(props) {
-    const {step, loading, formData, errors} = props.requestContext.state; // provider state values
-    const { register, clearError, handleSubmit, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3} = props.requestContext; // provider functions
+    const {step, loading, formData, errors, showModal} = props.requestContext.state; // provider state values
+    const { register, clearError, handleSubmit, setShowModal, submitRequest, stepOneIsValid, stepTwoIsValid, stepThreeIsValid, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3} = props.requestContext; // provider functions
 
     if (step == 1) {
         return (
@@ -48,44 +49,47 @@ export default function RequestModuleHome(props) {
                         <form onSubmit={handleSubmit(validateStep1)}>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control lead" id="inputEmail4" placeholder="First Name"></input>
+                                    <input required={true} ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" value={formData.firstName} className="form-control lead" id="inputEmail4" placeholder="Stay"></input>
                                     {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.lastName} className="form-control" id="inputPassword4" placeholder="Neighbor"></input>
                                     {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.phoneNumber} className="form-control" id="inputPassword4" placeholder="910-617-5542"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="email" className="form-control" id="inputPassword4" placeholder="Email Address"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="email" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="help@stayneighbor.com"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address"></input>
-                                    {errors.streetAddress && <p style={{ color: 'red', marginBottom: 0 }}>{errors.streetAddress.message || errors.streetAddress.type}</p>}
+                                    <input required={true} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.address} className="form-control" id="inputPassword4" placeholder="1234 First St"></input>
+                                    {errors.address && <p style={{ color: 'red', marginBottom: 0 }}>{errors.address.message || errors.address.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input ref={register({ required: true })} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
+                                    <input required={true} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.zipcode} className="form-control" id="inputPassword4" placeholder="28412"></input>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group mr-auto ml-auto col-xl-4 col-md-8 mr-auto ml-auto text-center">
-                                    <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">0</span>
-                                    <input ref={register({ required: true, min: 0, max: 10 })} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" ref={register({ required: true, max: 10, min: 1 })} name='phoneNumber' type="range" defaultValue='0' onChange={(e) => document.getElementById('peopleInHousehold').innerText = e.target.value} className="custom-range" min="0" max="10" id="customRange2"></input>
+                                    <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">{formData.householdNum}</span>
+                                    <input required={true} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" name='phoneNumber' type="range" value={formData.householdNum} onChange={(e) => {
+                                        document.getElementById('peopleInHousehold').innerText = e.target.value
+                                        setFormData({...formData, householdNum: e.target.value})
+                                     }} className="custom-range" min="0" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
 
-                            {!loading && <button onClick={() => validateStep1()} type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto ml-auto col-12 btn mt-4">Continue</button>}
+                            {!loading && <button type="submit" disabled={stepOneIsValid()} className="col-xl-8 col-12 mr-auto ml-auto btn mt-4 btn-primary-hover">Continue</button>}
                         </form>
                     </div>
                 </div>
@@ -150,7 +154,7 @@ export default function RequestModuleHome(props) {
                         </div>
 
                         <div className="form-row mr-auto ml-auto text-center">
-                            {!loading && <button onClick={() => validateStep2()} disabled={formData && (!formData.items || (formData.items && formData.items.length === 0))}  type="submit" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-1">Continue</button>}
+                            {!loading && <button title={formData && (!formData.items || (formData.items && formData.items.length === 0)) ? 'Please select an item' : ''} onClick={() => validateStep2()} disabled={stepTwoIsValid()}  type="submit" className="btn text-center mr-auto ml-auto col-xl-6 col-12 mt-1 btn-primary-hover">Continue</button>}
                         </div>
 
                     </form>
@@ -185,7 +189,6 @@ export default function RequestModuleHome(props) {
                     <form onSubmit={handleSubmit(validateStep3)}>
                         <div className="form-row">
                             <span>DROPOFF TIME</span>
-
                         </div>
 
                         <div className="form-row">
@@ -203,9 +206,74 @@ export default function RequestModuleHome(props) {
                             </div>
                         </div>
 
-                        {!loading && <button type="submit" disabled={formData && (!formData.dropoff)} style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="btn col-12 mt-4">Continue</button>}
+                        {!loading && <button type="submit" disabled={stepThreeIsValid()} className="btn col-12 mt-4 btn-primary-hover">Continue</button>}
                     </form>
                 </div>
+                <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
+                    <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
+                        <div className="col-12 text-center">
+                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Confirm your request.</span>
+                        </div>
+                        <div className="col-12 row" style={{marginTop:25}}>
+                            <div className="col-12 col-xl-5 mr-auto ml-auto">
+                                <div className="border-bottom pb-1 row">
+                                    <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Your Info</div>
+                                    <div onClick={() => {
+                                        setStep(1)
+                                        setShowModal(false)
+                                        }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                </div>
+                                <div>
+                                    <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.firstName} {formData.lastName}</li>
+                                    <li className="mb-1 lead" style={{listStyleType:'none',fontSize:14}}>{formData.address}</li>
+                                    <li className="mb-3 lead" style={{listStyleType:'none',fontSize:14}}>{formData.zipcode}</li>
+                                    <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.phoneNumber}</li>
+                                    <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.emailAddress}</li>
+                                </div>
+                            </div>
+                            <div className="col-12 col-xl-5 mr-auto ml-auto">
+                                <div className="border-bottom pb-1 row">
+                                    <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Items</div>
+                                    <div onClick={() => {
+                                        setStep(2)
+                                        setShowModal(false)
+                                        }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                </div>
+                                <div>
+                                    {formData.items.map(item => {
+                                        return (
+                                            <li className="ml-3 lead" style={{fontSize:14}}>{item.value}</li>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-12 row" style={{marginTop:25}}>
+                            <div className="col-12 col-xl-5 mr-auto ml-auto">
+                                <div className="border-bottom row pb-1">
+                                    <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Drop Off Time</div>
+                                    <div onClick={() => {
+                                        setStep(3)
+                                        setShowModal(false)
+                                        }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                </div>
+                                <div>
+                                    <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.dropoff ? `${formData.dropoff.label} (${formData.dropoff.time})` : ''}</li>
+                                </div>
+                            </div>
+                            <div className="col-5 mr-auto ml-auto"></div>
+                        </div>
+                        <div className="col-12 mr-auto ml-auto mt-4 text-center">
+                            {!loading && <button onClick={submitRequest} className="btn col-12 btn-primary-hover" type="button">Submit</button>}
+                            {loading && <button className="btn col-12 btn-primary-hover" type="button">
+                                <Spinner animation="border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
+                            </button>}
+                            <span className="text-center mr-auto ml-auto">Please note our deliveries are contactless, we will leave the item where you specify.</span>
+                        </div>
+                    </Modal.Body>
+                </Modal>
             </main>
         )
     }
@@ -237,7 +305,7 @@ export default function RequestModuleHome(props) {
                             props.history.push('/')
                             setStep(1)
                         }} className="btn btn-outline-brand btn-lg">Home</button>
-                        <button onClick={() => window.location.replace('https://stayneighbor.com')} className="btn btn-outline-brand btn-lg">Learn More</button>
+                        <button onClick={() => window.location.replace('https://stayneighbor.com')} className="btn btn-lg btn-outline-brand">Learn More</button>
                     </div>
                 </div>
             </main>

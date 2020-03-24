@@ -1,4 +1,4 @@
-import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential} from 'mongodb-stitch-browser-sdk'
+import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
     if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
@@ -64,7 +64,6 @@ export async function getOrders(){
 }
 
 export async function putOrder(body){
-    
     try{
         //get our default app client
         const client = intializeStitchClient()
@@ -72,8 +71,9 @@ export async function putOrder(body){
 
         var result = await client.callFunction("createOrder", [body]);
         logUserOut()
-        if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
-        else return true
+        // if(result && result.status !== '200') return result
+        // else return true
+        return result
     } catch(e){
         return {errorCode: '002', errorMessage: e.toString()}
     }
@@ -106,6 +106,15 @@ export async function logUserOut(){
     return true
 }
 
-export function getUserInfo(){
-    return intializeStitchClient().auth.currentUser
+export async function getUserInfo(){
+    var client = intializeStitchClient()
+    var db = establishMongoDbConnection()
+
+    var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
+
+    if(user.errorCode) return false
+
+    return {...client.auth.currentUser, customData: {...user}}
+
+    //return intializeStitchClient().auth.currentUser
 }

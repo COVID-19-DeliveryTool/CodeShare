@@ -15,7 +15,7 @@ const GlobalStateProvider = props => {
 
     const getUser = async () => {
      //example of calling a stich function inside here
-        const prom = getUserInfo();
+        const prom = await getUserInfo();
         setUser(prom);
     }
     
