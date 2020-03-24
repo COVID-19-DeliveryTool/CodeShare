@@ -6,11 +6,32 @@ import { putOrder } from '../../lib/StitchFunctions';
 
 const DonationProvider = props => {
     var { register, errors, clearError, handleSubmit } = useForm();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     var [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({ 
         firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null });
+
+
+    const stepOneIsValid = () => {
+        if(!formData.firstName) return true
+        if(!formData.lastName) return true
+        if(!formData.phoneNumber || !formData.phoneNumber.match(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/g)) return true
+        if(!formData.emailAddress) return true
+        if(!formData.address) return true
+        if(!formData.zipcode) return true
+        return false
+    }
+
+    const stepTwoIsValid = () => {
+        if(!formData.items || (formData.items && formData.items.length === 0)) return true
+        return false
+    }
+
+    const stepThreeIsValid = () => {
+        if(!formData.dropoff) return true
+        return false
+    }
 
     const validateStep1 = () => {
         // todo handle address validation logic
@@ -33,11 +54,12 @@ const DonationProvider = props => {
         const formattedData = formatRequest();
         const response = await putOrder(formattedData);
         setLoading(false);
-        if(response && !response.errorCode){
+        if(response && !response.errorCode && response.status === '200'){
             toast('Donation submitted successfully!')
             setStep(4)
+            setShowModal(false)
         } else {
-            toast('There was an error submitting your donation.');
+            toast(response.message);
         }
     }
 
@@ -76,6 +98,9 @@ const DonationProvider = props => {
                 register: () => register(),
                 clearError: () => clearError(),
                 handleSubmit: (e) => handleSubmit(e),
+                stepOneIsValid: () => stepOneIsValid(),
+                stepTwoIsValid: () => stepTwoIsValid(),
+                stepThreeIsValid: () => stepThreeIsValid(),
                 validateStep1: () => validateStep1(),
                 validateStep2: () => validateStep2(),
                 validateStep3: () => validateStep3(),

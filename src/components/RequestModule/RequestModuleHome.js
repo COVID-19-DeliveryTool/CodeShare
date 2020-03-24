@@ -63,7 +63,7 @@ export default function RequestModuleHome(props) {
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="email" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="help@stayneighbor.com"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="help@stayneighbor.com"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>

@@ -10,7 +10,6 @@ const DispatchProvider = props => {
 
     const getOrdersForDispatcher = async () =>{
         try{
-            console.log("her we go")
             const prom = await getOrders()
             if(prom.errorCode) return //set into global error state or local?
             setOrders(prom)
