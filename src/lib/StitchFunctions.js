@@ -112,6 +112,8 @@ export async function getUserInfo(){
 
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
 
+    console.log(user)
+
     if(user.errorCode) return false
 
     return {...client.auth.currentUser, customData: {...user}}
