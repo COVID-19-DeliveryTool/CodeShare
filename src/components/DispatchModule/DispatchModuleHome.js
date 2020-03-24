@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import {Redirect} from 'react-router-dom'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle,LogOut,X,User,CheckCircle,ShoppingCart} from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
@@ -7,7 +8,7 @@ import {toast} from 'react-toastify'
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter } = props.dispatchContext.state
     const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter } = props.dispatchContext
-    var { isAuthenticated, user } = props.globalContext.state
+    var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
 
@@ -171,17 +172,30 @@ export default function DispatchModuleHome(props){
                                         <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.additionalInfo}</span>
                                     </div>
                                 </div>
+                                <div className="form-row">
+                                    <div className="form-group mr-2 col-12 mr-auto ml-auto">
+                                        {/* <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Items</b></label> */}
+                                        <button type="button" className="btn btn-outline-brand col-12">Save Order</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     : ''}
-                </div> 
-            
+                </div>
             : ''}
 
             {!isAuthenticated ? 
                 <div className="text-center mr-auto ml-auto" style={{marginTop:'15rem',width:'20%'}}>
                     <div>
                         <span className="h5">Select a login partner...</span>
+                    </div>
+                </div>
+            : ''}
+
+            {errors.login ? 
+                <div className="text-center mr-auto ml-auto" style={{marginTop:'15rem',width:'20%'}}>
+                    <div>
+                        <span className="h5">{errors.login}</span>
                     </div>
                 </div>
             : ''}

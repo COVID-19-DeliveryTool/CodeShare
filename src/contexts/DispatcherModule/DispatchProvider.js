@@ -4,6 +4,7 @@ import { getOrders } from '../../lib/StitchFunctions';
 
 const DispatchProvider = props => {
     const [orders, setOrders] = useState(false)
+    const [drivers, setDrivers] = useState(false)
     const [selectedOrder, setSelectedOrder] = useState(false)
     const [typeFilter, setTypeFilter] = useState(false)
     const [statusFilter, setStatusFilter] = useState(false)
@@ -27,13 +28,15 @@ const DispatchProvider = props => {
                     orders: orders,
                     selectedOrder: selectedOrder,
                     typeFilter: typeFilter,
-                    statusFilter: statusFilter
+                    statusFilter: statusFilter,
+                    drivers: drivers
                 },
                 // expose functions here
                 getOrdersForDispatcher: () => getOrdersForDispatcher(),
                 setSelectedOrder: (obj) => setSelectedOrder(obj),
                 setTypeFilter: (str) => setTypeFilter(str),
-                setStatusFilter: (str) => setStatusFilter(str)
+                setStatusFilter: (str) => setStatusFilter(str),
+                setDrivers: () => setDrivers()
             }}
         >
             {props.children}

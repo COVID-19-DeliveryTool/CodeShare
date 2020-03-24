@@ -1,8 +1,9 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
-    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
+    //if(process.env.NODE_ENV === 'development') return 'stayneighbor_dev-nszik'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
 }
 
 function getDb(){
@@ -110,13 +111,28 @@ export async function getUserInfo(){
     var client = intializeStitchClient()
     var db = establishMongoDbConnection()
 
-    await client.auth.refreshCustomData()
+    console.log(client.auth.currentUser)
 
+    //await client.auth.refreshCustomData()
+    // console.log(client.auth.user.id)
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
 
-    if(user.errorCode) return false
+    //if(!user || user.status != '200') return user
 
     return {...client.auth.currentUser, customData: {...user}}
 
     //return intializeStitchClient().auth.currentUser
+}
+
+export async function getDrivers(){
+    const client = intializeStitchClient()
+
+    try {
+        var result = await client.callFunction("getDrivers", []);
+        if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
+        return result
+    } catch(e){
+        console.log(e)
+        return e
+    }
 }
