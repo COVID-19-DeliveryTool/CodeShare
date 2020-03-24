@@ -27,7 +27,6 @@ const DonationProvider = props => {
     };
 
     const submitDonation = async () => {
-        console.log('here')
         // todo handle dropoff time validation
         setLoading(true);
         // format put request data

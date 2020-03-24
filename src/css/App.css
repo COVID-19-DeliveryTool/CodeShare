@@ -84,6 +84,13 @@
   margin: .5rem .5rem .5rem .5rem;
 }
 
+.btn-outline-brand:hover{
+  color:white !important;
+  background-color:#6f2c8e !important;
+  border: 1px solid !important;
+  margin: .5rem .5rem .5rem .5rem;
+}
+
 .btn-primary-hover{
   background-color:rgb(158, 69, 183) !important;
   color:white !important;

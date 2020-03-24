@@ -144,7 +144,6 @@ export default function DonationModuleHome(props) {
     }
 
     if (step === 3) {
-        console.log(formData)
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
@@ -194,7 +193,7 @@ export default function DonationModuleHome(props) {
                 <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
                     <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
                         <div className="col-12 text-center">
-                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Confirm your request.</span>
+                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Confirm your donation.</span>
                         </div>
                         
                         <div className="col-12 row" style={{marginTop:25}}>
@@ -228,7 +227,7 @@ export default function DonationModuleHome(props) {
                         <div className="col-12 row" style={{marginTop:25}}>
                             <div className="col-12 col-xl-5 mr-auto ml-auto">
                                 <div className="border-bottom row pb-1">
-                                    <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Drop Off Time</div>
+                                    <div className='col-6 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Pick Up Time</div>
                                     <div onClick={() => {
                                         setStep(3)
                                         setShowModal(false)

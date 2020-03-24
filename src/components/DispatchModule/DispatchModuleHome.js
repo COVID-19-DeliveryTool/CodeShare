@@ -13,12 +13,11 @@ export default function DispatchModuleHome(props){
 
     useEffect(() => {
         checkAuthStatus()
-        if(isAuthenticated) getUser()
+        if(isAuthenticated && !user) getUser()
         if(isAuthenticated && user && !orders) getOrdersForDispatcher()
     }, [isAuthenticated, user, orders])
 
     function applyFilters(orders){
-        console.log(typeFilter, statusFilter)
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
         if(statusFilter) orders = orders.filter(a => a.status === statusFilter)
         return orders
