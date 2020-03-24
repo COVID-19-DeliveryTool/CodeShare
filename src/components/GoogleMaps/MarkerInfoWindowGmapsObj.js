@@ -62,84 +62,84 @@ const getInfoWindowString = place => `
 //   return
 
 
-  // const markers = [{}];
-  // const infowindows = [];
+// const markers = [{}];
+// const infowindows = [];
 
-  // var places = [
-  //   {
-  //     name: "Home",
-  //     types: ['Request'],
-  //     geometry: {
-  //       location: {
-  //         lat: 34.23,
-  //         lng: -77.94
-  //       }
-  //     },
-  //     address: '2131 S 17th Street'
-  //   },
-  //   {
-  //     name: "Home1",
-  //     types: ['Donation'],
-  //     geometry: {
-  //       location: {
-  //         lat: 34.148562,
-  //         lng: -77.935982
-  //       }
-  //     }
-  //   },
-  //   {
-  //     name: "Home2",
-  //     types: ['Request'],
-  //     geometry: {
-  //       location: {
-  //         lat: 34.206362,
-  //         lng: -77.922413
-  //       }
-  //     }
-  //   }
-  // ]
+// var places = [
+//   {
+//     name: "Home",
+//     types: ['Request'],
+//     geometry: {
+//       location: {
+//         lat: 34.23,
+//         lng: -77.94
+//       }
+//     },
+//     address: '2131 S 17th Street'
+//   },
+//   {
+//     name: "Home1",
+//     types: ['Donation'],
+//     geometry: {
+//       location: {
+//         lat: 34.148562,
+//         lng: -77.935982
+//       }
+//     }
+//   },
+//   {
+//     name: "Home2",
+//     types: ['Request'],
+//     geometry: {
+//       location: {
+//         lat: 34.206362,
+//         lng: -77.922413
+//       }
+//     }
+//   }
+// ]
 
-  // for using a custom image as a marker
-  // var image = {
-  //   url: 'https://cdn4.iconfinder.com/data/icons/contact-us-19/48/35-512.png',
-  //   scaledSize: new maps.Size(25, 25),
-  // }
+// for using a custom image as a marker
+// var image = {
+//   url: 'https://cdn4.iconfinder.com/data/icons/contact-us-19/48/35-512.png',
+//   scaledSize: new maps.Size(25, 25),
+// }
 
-  // places.forEach((place) => {
-  //   markers.push(new maps.Marker({
-  //     position: {
-  //       lat: Number(place.geometry.lat),
-  //       lng: Number(place.geometry.long),
-  //     },
-  //     map,
-  //     data: place,
-  //     // icon: image,
-  //     icon: place.type === 'REQUEST' ? {
-  //       path: maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-  //       strokeColor: 'red',
-  //       scale: 5
-  //     } : {
-  //         path: maps.SymbolPath.FORWARD_CLOSED_ARROW,
-  //         strokeColor: 'blue',
-  //         scale: 5
-  //       },
-  //   }));
+// places.forEach((place) => {
+//   markers.push(new maps.Marker({
+//     position: {
+//       lat: Number(place.geometry.lat),
+//       lng: Number(place.geometry.long),
+//     },
+//     map,
+//     data: place,
+//     // icon: image,
+//     icon: place.type === 'REQUEST' ? {
+//       path: maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+//       strokeColor: 'red',
+//       scale: 5
+//     } : {
+//         path: maps.SymbolPath.FORWARD_CLOSED_ARROW,
+//         strokeColor: 'blue',
+//         scale: 5
+//       },
+//   }));
 
-  //   infowindows.push(new maps.InfoWindow({
-  //     content: getInfoWindowString(place),
-  //   }));
-  // });
+//   infowindows.push(new maps.InfoWindow({
+//     content: getInfoWindowString(place),
+//   }));
+// });
 
-  // markers.slice(1).forEach((marker, i) => {
-  //   marker.addListener('click', () => {
-  //     infowindows[i].open(map, marker)
-  //     props.setSelectedOrder(marker.data)
-  //     if (last) last.close()
-  //     last = infowindows[i]
-  //   })
-  // });
-  // console.log(markers)
-  // records = markers.slice(1)
+// markers.slice(1).forEach((marker, i) => {
+//   marker.addListener('click', () => {
+//     infowindows[i].open(map, marker)
+//     props.setSelectedOrder(marker.data)
+//     if (last) last.close()
+//     last = infowindows[i]
+//   })
+// });
+// console.log(markers)
+// records = markers.slice(1)
 //};
 
 class MarkerInfoWindowGmapsObj extends Component {
@@ -160,16 +160,16 @@ class MarkerInfoWindowGmapsObj extends Component {
 
   handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selectedMarker) => {
     console.log(map)
-    this.setState({gMap: map, gMaps: maps})
+    this.setState({ gMap: map, gMaps: maps })
     return
   }
 
-  getPlaces(places, props){
+  getPlaces(places, props) {
     const markers = [{}];
     const infowindows = [];
     var gMaps = this.state.gMaps
     var gMap = this.state.gMap
-  
+
     places.forEach((place) => {
       markers.push(new gMaps.Marker({
         position: {
@@ -189,12 +189,12 @@ class MarkerInfoWindowGmapsObj extends Component {
             scale: 5
           },
       }));
-  
+
       infowindows.push(new gMaps.InfoWindow({
         content: getInfoWindowString(place),
       }));
     });
-  
+
     markers.slice(1).forEach((marker, i) => {
       marker.addListener('click', () => {
         infowindows[i].open(gMap, marker)
@@ -203,18 +203,20 @@ class MarkerInfoWindowGmapsObj extends Component {
         last = infowindows[i]
       })
     });
-  
+
     console.log(markers)
     return markers.slice(1)
   }
 
   render() {
-    if(this.props.selectedOrder && this.props.selectedOrder != this.state.selectedMarker) this.setState({selectedMarker: this.props.selectedOrder})
+    if (this.props.selectedOrder && this.props.selectedOrder != this.state.selectedMarker) this.setState({ selectedMarker: this.props.selectedOrder })
+    const defaultCenter = { lat: 34.23, lng: -77.94 };
+    const coordinates = this.props.selectedOrder ? { lat: Number(this.props.selectedOrder.geometry.lat), lng: Number(this.props.selectedOrder.geometry.long) } : defaultCenter;
     return (
       <div style={{ height: '90vh', width: '100%' }}>
         <GoogleMap
           defaultZoom={12}
-          defaultCenter={[34.23, -77.94]}
+          center={coordinates}
           bootstrapURLKeys={{ key: "AIzaSyD1t2vfHVpI_2dw0uqllA4lR5Q2Kjw9wdY" }}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps, this.props.orders, this.props)}
@@ -226,7 +228,7 @@ class MarkerInfoWindowGmapsObj extends Component {
                 text={order.type}
                 lat={Number(order.geometry.lat)}
                 lng={Number(order.geometry.long)}
-                onClick={() => console.log('here')}
+                onClick={() => this.props.setSelectedOrder(order)}
               />
             )
           })}
