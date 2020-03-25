@@ -60,6 +60,14 @@
   max-width: 5rem;
 }
 
+.no-border{
+  border: 0 !important;
+  background-color: white !important;
+  padding-left: 0px !important;
+  overflow-wrap: anywhere !important;
+  width:'100%'
+}
+
 .active-order{
   background-color: #00000021 !important;
 }

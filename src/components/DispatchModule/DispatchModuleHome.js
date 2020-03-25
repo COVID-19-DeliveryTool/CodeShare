@@ -118,13 +118,13 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group mr-2 col-5">
+                                    <div className="form-group col-6">
                                         <label className='lead' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
                                         <select onChange={(e) => setOrderChanges({...orderChanges, driver: JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{drivers && [{name: ''}, ...drivers].map(driver => {
                                             return <option value={driver.name === '' ? false : JSON.stringify(driver)} selected={setFormValue('driver').id === driver.id ? true : false}>{driver.name}</option>
                                         })}</select>
                                     </div>
-                                    <div className="form-group col-5 mr-2">
+                                    <div className="form-group col-6">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Status</b></label>
                                         <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{['ASSIGNED','PENDING','COMPLETED'].map(status => {
                                             return <option selected={setFormValue('status') === status ? true : false}>{status}</option>
@@ -132,11 +132,11 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group mr-2 col-5">
+                                    <div className="form-group col-6">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Address</b></label>
-                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className='lead form-control' disabled={orderChanges.enabled ? false : true} style={{display:'block', fontSize:'.9rem'}} value={setFormValue('address')}></input>
+                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'block', fontSize:'.9rem'}} value={setFormValue('address')}></input>
                                     </div>
-                                    <div className='lead' className="form-group mr-2 col-5">
+                                    <div className='lead' className="form-group col-6">
                                         <label className="lead" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
                                         <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{user.customData.zipcodes.map(zipcode => {
                                             return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
