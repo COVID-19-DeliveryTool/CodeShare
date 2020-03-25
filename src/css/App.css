@@ -42,9 +42,13 @@
 
 .request-type{
   background-color: #3498e1;
+  font-weight: 600 !important;
   color:white;
-  padding: 2px 5px 2px 5px;
+  padding: 5px 5px 5px 5px;
   border-radius: 3px;
+  min-width: 2rem;
+  max-width: 5rem;
+  text-align: center;
 }
 
 .donation-type{
@@ -52,6 +56,8 @@
   color:white;
   padding: 2px 5px 2px 5px;
   border-radius: 3px;
+  min-width: 2rem;
+  max-width: 5rem;
 }
 
 .active-order{

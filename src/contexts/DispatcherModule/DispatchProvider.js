@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers } from '../../lib/StitchFunctions';
 
 const DispatchProvider = props => {
     const [orders, setOrders] = useState(false)
@@ -8,6 +8,7 @@ const DispatchProvider = props => {
     const [selectedOrder, setSelectedOrder] = useState(false)
     const [typeFilter, setTypeFilter] = useState(false)
     const [statusFilter, setStatusFilter] = useState(false)
+    const [orderChanges, setOrderChanges] = useState(false)
 
     const getOrdersForDispatcher = async () =>{
         try{
@@ -18,7 +19,35 @@ const DispatchProvider = props => {
             console.log(e)
             //set error into global state?
         }
-    } 
+    }
+
+    const getDriversForDispatcher = async () => {
+        try {
+            const prom = await getDrivers()
+            if(prom.errorCode) return //set into global error state or local?
+            setDrivers(prom)
+        } catch(e) {
+            
+        }
+    }
+
+    const setFormValue = (key) => {
+        try {
+            if(!orderChanges.enabled) {  
+                if(!selectedOrder[key]) return {}
+                return selectedOrder[key]
+            }
+            else {
+                if(orderChanges[key]) return orderChanges[key]
+                else {
+                    if(!selectedOrder[key]) return {}
+                    return selectedOrder[key]
+                }
+            }
+        } catch (e) {
+
+        }
+    }
 
     return (
         <DispatchContext.Provider 
@@ -29,14 +58,18 @@ const DispatchProvider = props => {
                     selectedOrder: selectedOrder,
                     typeFilter: typeFilter,
                     statusFilter: statusFilter,
-                    drivers: drivers
+                    drivers: drivers,
+                    orderChanges: orderChanges
                 },
                 // expose functions here
                 getOrdersForDispatcher: () => getOrdersForDispatcher(),
+                getDriversForDispatcher: () => getDriversForDispatcher(),
                 setSelectedOrder: (obj) => setSelectedOrder(obj),
                 setTypeFilter: (str) => setTypeFilter(str),
                 setStatusFilter: (str) => setStatusFilter(str),
-                setDrivers: () => setDrivers()
+                setDrivers: () => setDrivers(),
+                setOrderChanges: (bool) => setOrderChanges(bool),
+                setFormValue: (str) => setFormValue(str)
             }}
         >
             {props.children}

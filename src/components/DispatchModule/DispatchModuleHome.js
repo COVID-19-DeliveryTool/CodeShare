@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react'
 import {Redirect} from 'react-router-dom'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
-import { ArrowLeftCircle,LogOut,X,User,CheckCircle,ShoppingCart} from 'react-feather'
+import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
 import {toast} from 'react-toastify'
 
 export default function DispatchModuleHome(props){
-    const { orders, selectedOrder, typeFilter, statusFilter } = props.dispatchContext.state
-    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter } = props.dispatchContext
+    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers } = props.dispatchContext.state
+    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
@@ -16,7 +16,10 @@ export default function DispatchModuleHome(props){
         checkAuthStatus()
         if(isAuthenticated && !user) getUser()
         if(isAuthenticated && user && !orders) getOrdersForDispatcher()
-    }, [isAuthenticated, user, orders])
+        if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
+    }, [isAuthenticated, user, orders, drivers])
+
+    if(!user || !orders || !drivers) return <div>Loading</div>
 
     function applyFilters(orders){
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
@@ -25,7 +28,7 @@ export default function DispatchModuleHome(props){
     }
 
     if(orders) filteredOrders = applyFilters(orders)
-
+    console.log(user)
     return (
         <main>
             <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6F2C8E', paddingBottom: 15 }}>
@@ -42,8 +45,8 @@ export default function DispatchModuleHome(props){
             </nav>
 
             {isAuthenticated && user && orders ? 
-                <div className="col-12 row mr-auto" style={{marginTop:75}}>
-                    <div style={{paddingLeft:0,paddingRight:0,width:'20%'}}>
+                <div className="col-12 row" style={{marginTop:75}}>
+                    <div style={{paddingLeft:0,paddingRight:0}} className="col-3">
                         <div className={{width:'100%',height:"100%"}}>
                             <div style={{paddingLeft:'1.50rem'}}>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Type</label>
@@ -51,6 +54,7 @@ export default function DispatchModuleHome(props){
                                     <button onClick={() => setTypeFilter('REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({filteredOrders.filter(a => a.type === 'REQUEST').length})</button>
                                     <button onClick={() => setTypeFilter('DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations ({filteredOrders.filter(a => a.type === 'DONATION').length})</button>
                                     <X onClick={() => setTypeFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
+                                    <RefreshCw onClick={getOrdersForDispatcher} className="hover" style={{marginTop:'.75rem',marginLeft:'.50rem'}}/>
                                 </div>
                             </div>
                             <div style={{paddingLeft:'1.50rem'}}>
@@ -92,90 +96,88 @@ export default function DispatchModuleHome(props){
                             </div>
                         </div>
                     </div>
-                    <div className={selectedOrder ? "col-7" : 'col-9'}>
+                    <div className={selectedOrder ? "col-6" : 'col-9'}>
                         <MarkerInfoWindowGmapsObj setSelectedOrder={setSelectedOrder} orders={filteredOrders} selectedOrder={selectedOrder}/>
                     </div>
                     
                     {selectedOrder ? 
-                        <div style={{width:"20%",fontSize:12}} className="ml-auto pl-2">
-                            <form className="col-12 mr-auto ml-auto">
-                                <div className="form-row">
-                                    <label style={{width:'100%',fontSize:'1.2rem',letterSpacing:'.03rem'}} className="mb-2 pb-0 lead"><u>{selectedOrder.type} Details</u></label>
-                                    {/* <span style={{fontWeight:'bolder'}}><u>{selectedOrder.type} Details</u></span> */}
+                        <div className="col-3" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
+                            <form className="col-12">
+                                <div className="form-row border-bottom" style={{paddingBottom:5}}>
+                                    <span className="mb-2 pb-0 lead">{selectedOrder.type.charAt(0)}{selectedOrder.type.slice(1).toLowerCase()} Details</span>
+                                    <span className="ml-auto mt-2"><X className="hover"/></span>
                                 </div>
-                                <div className="form-row">
-                                    <div className="form-group mr-2">
+                                <div className="form-row row pr-0 pl-0" style={{paddingTop:10}}>
+                                    <div className="form-group col-12 col-xl-6">
                                         <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Type</b></label>
                                         <span style={{display:'block',fontSize:'.9rem'}} className={selectedOrder.type === "REQUEST" ? 'request-type lead mt-1' : 'donation-type lead mt-1'}>{selectedOrder.type}</span>
                                     </div>
-                                    <div className="form-group mr-2">
+                                    <div className="form-group col-12 col-xl-6">
                                         <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Name</b></label>
-                                        <span className="lead" type="email" style={{display:'block'}} aria-describedby="emailHelp">{selectedOrder.firstName} {selectedOrder.lastName}</span>
-                                    </div>
-                                    <div className="form-group mr-2">
-                                        {/* <label for="exampleInputEmail1"><b># in House</b></label> */}
-                                        <User/>
-                                        <span className="ml-2 lead mt-2" type="email" style={{display:'block',fontSize:"1.0rem"}} aria-describedby="emailHelp">{selectedOrder.householdNum}</span>
+                                        <span className="lead" type="email" style={{display:'block',fontWeight:400}} aria-describedby="emailHelp">{selectedOrder.firstName} {selectedOrder.lastName}</span>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
-                                        <select style={{display:'block'}} >{['','Patrick Willetts','Dillon Harless'].map(driver => {
-                                            return <option>{driver}</option>
+                                        <select onChange={(e) => setOrderChanges({...orderChanges, driver: JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{drivers && [{name: ''}, ...drivers].map(driver => {
+                                            return <option value={driver.name === '' ? false : JSON.stringify(driver)} selected={setFormValue('driver').id === driver.id ? true : false}>{driver.name}</option>
                                         })}</select>
                                     </div>
                                     <div className="form-group col-5 mr-2">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Status</b></label>
-                                        <select selected={selectedOrder.status} style={{display:'block'}} >{['ASSIGNED','PENDING','COMPLETED'].map(status => {
-                                            return <option selected={selectedOrder.status === status ? true : false}>{status}</option>
+                                        <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{['ASSIGNED','PENDING','COMPLETED'].map(status => {
+                                            return <option selected={setFormValue('status') === status ? true : false}>{status}</option>
                                         })}</select>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Address</b></label>
-                                        <span className='lead' style={{display:'block', fontSize:'.9rem'}}>{selectedOrder.address}</span>
+                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className='lead form-control' disabled={orderChanges.enabled ? false : true} style={{display:'block', fontSize:'.9rem'}} value={setFormValue('address')}></input>
                                     </div>
                                     <div className='lead' className="form-group mr-2 col-5">
                                         <label className="lead" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
-                                        <span className='lead' type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.zipcode}</span>
+                                        <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{user.customData.zipcodes.map(zipcode => {
+                                            return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
+                                        })}</select>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>{selectedOrder.type === 'DONATION' ? 'Pickup Time' : 'Delivery Time'}</b></label>
-                                        <span className='lead' type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.dropoffTime}</span>
+                                        <select onChange={e => setOrderChanges({...orderChanges, time: e.target.value})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{['morning', 'afternoon', 'evening'].map(time => {
+                                            return <option selected={setFormValue('time') === time ? true : false}>{time}</option>
+                                        })}</select>
                                     </div>
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Phone Number</b></label>
-                                        <span className='lead' type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.phoneNumber}</span>
+                                        <input onChange={e => setOrderChanges({...orderChanges, phoneNumber: e.target.value})} className='lead form-control' type="text" disabled={orderChanges.enabled ? false : true} style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp" value={setFormValue('phoneNumber')}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Date Created</b></label>
-                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{new Date(selectedOrder.dateCreated).toLocaleDateString()} {new Date(selectedOrder.dateCreated).toLocaleTimeString()}</span>
-                                    </div>
-                                    <div className="form-group mr-2 col-5">
-                                        <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Phone Number</b></label>
-                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.phoneNumber}</span>
+                                        <input type="text" className='lead form-control' disabled={true} style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp" defaultValue={`${new Date(selectedOrder.dateCreated).toLocaleDateString()} ${new Date(selectedOrder.dateCreated).toLocaleTimeString()}`}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-5">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Items</b></label>
-                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.items.map(item => item.name)}</span>
+                                        <input type="text" disabled={orderChanges.enabled ? false : true} style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp" defaultValue={selectedOrder.items.map(item => item.name)}></input>
                                     </div>
-                                    <div className="form-group mr-2 col-5">
+                                </div>
+                                <div className="form-row">
+                                    <div className="form-group mr-2 col-12">
                                         <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Additional Info</b></label>
-                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{selectedOrder.additionalInfo}</span>
+                                        <textarea type="text" disabled={orderChanges.enabled ? false : true} style={{display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" defaultValue={selectedOrder.additionalInfo}></textarea>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group mr-2 col-12 mr-auto ml-auto">
                                         {/* <label className='lead' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Items</b></label> */}
-                                        <button type="button" className="btn btn-outline-brand col-12">Save Order</button>
+                                        {orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12">Save Order</button>}
+                                        {!orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12" onClick={() => setOrderChanges({enabled: true})}>Edit Order</button>}
                                     </div>
                                 </div>
                             </form>

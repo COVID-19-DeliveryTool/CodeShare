@@ -113,11 +113,11 @@ export async function getUserInfo(){
 
     console.log(client.auth.currentUser)
 
-    //await client.auth.refreshCustomData()
-    // console.log(client.auth.user.id)
+    await client.auth.refreshCustomData()
+
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
 
-    //if(!user || user.status != '200') return user
+    if(!user) return false
 
     return {...client.auth.currentUser, customData: {...user}}
 
@@ -129,6 +129,7 @@ export async function getDrivers(){
 
     try {
         var result = await client.callFunction("getDrivers", []);
+        console.log(result)
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         return result
     } catch(e){
