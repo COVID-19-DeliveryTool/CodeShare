@@ -46,18 +46,22 @@
   color:white;
   padding: 5px 5px 5px 5px;
   border-radius: 3px;
-  min-width: 2rem;
-  max-width: 5rem;
+  max-width: 7rem;
   text-align: center;
 }
 
 .donation-type{
   background-color: #3fb94c;
+  font-weight: 600 !important;
   color:white;
-  padding: 2px 5px 2px 5px;
+  padding: 5px 5px 5px 5px;
   border-radius: 3px;
-  min-width: 2rem;
-  max-width: 5rem;
+  max-width: 7rem;
+  text-align: center;
+}
+
+.form-control{
+  padding: 0 0 0 0 !important;
 }
 
 .no-border{

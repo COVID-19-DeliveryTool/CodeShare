@@ -45,14 +45,14 @@ export default function DispatchModuleHome(props){
             </nav>
 
             {isAuthenticated && user && orders ? 
-                <div className="col-12 row" style={{marginTop:75}}>
+                <div className="col-12 row" style={{marginTop:75,maxHeight:'50vh'}}>
                     <div style={{paddingLeft:0,paddingRight:0}} className="col-3">
-                        <div className={{width:'100%',height:"100%"}}>
+                        <div className={{width:'100%'}}>
                             <div style={{paddingLeft:'1.50rem'}}>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Type</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={() => setTypeFilter('REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({filteredOrders.filter(a => a.type === 'REQUEST').length})</button>
-                                    <button onClick={() => setTypeFilter('DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations ({filteredOrders.filter(a => a.type === 'DONATION').length})</button>
+                                    <button onClick={() => setTypeFilter(typeFilter === 'REQUEST' ? '' : 'REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({filteredOrders.filter(a => a.type === 'REQUEST').length})</button>
+                                    <button onClick={() => setTypeFilter(typeFilter === 'DONATION' ? '' : 'DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations ({filteredOrders.filter(a => a.type === 'DONATION').length})</button>
                                     <X onClick={() => setTypeFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
                                     <RefreshCw onClick={getOrdersForDispatcher} className="hover" style={{marginTop:'.75rem',marginLeft:'.50rem'}}/>
                                 </div>
@@ -60,13 +60,13 @@ export default function DispatchModuleHome(props){
                             <div style={{paddingLeft:'1.50rem'}}>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={() => setStatusFilter('PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Pending ({filteredOrders.filter(a => a.status === 'PENDING').length})</button>
-                                    <button onClick={() => setStatusFilter('ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Assigned ({filteredOrders.filter(a => a.type === 'ASSIGNED').length})</button>
-                                    <button onClick={() => setStatusFilter('COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Completed ({filteredOrders.filter(a => a.type === 'COMPLETED').length})</button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Pending ({filteredOrders.filter(a => a.status === 'PENDING').length})</button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'ASSIGNED' ? '' : 'ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Assigned ({filteredOrders.filter(a => a.type === 'ASSIGNED').length})</button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Completed ({filteredOrders.filter(a => a.type === 'COMPLETED').length})</button>
                                     <X onClick={() => setStatusFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
-                            <div style={{paddingLeft:-50,paddingRight:0,borderRight:"2px solid black"}} className="mt-2">
+                            <div style={{maxHeight:'70vh',paddingLeft:-50,paddingRight:0,borderRight:"2px solid black",overflowY:'auto'}} className="mt-2">
                                 {orders && filteredOrders.map(order => {
                                     return (
                                         <li style={{fontSize:12,paddingLeft:'1.5rem',paddingRight:5,paddingBottom:'.25rem'}} class={`list-group-item order-list text-center ${order == selectedOrder ? 'active-order': ""}`} onClick={() => setSelectedOrder(order)}>
@@ -109,8 +109,8 @@ export default function DispatchModuleHome(props){
                                 </div>
                                 <div className="form-row row pr-0 pl-0" style={{paddingTop:10}}>
                                     <div className="form-group col-12 col-xl-6">
-                                        <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Type</b></label>
-                                        <span style={{display:'block',fontSize:'.9rem'}} className={selectedOrder.type === "REQUEST" ? 'request-type lead mt-1' : 'donation-type lead mt-1'}>{selectedOrder.type}</span>
+                                        <label className="lead" for="exampleInputEmail1" style={{fontSize:'.9rem'}}><b>Type</b></label>
+                                        <span style={{display:'block',fontSize:'.9rem'}} className={selectedOrder.type === "REQUEST" ? 'request-type lead' : 'donation-type lead'}>{selectedOrder.type}</span>
                                     </div>
                                     <div className="form-group col-12 col-xl-6">
                                         <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Name</b></label>
@@ -120,7 +120,7 @@ export default function DispatchModuleHome(props){
                                 <div className="form-row">
                                     <div className="form-group col-6">
                                         <label className='lead' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
-                                        <select onChange={(e) => setOrderChanges({...orderChanges, driver: JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className="custom-select" style={{display:'block'}} >{drivers && [{name: ''}, ...drivers].map(driver => {
+                                        <select onChange={(e) => setOrderChanges({...orderChanges, driver: JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className="custom-select input-sm" style={{display:'block'}} >{drivers && [{name: ''}, ...drivers].map(driver => {
                                             return <option value={driver.name === '' ? false : JSON.stringify(driver)} selected={setFormValue('driver').id === driver.id ? true : false}>{driver.name}</option>
                                         })}</select>
                                     </div>
