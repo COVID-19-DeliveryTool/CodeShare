@@ -6,7 +6,7 @@ import { putOrder } from '../../lib/StitchFunctions';
 
 const DonationProvider = props => {
     var { register, errors, clearError, handleSubmit } = useForm();
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     var [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({ 
