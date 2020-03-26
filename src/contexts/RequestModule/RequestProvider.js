@@ -7,10 +7,10 @@ import { putOrder } from '../../lib/StitchFunctions';
 const RequestProvider = props => {
     const { register, errors, clearError, handleSubmit } = useForm();
     const [showModal, setShowModal] = useState(false)
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(2);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({ 
-        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null, householdNum: 0 });
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], freeTextItems: [''], dropoff: null, householdNum: 0 });
 
     const stepOneIsValid = () => {
         if(!formData.firstName) return true

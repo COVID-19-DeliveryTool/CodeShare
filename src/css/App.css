@@ -40,12 +40,24 @@
   color: #61dafb;
 }
 
+/* Order Status Styling */
+.pending-status{
+  background-color: #d6bd4b;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  max-width: 7rem;
+  text-align: center;
+}
+
 .request-type{
   background-color: #3498e1;
   font-weight: 600 !important;
   color:white;
   padding: 5px 5px 5px 5px;
   border-radius: 3px;
+  min-width: 6rem;
   max-width: 7rem;
   text-align: center;
 }
@@ -56,12 +68,9 @@
   color:white;
   padding: 5px 5px 5px 5px;
   border-radius: 3px;
+  min-width: 6rem;
   max-width: 7rem;
   text-align: center;
-}
-
-.form-control{
-  padding: 0 0 0 0 !important;
 }
 
 .no-border{
@@ -69,11 +78,16 @@
   background-color: white !important;
   padding-left: 0px !important;
   overflow-wrap: anywhere !important;
-  width:'100%'
+  width:'100%';
+  background: white !important;
 }
 
 .active-order{
   background-color: #00000021 !important;
+}
+
+.label-half{
+  margin-bottom: .25rem !important;
 }
 
 .order-list:hover{

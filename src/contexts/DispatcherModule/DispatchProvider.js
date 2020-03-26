@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders, getDrivers } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers, assignOrder, updateOrderStatus } from '../../lib/StitchFunctions';
 
 const DispatchProvider = props => {
     const [orders, setOrders] = useState(false)
@@ -49,6 +49,23 @@ const DispatchProvider = props => {
         }
     }
 
+    const updateOrder = async () => {
+        if(!orderChanges) return
+        if(orderChanges.driver) { //process driver change with assignOrder api
+            console.log(orderChanges.driver)
+            var prom = await assignOrder(selectedOrder._id, orderChanges.driver.id)
+            console.log(prom)
+        }
+
+        if(orderChanges.status){
+            console.log(orderChanges.driver)
+            console.log(selectedOrder._id.toString(), orderChanges.status)
+            var prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
+        }
+
+        await getOrdersForDispatcher()
+    }
+
     return (
         <DispatchContext.Provider 
             value={{
@@ -69,7 +86,8 @@ const DispatchProvider = props => {
                 setStatusFilter: (str) => setStatusFilter(str),
                 setDrivers: () => setDrivers(),
                 setOrderChanges: (bool) => setOrderChanges(bool),
-                setFormValue: (str) => setFormValue(str)
+                setFormValue: (str) => setFormValue(str),
+                updateOrder: () => updateOrder()
             }}
         >
             {props.children}
