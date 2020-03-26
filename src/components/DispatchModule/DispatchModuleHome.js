@@ -48,28 +48,38 @@ export default function DispatchModuleHome(props){
                 <div className="col-12 row" style={{marginTop:75,maxHeight:'50vh'}}>
                     <div style={{paddingLeft:0,paddingRight:0}} className="col-12 col-md-6 col-xl-3">
                         <div className={{width:'100%'}}>
-                            <div style={{paddingLeft:'1.50rem'}}>
-                                <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Type</label>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={() => setTypeFilter(typeFilter === 'REQUEST' ? '' : 'REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({filteredOrders.filter(a => a.type === 'REQUEST').length})</button>
-                                    <button onClick={() => setTypeFilter(typeFilter === 'DONATION' ? '' : 'DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations ({filteredOrders.filter(a => a.type === 'DONATION').length})</button>
-                                    <X onClick={() => setTypeFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
-                                    <RefreshCw onClick={getOrdersForDispatcher} className="hover" style={{marginTop:'.75rem',marginLeft:'.50rem'}}/>
+                            <div className='card mt-0 mb-0'>
+                                <div class="card-header pb-1 pt-1">
+                                    Order Filters
                                 </div>
                             </div>
                             <div style={{paddingLeft:'1.50rem'}}>
-                                <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Order Status</label>
+                                <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Type</label>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button onClick={() => setTypeFilter(typeFilter === 'REQUEST' ? '' : 'REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests ({filteredOrders.filter(a => a.type === 'REQUEST').length})</button>
+                                    <button onClick={() => setTypeFilter(typeFilter === 'DONATION' ? '' : 'DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations ({filteredOrders.filter(a => a.type === 'DONATION').length})</button>
+                                    <X onClick={() => setTypeFilter(false)} style={{marginTop:'.40rem',color:"grey"}} className="hover ml-1"/>
+                                    <RefreshCw onClick={() => getOrdersForDispatcher(true)} className="hover" style={{marginTop:'.40rem',marginLeft:'.50rem'}}/>
+                                </div>
+                            </div>
+                            <div style={{paddingLeft:'1.50rem'}}>
+                                <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Pending ({filteredOrders.filter(a => a.status === 'PENDING').length})</button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'ASSIGNED' ? '' : 'ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Assigned ({filteredOrders.filter(a => a.status === 'ASSIGNED').length})</button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Completed ({filteredOrders.filter(a => a.status === 'COMPLETED').length})</button>
-                                    <X onClick={() => setStatusFilter(false)} style={{marginTop:'.75rem',color:"grey"}} className="hover ml-1"/>
+                                    <X onClick={() => setStatusFilter(false)} style={{marginTop:'.40rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
-                            <div style={{maxHeight:'74vh',paddingLeft:-50,paddingRight:0,borderRight:"2px solid black",overflowY:'auto'}} className="mt-2">
+                            <div className='card mt-0 mb-0'>
+                                <div class="card-header pb-1 pt-1">
+                                    Order List
+                                </div>
+                            </div>
+                            <div style={{maxHeight:'60vh',paddingLeft:-50,paddingRight:0,borderRight:"2px solid black",overflowY:'auto'}} className="mt-2">
                                 {orders && filteredOrders.map(order => {
                                     return (
-                                        <li style={{fontSize:12,paddingLeft:'1.5rem',paddingRight:5,paddingBottom:'.25rem'}} class={`list-group-item order-list text-center ${selectedOrder._id ? order._id.toString() == selectedOrder._id.toString() ? 'active-order': "" : ''}`} onClick={() => {
+                                        <li style={{fontSize:12,paddingLeft:'1.5rem',paddingRight:5,paddingBottom:'.25rem'}} class={`list-group-item order-list text-center pl-1 pr-1 pt-0 pb-0 ${selectedOrder._id ? order._id.toString() == selectedOrder._id.toString() ? 'active-order': "" : ''}`} onClick={() => {
                                             setSelectedOrder(order)
                                             setOrderChanges(false)
                                         }}>
@@ -77,11 +87,11 @@ export default function DispatchModuleHome(props){
                                                 <div className="form-row" style={{paddingTop:'.25rem'}}>
                                                     <div className="form-group col-3 mr-2">
                                                         {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'1.1rem'}}>Type</label> */}
-                                                        <span style={{display:'block',fontSize:'.9rem'}} className={order.type === "REQUEST" ? 'request-type' : 'donation-type'}>{order.type}</span>
+                                                        <span style={{display:'block',fontSize:'.7rem'}} className={order.type === "REQUEST" ? 'request-type' : 'donation-type'}>{order.type}</span>
                                                     </div>
                                                     <div className="form-group col-4 mr-2">
                                                         {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Name</b></label> */}
-                                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{order.firstName} {order.lastName}</span>
+                                                        <span type="email" style={{display:'block',fontSize:'.7rem'}} aria-describedby="emailHelp">{order.firstName} {order.lastName}</span>
                                                     </div>
                                                     {/* <div className="form-group col-2 mr-2">
                                                         <label for="exampleInputEmail1"><b>People</b></label>
@@ -89,7 +99,7 @@ export default function DispatchModuleHome(props){
                                                     </div> */}
                                                     <div className="form-group col-3 mr-2">
                                                         {/* <label for="exampleInputEmail1" className="lead" style={{fontSize:'.9rem'}}><b>Status</b></label> */}
-                                                        <span type="email" style={{display:'block',fontSize:'.9rem'}} aria-describedby="emailHelp">{order.status}</span>
+                                                        <span type="email" style={{display:'block',fontSize:'.7rem'}} aria-describedby="emailHelp">{order.status}</span>
                                                     </div>
                                                 </div>
                                             </form>

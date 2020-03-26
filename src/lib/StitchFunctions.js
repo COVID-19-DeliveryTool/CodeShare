@@ -163,3 +163,13 @@ export async function updateOrderStatus(orderId, orderStatus){
         return e
     }
 }
+
+export async function getOrder(orderId){
+    try{
+        var db = establishMongoDbConnection()
+        var user = await db.collection('orders').findOne({_id: orderId})
+        return user
+    } catch (e) {
+        console.log(e)
+    }
+}

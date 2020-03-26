@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders, getDrivers, assignOrder, updateOrderStatus } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder } from '../../lib/StitchFunctions';
+import {toast} from 'react-toastify'
 
 const DispatchProvider = props => {
     const [orders, setOrders] = useState(false)
@@ -10,11 +11,12 @@ const DispatchProvider = props => {
     const [statusFilter, setStatusFilter] = useState(false)
     const [orderChanges, setOrderChanges] = useState(false)
 
-    const getOrdersForDispatcher = async () =>{
+    const getOrdersForDispatcher = async (notify) =>{
         try{
             const prom = await getOrders()
             if(prom.errorCode) return //set into global error state or local?
             setOrders(prom)
+            if(notify) toast('Orders updated!')
         } catch(e){
             console.log(e)
             //set error into global state?
@@ -63,7 +65,9 @@ const DispatchProvider = props => {
             var prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
         }
 
+        toast('Order successfully updated!')
         await getOrdersForDispatcher()
+        setSelectedOrder(await getOrder(selectedOrder._id))
     }
 
     return (
@@ -79,7 +83,7 @@ const DispatchProvider = props => {
                     orderChanges: orderChanges
                 },
                 // expose functions here
-                getOrdersForDispatcher: () => getOrdersForDispatcher(),
+                getOrdersForDispatcher: (bool) => getOrdersForDispatcher(bool),
                 getDriversForDispatcher: () => getDriversForDispatcher(),
                 setSelectedOrder: (obj) => setSelectedOrder(obj),
                 setTypeFilter: (str) => setTypeFilter(str),
