@@ -7,7 +7,7 @@ function getAppId(){
 }
 
 function getDb(){
-    if(process.env.NODE_ENV === 'development') return 'stayneighbor'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor-dev'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
 
