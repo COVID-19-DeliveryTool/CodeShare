@@ -140,10 +140,11 @@ export async function getDrivers(){
 
 export async function assignOrder(orderId, driverId){
     const client = intializeStitchClient()
-    console.log(orderId.toString(), driverId)
+    console.log(orderId, driverId)
     try {
         var result = await client.callFunction("assignOrder", [orderId.toString(), driverId]);
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
+        console.log(result)
         return result
     } catch(e){
         console.log(e)

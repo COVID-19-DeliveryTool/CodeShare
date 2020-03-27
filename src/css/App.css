@@ -51,18 +51,7 @@
   text-align: center;
 }
 
-.request-type{
-  background-color: #3498e1;
-  font-weight: 600 !important;
-  color:white;
-  padding: 5px 5px 5px 5px;
-  border-radius: 3px;
-  min-width: 6rem;
-  max-width: 7rem;
-  text-align: center;
-}
-
-.donation-type{
+.donation-type-details{
   background-color: #3fb94c;
   font-weight: 600 !important;
   color:white;
@@ -71,6 +60,43 @@
   min-width: 6rem;
   max-width: 7rem;
   text-align: center;
+  font-size:1rem;
+}
+
+.request-type-details{
+  background-color: #3498e1;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  min-width: 6rem;
+  max-width: 7rem;
+  text-align: center;
+  font-size:1rem;
+}
+
+.request-type{
+  background-color: #3498e1;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  min-width: 2rem;
+  max-width: 3rem;
+  text-align: center;
+  font-size:1rem;
+}
+
+.donation-type{
+  background-color: #3fb94c;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  min-width: 2rem;
+  max-width: 3rem;
+  text-align: center;
+  font-size:1rem;
 }
 
 .no-border{

@@ -54,7 +54,8 @@ const RequestProvider = props => {
         const formattedData = formatRequest();
         const response = await putOrder(formattedData);
         setLoading(false);
-        if(response && !response.errorCode && response.status === '200'){
+
+        if(response.status === '200'){
             toast('Request submitted successfully!')
             setStep(4)
         } else {

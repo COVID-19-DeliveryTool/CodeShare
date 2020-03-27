@@ -14,8 +14,7 @@ const DispatchProvider = props => {
     const getOrdersForDispatcher = async (notify) =>{
         try{
             const prom = await getOrders()
-            if(prom.errorCode) return //set into global error state or local?
-            setOrders(prom)
+            if(prom.status === '200') setOrders(prom.data)
             if(notify) toast('Orders updated!')
         } catch(e){
             console.log(e)
@@ -26,8 +25,8 @@ const DispatchProvider = props => {
     const getDriversForDispatcher = async () => {
         try {
             const prom = await getDrivers()
-            if(prom.errorCode) return //set into global error state or local?
-            setDrivers(prom)
+            if(prom.status === '200') setDrivers(prom.data)    
+            console.log(prom.data)
         } catch(e) {
             
         }
@@ -53,17 +52,22 @@ const DispatchProvider = props => {
 
     const updateOrder = async () => {
         if(!orderChanges) return
-        if(orderChanges.driver) { //process driver change with assignOrder api
-            console.log(orderChanges.driver)
-            var prom = await assignOrder(selectedOrder._id, orderChanges.driver.id)
-            console.log(prom)
+        if(orderChanges.driver === '' || orderChanges.driver) { //process driver change with assignOrder api
+            var prom = await assignOrder(selectedOrder._id, orderChanges.driver.id ? orderChanges.driver.id : '')
+            if(prom.status === '400') {
+                console.log(prom)
+            } else {
+                console.log(prom)
+            }
         }
 
         if(orderChanges.status){
-            console.log(orderChanges.driver)
-            console.log(selectedOrder._id.toString(), orderChanges.status)
             var prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
+            if(prom.status === '400') {
+
+            }
         }
+
 
         toast('Order successfully updated!')
         await getOrdersForDispatcher()
