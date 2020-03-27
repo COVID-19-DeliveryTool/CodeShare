@@ -1,12 +1,12 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
-    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor_dev-nszik'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
 }
 
 function getDb(){
-    if(process.env.NODE_ENV === 'development') return 'stayneighbor'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor-dev'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
 
