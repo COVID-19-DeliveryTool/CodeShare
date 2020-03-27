@@ -6,6 +6,7 @@ import Home from './components/Home'
 import RequestModule from './components/RequestModule/RequestModuleHome'
 import DonationModule from './components/DonationModule/DonationModuleHome'
 import DispatchModule from './components/Dispatch'
+import Error from './components/Error'
 import GoogleMaps from './components/GoogleMaps/GoogleMap'
 import MarkerInfoWindowGmapsObj from './components/GoogleMaps/MarkerInfoWindowGmapsObj'
 import './css/App.css';
@@ -35,10 +36,11 @@ function App() {
         />
 
         <Switch>
-            <Route exact={true} path="/" render={(props) => <Home globalContext={globalContext} {...props}/>}/>
-            <Route exact={true} path="/request" render={(props) => <RequestContext.Consumer>{requestContext => (<RequestModule globalContext={globalContext} requestContext={requestContext} {...props}/>)}</RequestContext.Consumer>}/>
-            <Route exact={true} path="/donate" render={(props) => <DonationContext.Consumer>{donationContext => (<DonationModule globalContext={globalContext} donationContext={donationContext} {...props}/>)}</DonationContext.Consumer>}/>
-            <Route exact={true} path="/dispatcher" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<DispatchModuleHome globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
+          <Route exact={true} path="/" render={(props) => <Home globalContext={globalContext} {...props}/>}/>
+          <Route exact={true} path="/request" render={(props) => <RequestContext.Consumer>{requestContext => (<RequestModule globalContext={globalContext} requestContext={requestContext} {...props}/>)}</RequestContext.Consumer>}/>
+          <Route exact={true} path="/donate" render={(props) => <DonationContext.Consumer>{donationContext => (<DonationModule globalContext={globalContext} donationContext={donationContext} {...props}/>)}</DonationContext.Consumer>}/>
+          <Route exact={true} path="/dispatcher" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<DispatchModuleHome globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
+          <Route exact={true} path="/error" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<Error globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
         </Switch>
       </BrowserRouter>
       )}

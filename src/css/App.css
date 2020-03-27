@@ -40,22 +40,80 @@
   color: #61dafb;
 }
 
+/* Order Status Styling */
+.pending-status{
+  background-color: #d6bd4b;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  max-width: 7rem;
+  text-align: center;
+}
+
+.donation-type-details{
+  background-color: #3fb94c;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  min-width: 6rem;
+  max-width: 7rem;
+  text-align: center;
+  font-size:1rem;
+}
+
+.request-type-details{
+  background-color: #3498e1;
+  font-weight: 600 !important;
+  color:white;
+  padding: 5px 5px 5px 5px;
+  border-radius: 3px;
+  min-width: 6rem;
+  max-width: 7rem;
+  text-align: center;
+  font-size:1rem;
+}
+
 .request-type{
   background-color: #3498e1;
+  font-weight: 600 !important;
   color:white;
-  padding: 2px 5px 2px 5px;
+  padding: 5px 5px 5px 5px;
   border-radius: 3px;
+  min-width: 2rem;
+  max-width: 3rem;
+  text-align: center;
+  font-size:1rem;
 }
 
 .donation-type{
   background-color: #3fb94c;
+  font-weight: 600 !important;
   color:white;
-  padding: 2px 5px 2px 5px;
+  padding: 5px 5px 5px 5px;
   border-radius: 3px;
+  min-width: 2rem;
+  max-width: 3rem;
+  text-align: center;
+  font-size:1rem;
+}
+
+.no-border{
+  border: 0 !important;
+  background-color: white !important;
+  padding-left: 0px !important;
+  overflow-wrap: anywhere !important;
+  width:'100%';
+  background: white !important;
 }
 
 .active-order{
   background-color: #00000021 !important;
+}
+
+.label-half{
+  margin-bottom: .25rem !important;
 }
 
 .order-list:hover{
@@ -81,14 +139,14 @@
   color:#6f2c8e !important;
   border-color:#6f2c8e !important;
   border: 1px solid !important;
-  margin: .5rem .5rem .5rem .5rem;
+  margin: .1rem .5rem .5rem .5rem;
 }
 
 .btn-outline-brand:hover{
   color:white !important;
   background-color:#6f2c8e !important;
   border: 1px solid !important;
-  margin: .5rem .5rem .5rem .5rem;
+  margin: .1rem .5rem .5rem .5rem;
 }
 
 .btn-primary-hover{
@@ -120,7 +178,7 @@
   color:white !important;
   border-color:#6f2c8e !important;
   border: 1px solid !important;
-  margin: .5rem .5rem .5rem .5rem;
+  margin: .1rem .5rem .5rem .5rem;
 }
 
 .toastify-brand{

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Modal,Spinner} from 'react-bootstrap'
-import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Check, Square } from 'react-feather';
+import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Check, Square, PlusSquare, Trash2 } from 'react-feather';
 import fulllogo from '../../images/fulllogo.png'
 
 const itemList = [
@@ -49,31 +49,31 @@ export default function RequestModuleHome(props) {
                         <form onSubmit={handleSubmit(validateStep1)}>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input required={true} ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" value={formData.firstName} className="form-control lead" id="inputEmail4" placeholder="Stay"></input>
+                                    <input required={true} ref={register({ required: true })} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" value={formData.firstName} className="form-control lead" id="inputEmail4" placeholder="First Name"></input>
                                     {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input required={true} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.lastName} className="form-control" id="inputPassword4" placeholder="Neighbor"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.lastName} className="form-control" id="inputPassword4" placeholder="Last Name"></input>
                                     {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input required={true} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.phoneNumber} className="form-control" id="inputPassword4" placeholder="910-617-5542"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.phoneNumber} className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="help@stayneighbor.com"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="Email Address"></input>
                                     {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input required={true} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.address} className="form-control" id="inputPassword4" placeholder="1234 First St"></input>
+                                    <input required={true} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.address} className="form-control" id="inputPassword4" placeholder="Address"></input>
                                     {errors.address && <p style={{ color: 'red', marginBottom: 0 }}>{errors.address.message || errors.address.type}</p>}
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input required={true} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.zipcode} className="form-control" id="inputPassword4" placeholder="28412"></input>
+                                    <input required={true} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.zipcode} className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
@@ -135,7 +135,7 @@ export default function RequestModuleHome(props) {
                                             return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckSquare className="mr-3 brand" size={18} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="underline-hover list-group-item"><Square className="mr-3 brand" size={18} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="underline-hover list-group-item d-flex"><Square className="mr-3 brand" size={18} />{item.label}</li>
                                             )
                                         }
                                     })}
@@ -144,12 +144,33 @@ export default function RequestModuleHome(props) {
                         </div>
                         <div className="form-row">
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
-                                <input name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control" id="inputEmail4" placeholder="+ Add additional Item"></input>
+                                {formData.freeTextItems.map((item, index) => {
+                                    return (
+                                        <div className="d-flex">
+                                            <input onChange={(e) => {
+                                                var list = [...formData.freeTextItems]
+                                                list[index] = e.target.value
+                                                setFormData({...formData, freeTextItems: list})
+                                            }} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control pl-3 pr-3" id="newListItem" placeholder="+ Add additional Item" value={item}>
+                                            </input>
+                                            <Trash2 onClick={() => {
+                                                var list = [...formData.freeTextItems]
+                                                if(list.length === 1) {
+                                                    list[index] = ''
+                                                } else {
+                                                    list.splice(index,1)
+                                                }
+                                                setFormData({...formData, freeTextItems: list})
+                                            }} style={{height:'100%'}} className="mt-2 hover brand"/>
+                                        </div>
+                                        
+                                    )
+                                })}
                             </div>
                         </div>
                         <div className='form-row'>
                             <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
-                                <button className="btn btn-sm btn-outline-brand"><Plus /> Add Another</button>
+                                <button type="button" onClick={() => setFormData({...formData, freeTextItems: [...formData.freeTextItems, '']})} className="btn btn-sm btn-outline-brand"><Plus /> Add Another</button>
                             </div>
                         </div>
 

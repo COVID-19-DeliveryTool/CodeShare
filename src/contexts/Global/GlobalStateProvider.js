@@ -16,7 +16,8 @@ const GlobalStateProvider = props => {
     const getUser = async () => {
      //example of calling a stich function inside here
         const prom = await getUserInfo();
-        setUser(prom);
+        if(!prom) setErrors({...errors, login: 'We had trouble logging you in, please try again later.'})
+        else setUser(prom);
     }
     
     return (

@@ -115,7 +115,7 @@ export default function DonationModuleHome(props) {
                                             return <li key={item.id} onClick={() => setFormData({ ...formData, items: itemsList })} className="list-group-item underline-hover"><CheckSquare className="mr-3 brand" size={18} />{item.label}</li>
                                         } else {
                                             return (
-                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="list-group-item underline-hover"><Square className="mr-3 brand" size={18} />{item.label}</li>
+                                                <li key={item.id} onClick={() => setFormData({ ...formData, items: [...formData.items, item] })} className="ml-1 list-group-item underline-hover"><Square className="mr-3 brand" size={18} />{item.label}</li>
                                             )
                                         }
                                     })}
