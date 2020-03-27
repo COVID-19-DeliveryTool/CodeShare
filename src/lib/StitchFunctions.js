@@ -1,5 +1,8 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
+//Load config from .env file
+require('dotenv').config();
+
 function getAppId(){
     if(process.env.NODE_ENV === 'development') return 'stayneighbor_dev-nszik'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
@@ -11,6 +14,7 @@ function getDb(){
 }
 
 function establishMongoDbConnection(){
+
     //get our default app client
     const client = intializeStitchClient()
 
