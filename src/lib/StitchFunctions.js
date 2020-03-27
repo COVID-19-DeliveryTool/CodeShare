@@ -111,7 +111,7 @@ export async function getUserInfo(){
     var client = intializeStitchClient()
     var db = establishMongoDbConnection()
 
-    console.log(client.auth.currentUser)
+    console.log(client.auth.user.id)
 
     await client.auth.refreshCustomData()
 

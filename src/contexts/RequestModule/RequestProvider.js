@@ -57,6 +57,8 @@ const RequestProvider = props => {
 
         if(response.status === '200'){
             toast('Request submitted successfully!')
+            setFormData({ 
+                firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], freeTextItems: [''], dropoff: null, householdNum: 0 })
             setStep(4)
         } else {
             toast(response.message);
