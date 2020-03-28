@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import StayNeighborBrand from './StayNeighborBrand'
 import { ChevronRight } from 'react-feather'
-import fulllogo from '../images/fulllogo.png'
+
 
 export default function Home(props) {
     return (
@@ -11,10 +12,8 @@ export default function Home(props) {
                 </div>
             </nav>
             <div style={{ backgroundColor: "rgb(255, 255, 255)", height: '100vh', color: 'white' }}>
-                <div className="mr-auto ml-auto text-center" style={{ paddingTop: '10rem' }}>
-                    <img className="mr-auto ml-auto" style={{ width: '25rem' }} src={fulllogo} />
-                </div>
-                <div className="lead col-11 mr-auto ml-auto text-center" style={{ fontSize: '1.25rem', marginTop: '2rem', color: 'rgb(0, 0, 0)', fontWeight: 400 }}>
+                <StayNeighborBrand/>
+                <div className="lead col-10 col-xl-6 col-md-8 mr-auto ml-auto text-center" style={{ fontSize: '1.25rem', marginTop: '2rem', color: 'rgb(0, 0, 0)', fontWeight: 400 }}>
                     A volunteer-powered network for essential supplies - delivered in a safe, healthy, and organized way.
                 </div>
                 <div style={{ marginTop: '3rem' }}>

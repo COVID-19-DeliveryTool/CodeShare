@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Modal,Spinner} from 'react-bootstrap'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Check, Square, PlusSquare, Trash2 } from 'react-feather';
-import fulllogo from '../../images/fulllogo.png'
+import StayNeighborBrand from '../StayNeighborBrand';
 
 const itemList = [
     { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
@@ -311,12 +311,10 @@ export default function RequestModuleHome(props) {
                         <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
-                <div className="col-xl-6 col-11 mr-auto ml-auto" style={{paddingTop:'8rem'}}>
-                    <div className="mr-auto ml-auto text-center">
-                        <img className="mr-auto ml-auto" style={{width:'25rem'}} src={fulllogo}/>
-                    </div>
-                    <div className="mr-auto ml-auto text-center mt-4">
-                        <span className="lead" style={{fontSize:'4rem',color:"rgba(0, 0, 0, 0.42)"}}>Help is on the way.</span>
+                <div className="col-xl-6 col-11 mr-auto ml-auto">
+                    <StayNeighborBrand/>
+                    <div className="mr-auto ml-auto text-center mt-3">
+                        <span className="lead" style={{fontSize:'3rem',color:"rgba(0, 0, 0, 0.42)"}}>Help is on the way.</span>
                     </div>
                     <div className="mr-auto ml-auto text-center mt-2 mb-4">
                         <span className="lead" style={{fontSize:'1.5rem',color:"rgba(0, 0, 0, 0.42)"}}>When your order is assigned to a driver, we will let you know.</span>

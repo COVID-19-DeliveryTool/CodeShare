@@ -15,7 +15,7 @@ const DispatchProvider = props => {
     const getOrdersForDispatcher = async (notify) =>{
         try{
             const prom = await getOrders()
-            if(prom.status === '200') setOrders(prom.data)
+            if(prom.status === '200') setOrders(prom.data.sort((a, b) => a.dateCreated < b.dateCreated))
             if(notify) toast('Orders updated!')
         } catch(e){
             console.log(e)

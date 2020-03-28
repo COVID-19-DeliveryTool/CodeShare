@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react'
+import Loading from '../Loading'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
 import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
+import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
 
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading } = props.dispatchContext.state
@@ -19,7 +21,7 @@ export default function DispatchModuleHome(props){
         if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
     }, [isAuthenticated, user, orders, drivers])
 
-    if(!user || !orders || !drivers) return <div>Loading</div>
+    if(!user || !orders || !drivers) return <Loading/>
 
     function applyFilters(orders){
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
@@ -37,6 +39,13 @@ export default function DispatchModuleHome(props){
         }
 
         return false
+    }
+
+    function timeSince(date){
+        var hoursSince = differenceInHours(new Date(), new Date(date))
+        if(hoursSince < 1) return `${differenceInMinutes(new Date(), new Date(date))} minutes ago`
+        if(hoursSince > 24) return `${differenceInDays(new Date(), new Date(date))} days ago`
+        return `${hoursSince} hours ago`
     }
 
     if(orders) filteredOrders = applyFilters(orders)
@@ -75,7 +84,7 @@ export default function DispatchModuleHome(props){
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><Circle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'ASSIGNED' ? '' : 'ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'IN PROGRESS' ? '' : 'IN PROGRESS')} class={`${statusFilter === 'IN PROGRESS' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><CheckCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'CANCELLED' ? '' : 'CANCELLED')} class={`${statusFilter === 'CANCELLED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><XCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'ERROR/ACTION' ? '' : 'ERROR/ACTION')} class={`${statusFilter === 'ERROR/ACTION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><AlertCircle/></button>
@@ -96,6 +105,7 @@ export default function DispatchModuleHome(props){
                                             <span className={order.type === "REQUEST" ? 'request-type ml-1 mr-1' : 'donation-type  ml-1 mr-1'}>{order.type.charAt(0).toUpperCase()}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.status}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.firstName} {order.lastName}</span>
+                                            <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{timeSince(order.dateCreated)}</span>
                                         </li>
                                     )
                                 })}
@@ -153,7 +163,7 @@ export default function DispatchModuleHome(props){
                                     <div className='lead' className="form-group col-12 col-xl-6 mb-0">
                                         <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
                                         {orderChanges.enabled ? 
-                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.map(zipcode => {
+                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.sort().map(zipcode => {
                                                 return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
                                             })}</select>
                                         : 
