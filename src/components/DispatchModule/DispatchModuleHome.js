@@ -153,7 +153,7 @@ export default function DispatchModuleHome(props){
                                     <div className='lead' className="form-group col-12 col-xl-6 mb-0">
                                         <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
                                         {orderChanges.enabled ? 
-                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.map(zipcode => {
+                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.sort().map(zipcode => {
                                                 return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
                                             })}</select>
                                         : 
