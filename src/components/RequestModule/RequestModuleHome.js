@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {Modal,Spinner} from 'react-bootstrap'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Check, Square, PlusSquare, Trash2 } from 'react-feather';
-import fulllogo from '../../images/fulllogo.png'
+import StayNeighborBrand from '../StayNeighborBrand';
 
 const itemList = [
     { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
@@ -83,7 +83,7 @@ export default function RequestModuleHome(props) {
                                     <input required={true} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" name='phoneNumber' type="range" value={formData.householdNum} onChange={(e) => {
                                         document.getElementById('peopleInHousehold').innerText = e.target.value
                                         setFormData({...formData, householdNum: e.target.value})
-                                     }} className="custom-range" min="0" max="10" id="customRange2"></input>
+                                     }} className="custom-range" min="1" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
@@ -233,7 +233,7 @@ export default function RequestModuleHome(props) {
                 <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
                     <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
                         <div className="col-12 text-center">
-                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Confirm your request.</span>
+                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Is everything correct?</span>
                         </div>
                         <div className="col-12 row" style={{marginTop:25}}>
                             <div className="col-12 col-xl-5 mr-auto ml-auto">
@@ -311,12 +311,10 @@ export default function RequestModuleHome(props) {
                         <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                     </div>
                 </nav>
-                <div className="col-xl-6 col-11 mr-auto ml-auto" style={{paddingTop:'8rem'}}>
-                    <div className="mr-auto ml-auto text-center">
-                        <img className="mr-auto ml-auto" style={{width:'25rem'}} src={fulllogo}/>
-                    </div>
-                    <div className="mr-auto ml-auto text-center mt-4">
-                        <span className="lead" style={{fontSize:'4rem',color:"rgba(0, 0, 0, 0.42)"}}>Help is on the way.</span>
+                <div className="col-xl-6 col-11 mr-auto ml-auto">
+                    <StayNeighborBrand/>
+                    <div className="mr-auto ml-auto text-center mt-3">
+                        <span className="lead" style={{fontSize:'3rem',color:"rgba(0, 0, 0, 0.42)"}}>Help is on the way.</span>
                     </div>
                     <div className="mr-auto ml-auto text-center mt-2 mb-4">
                         <span className="lead" style={{fontSize:'1.5rem',color:"rgba(0, 0, 0, 0.42)"}}>When your order is assigned to a driver, we will let you know.</span>

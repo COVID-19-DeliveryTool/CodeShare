@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ArrowLeftCircle, Circle, CheckCircle, Plus, CheckSquare, Square } from 'react-feather'
 import {Modal,Spinner} from 'react-bootstrap'
-import fulllogo from '../../images/fulllogo.png'
+import StayNeighborBrand from '../StayNeighborBrand'
 
 const dropoff = [
     { id: 'morning', label: 'Morning', time: '9am - 12pm' },
@@ -268,9 +268,7 @@ export default function DonationModuleHome(props) {
                     </div>
                 </nav>
                 <div className="col-xl-6 col-11 mr-auto ml-auto" style={{paddingTop:'8rem'}}>
-                    <div className="mr-auto ml-auto text-center">
-                        <img className="mr-auto ml-auto" style={{width:'25rem'}} src={fulllogo}/>
-                    </div>
+                    <StayNeighborBrand/>
                     <div className="mr-auto ml-auto text-center mt-4">
                         <span className="lead" style={{fontSize:'4rem',color:"rgba(0, 0, 0, 0.42)"}}>Thank you!</span>
                     </div>

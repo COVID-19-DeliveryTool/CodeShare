@@ -1,16 +1,14 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
-    return 'stayneighbor_dev-nszik'
-    //if(process.env.NODE_ENV === 'development') return 'stayneighbor_dev-nszik'
-//    if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
-//    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
+    if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
 }
 
 function getDb(){
-    return 'stayneighbor-dev'
- //   if(process.env.NODE_ENV === 'development') return 'stayneighbor'
-  //  if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
+
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor'
+    if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
 
 function establishMongoDbConnection(){
@@ -113,8 +111,6 @@ export async function getUserInfo(){
     var client = intializeStitchClient()
     var db = establishMongoDbConnection()
 
-    console.log(client.auth.currentUser)
-
     await client.auth.refreshCustomData()
 
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
@@ -130,8 +126,7 @@ export async function getDrivers(){
     const client = intializeStitchClient()
 
     try {
-        var result = await client.callFunction("getDrivers", []);
-        console.log(result)
+        var result = await client.callFunction("getDrivers", [])
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         return result
     } catch(e){
@@ -140,11 +135,10 @@ export async function getDrivers(){
     }
 }
 
-export async function assignOrder(orderId, driverId){
+export async function assignOrder(orderId, driverEmail){
     const client = intializeStitchClient()
-    console.log(orderId, driverId)
     try {
-        var result = await client.callFunction("assignOrder", [orderId.toString(), driverId]);
+        var result = await client.callFunction("assignOrder", [orderId.toString(), driverEmail]);
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         console.log(result)
         return result
@@ -167,11 +161,24 @@ export async function updateOrderStatus(orderId, orderStatus){
     }
 }
 
-export async function getOrder(orderId) {
+
+export async function updateOrderFields(order, addressUpdated){
+    const client = intializeStitchClient()
+
     try {
-        var db = establishMongoDbConnection();
-        var order = await db.collection('orders').findOne({_id: orderId});
-        return order
+        var result = await client.callFunction("updateOrder", [order._id.toString(), order, addressUpdated])
+        return result
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
+
+export async function getOrder(orderId){
+    try{
+        var db = establishMongoDbConnection()
+        var user = await db.collection('orders').findOne({_id: orderId})
+        return user
     } catch (e) {
         console.log(e)
     }

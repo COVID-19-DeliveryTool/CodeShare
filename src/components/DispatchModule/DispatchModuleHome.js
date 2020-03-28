@@ -1,13 +1,16 @@
 import React, {useEffect} from 'react'
-import {Redirect} from 'react-router-dom'
+import Loading from '../Loading'
+import ConfirmChangesModal from './ConfirmChangesModal'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
+import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
+import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
 
 export default function DispatchModuleHome(props){
-    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers } = props.dispatchContext.state
-    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder } = props.dispatchContext
+    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading, showConfirmModal } = props.dispatchContext.state
+    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder, setShowConfirmModal } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
@@ -19,7 +22,7 @@ export default function DispatchModuleHome(props){
         if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
     }, [isAuthenticated, user, orders, drivers])
 
-    if(!user || !orders || !drivers) return <div>Loading</div>
+    if(!user || !orders || !drivers) return <Loading/>
 
     function applyFilters(orders){
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
@@ -32,11 +35,18 @@ export default function DispatchModuleHome(props){
             if(driver.name === '') return true
         }
 
-        if(selectedOrder && selectedOrder.assignedToDriver === driver.id){
+        if(selectedOrder && selectedOrder.assignedToDriver === driver.email){
             return true
         }
 
         return false
+    }
+
+    function timeSince(date){
+        var hoursSince = differenceInHours(new Date(), new Date(date))
+        if(hoursSince < 1) return `${differenceInMinutes(new Date(), new Date(date))} minutes ago`
+        if(hoursSince > 24) return `${differenceInDays(new Date(), new Date(date))} days ago`
+        return `${hoursSince} hours ago`
     }
 
     if(orders) filteredOrders = applyFilters(orders)
@@ -57,8 +67,8 @@ export default function DispatchModuleHome(props){
             </nav>
 
             {isAuthenticated && user && orders ? 
-                <div className="col-12 d-flex pl-0" style={{marginTop:60,maxHeight:'50vh'}}>
-                    <div style={{paddingLeft:20,paddingRight:20,minWidth:'25rem'}}>
+                <div className="col-12 d-flex pl-0 flex-wrap" style={{marginTop:60,maxHeight:'50vh'}}>
+                    <div className="col-12 col-md-4 col-xl-3" style={{paddingLeft:20,paddingRight:20}}>
                         <div className={{width:'100%'}}>
                             <div className="form-row border-bottom" style={{paddingBottom:5}}>
                                 <span className="pb-0 lead pt-1 pb-1">Order Filters</span>
@@ -75,7 +85,7 @@ export default function DispatchModuleHome(props){
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><Circle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'ASSIGNED' ? '' : 'ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'IN PROGRESS' ? '' : 'IN PROGRESS')} class={`${statusFilter === 'IN PROGRESS' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><CheckCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'CANCELLED' ? '' : 'CANCELLED')} class={`${statusFilter === 'CANCELLED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><XCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'ERROR/ACTION' ? '' : 'ERROR/ACTION')} class={`${statusFilter === 'ERROR/ACTION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><AlertCircle/></button>
@@ -96,20 +106,21 @@ export default function DispatchModuleHome(props){
                                             <span className={order.type === "REQUEST" ? 'request-type ml-1 mr-1' : 'donation-type  ml-1 mr-1'}>{order.type.charAt(0).toUpperCase()}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.status}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.firstName} {order.lastName}</span>
+                                            <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{timeSince(order.dateCreated)}</span>
                                         </li>
                                     )
                                 })}
                             </div>
                         </div>
                     </div>
-                    <div style={{width:'100%'}}>
+                    <div style={{paddingTop:20}} className={selectedOrder ? 'col-xl-6 col-md-6' : 'col-xl-9 col-md-8'}>
                         <MarkerInfoWindowGmapsObj setSelectedOrder={setSelectedOrder} orders={filteredOrders} selectedOrder={selectedOrder}/>
                     </div>
                     
                     {selectedOrder ? 
-                        <div className="col-3" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
+                        <div className="col-12 col-sm-12 col-xl-3 col-md-2" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
                             <form className="col-12">
-                                <div className="form-row border-bottom" style={{paddingBottom:5}}>
+                                <div className="form-row border-bottom d-flex flex-nowrap" style={{paddingBottom:5}}>
                                     <span className="pb-0 lead pt-1 pb-1">{selectedOrder.type.charAt(0)}{selectedOrder.type.slice(1).toLowerCase()} Details</span>
                                     <span className="ml-auto mt-2"><X className="hover" onClick={() => setSelectedOrder(false)}/></span>
                                 </div>
@@ -124,17 +135,17 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={(e) => setOrderChanges({...orderChanges, driver: e.target.value == '' ? '' : JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontSize:14}} >{drivers && [{name: ''}, ...drivers].map(driver => {
-                                                return <option value={driver.name === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
+                                                return <option value={driver.email === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
                                             })}</select>
                                         : 
-                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.id == setFormValue('assignedToDriver')) ? drivers.find(a => a.id == setFormValue('assignedToDriver')).name : ''}</span>
+                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.email == setFormValue('assignedToDriver')) ? drivers.find(a => a.email == setFormValue('assignedToDriver')).name : ''}</span>
                                         }
                                     </div>
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Status</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead ' : 'custom-select no-border lead'} style={{display:'block',fontSize:'1rem'}} >{['PENDING','IN PROGRESS','COMPLETED','CANCELLED','ERROR/ACTION'].map(status => {
@@ -146,14 +157,14 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Address</b></label>
-                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'block',fontWeight:600}} value={setFormValue('address')}></input>
+                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'inline',fontWeight:600,width:200,wordWrap:'break-word'}} value={setFormValue('address')}></input>
                                     </div>
-                                    <div className='lead' className="form-group col-6 mb-0">
+                                    <div className='lead' className="form-group col-12 col-xl-6 mb-0">
                                         <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
                                         {orderChanges.enabled ? 
-                                            <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontWeight:600,color:'black'}} >{user.customData.zipcodes.map(zipcode => {
+                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.sort().map(zipcode => {
                                                 return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
                                             })}</select>
                                         : 
@@ -162,7 +173,7 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>{selectedOrder.type === 'DONATION' ? 'Pickup Time' : 'Delivery Time'}</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, time: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select text-dark lead' : 'custom-select no-border text-dark lead'} style={{display:'block',fontSize:'1rem'}} >{['morning', 'afternoon', 'evening'].map(time => {
@@ -172,13 +183,13 @@ export default function DispatchModuleHome(props){
                                             <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{setFormValue('time').charAt(0).toUpperCase()}{setFormValue('time').slice(1)}</span>
                                         }
                                     </div>
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Phone Number</b></label>
                                         <input onChange={e => setOrderChanges({...orderChanges, phoneNumber: e.target.value})} className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" value={setFormValue('phoneNumber')}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Date Created</b></label>
                                         <input type="text" className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} disabled={true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" defaultValue={`${new Date(selectedOrder.dateCreated).toLocaleDateString()} ${new Date(selectedOrder.dateCreated).toLocaleTimeString()}`}></input>
                                     </div>
@@ -198,12 +209,19 @@ export default function DispatchModuleHome(props){
                                 <div className="form-row mt-2">
                                     <div className="form-group col-12">
                                         <label className='lead text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Additional Info</b></label>
-                                        <textarea className={orderChanges.enabled ? 'form-control' : 'form-control no-border'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" defaultValue={selectedOrder.additionalInfo}></textarea>
+                                        <textarea onChange={e => setOrderChanges({...orderChanges, additionalInfo: e.target.value})} className={orderChanges.enabled ? 'form-control' : 'form-control no-border'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" value={selectedOrder.additionalInfo}></textarea>
                                     </div>
                                 </div>
                                 <div className="form-row pl-0">
                                     <div className="form-group col-12">
-                                        {orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={updateOrder}>Save Order</button>}
+                                        {orderChanges.enabled && Object.keys(orderChanges).length > 1 && !loading && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setShowConfirmModal(true)}>Save Order</button>}
+                                        {orderChanges.enabled && loading &&  
+                                            <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0">
+                                                <Spinner animation="border" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </Spinner>
+                                            </button>
+                                        }
                                         {orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setOrderChanges(false)}>Cancel</button>}
                                         {!orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setOrderChanges({enabled: true})}>Edit Order</button>}
                                     </div>
@@ -212,6 +230,10 @@ export default function DispatchModuleHome(props){
                         </div>
                     : ''}
                 </div>
+            : ''}
+
+            {showConfirmModal ? 
+                <ConfirmChangesModal {...props}/>
             : ''}
 
             {!isAuthenticated ? 
