@@ -1,12 +1,12 @@
 import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
-    //if(process.env.NODE_ENV === 'development') return 'stayneighbor_dev-nszik'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
     if(process.env.NODE_ENV === 'development') return 'stayneighbor-bjuma'
 }
 
 function getDb(){
+
     if(process.env.NODE_ENV === 'development') return 'stayneighbor'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
@@ -161,6 +161,7 @@ export async function updateOrderStatus(orderId, orderStatus){
     }
 }
 
+
 export async function updateOrderFields(order, addressUpdated){
     const client = intializeStitchClient()
 
@@ -180,5 +181,20 @@ export async function getOrder(orderId){
         return user
     } catch (e) {
         console.log(e)
+    }
+}
+
+export async function completeOrder(orderId){
+    try {
+
+        const client = intializeStitchClient()
+        //Non logged in drivers should be able to complete
+        if(!client.auth.isLoggedIn) await anonymousUserLogin()
+
+        return await client.callFunction("completeOrder", [orderId.toString()]);
+
+    } catch(e){
+        console.log(e);
+        return e
     }
 }
