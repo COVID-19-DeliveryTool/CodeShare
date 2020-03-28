@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
-import {Redirect} from 'react-router-dom'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
+import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
 
 export default function DispatchModuleHome(props){
-    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers } = props.dispatchContext.state
+    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading } = props.dispatchContext.state
     const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
@@ -107,7 +107,7 @@ export default function DispatchModuleHome(props){
                     </div>
                     
                     {selectedOrder ? 
-                        <div className="col-3 col-xl-3 col-md-2" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
+                        <div className="col-12 col-sm-12 col-xl-3 col-md-2" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
                             <form className="col-12">
                                 <div className="form-row border-bottom d-flex flex-nowrap" style={{paddingBottom:5}}>
                                     <span className="pb-0 lead pt-1 pb-1">{selectedOrder.type.charAt(0)}{selectedOrder.type.slice(1).toLowerCase()} Details</span>
@@ -203,7 +203,14 @@ export default function DispatchModuleHome(props){
                                 </div>
                                 <div className="form-row pl-0">
                                     <div className="form-group col-12">
-                                        {orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={updateOrder}>Save Order</button>}
+                                        {orderChanges.enabled && !loading && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={updateOrder}>Save Order</button>}
+                                        {orderChanges.enabled && loading &&  
+                                            <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0">
+                                                <Spinner animation="border" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </Spinner>
+                                            </button>
+                                        }
                                         {orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setOrderChanges(false)}>Cancel</button>}
                                         {!orderChanges.enabled && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setOrderChanges({enabled: true})}>Edit Order</button>}
                                     </div>

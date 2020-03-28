@@ -10,6 +10,7 @@ const DispatchProvider = props => {
     const [typeFilter, setTypeFilter] = useState(false)
     const [statusFilter, setStatusFilter] = useState(false)
     const [orderChanges, setOrderChanges] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const getOrdersForDispatcher = async (notify) =>{
         try{
@@ -52,10 +53,13 @@ const DispatchProvider = props => {
 
     const updateOrder = async () => {
         if(!orderChanges) return
+        setLoading(true)
         if(orderChanges.driver === '' || orderChanges.driver) { //process driver change with assignOrder api
             let prom = await assignOrder(selectedOrder._id, orderChanges.driver.email ? orderChanges.driver.email : '')
             if(prom.status === '400') {
                 toast('We had an issue updating the order. Please try again later.')
+                setLoading(false)
+                return
             }
         }
 
@@ -63,6 +67,7 @@ const DispatchProvider = props => {
             let prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
             if(prom.status === '400') {
                 toast('We had an issue updating the order. Please try again later.')
+                setLoading(false)
                 return
             }
         }
@@ -78,12 +83,14 @@ const DispatchProvider = props => {
 
         if(updateProm.status === '400') {
             toast('We had an issue updating the order. Please try again later.')
+            setLoading(false)
             return
         }
 
         toast('Order successfully updated!')
         await getOrdersForDispatcher()
         setSelectedOrder(await getOrder(selectedOrder._id))
+        setLoading(false)
     }
 
     return (
@@ -96,7 +103,8 @@ const DispatchProvider = props => {
                     typeFilter: typeFilter,
                     statusFilter: statusFilter,
                     drivers: drivers,
-                    orderChanges: orderChanges
+                    orderChanges: orderChanges,
+                    loading: loading
                 },
                 // expose functions here
                 getOrdersForDispatcher: (bool) => getOrdersForDispatcher(bool),
