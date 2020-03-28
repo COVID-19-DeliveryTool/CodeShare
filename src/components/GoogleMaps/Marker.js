@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   width: 12px;
   height: 12px;
-  background-color: ${props => (props.type === 'REQUEST') ? 'red' : 'green'};
+  background-color: ${props => (props.type === 'REQUEST') ? '#3498e1' : 'green'};
   border-radius: ${props => (props.type === 'REQUEST') ? '10%' : '50%'};
   user-select: none;
   cursor: ${props => (props.onClick ? 'pointer' : 'default')};
