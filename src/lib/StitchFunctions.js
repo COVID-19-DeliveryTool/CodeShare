@@ -7,7 +7,7 @@ function getAppId(){
 }
 
 function getDb(){
-    if(process.env.NODE_ENV === 'development') return 'stayneighbor-dev'
+    if(process.env.NODE_ENV === 'development') return 'stayneighbor'
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
 
@@ -111,8 +111,6 @@ export async function getUserInfo(){
     var client = intializeStitchClient()
     var db = establishMongoDbConnection()
 
-    console.log(client.auth.user.id)
-
     await client.auth.refreshCustomData()
 
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
@@ -128,8 +126,7 @@ export async function getDrivers(){
     const client = intializeStitchClient()
 
     try {
-        var result = await client.callFunction("getDrivers", []);
-        console.log(result)
+        var result = await client.callFunction("getDrivers", [])
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         return result
     } catch(e){
@@ -138,11 +135,10 @@ export async function getDrivers(){
     }
 }
 
-export async function assignOrder(orderId, driverId){
+export async function assignOrder(orderId, driverEmail){
     const client = intializeStitchClient()
-    console.log(orderId, driverId)
     try {
-        var result = await client.callFunction("assignOrder", [orderId.toString(), driverId]);
+        var result = await client.callFunction("assignOrder", [orderId.toString(), driverEmail]);
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
         console.log(result)
         return result
@@ -158,6 +154,18 @@ export async function updateOrderStatus(orderId, orderStatus){
     try {
         var result = await client.callFunction("updateOrderStatus", [orderId.toString(), orderStatus]);
         if(result && result.errorCode) return {errorCode: result.errorCode, errorMessage: result.errorMessage}
+        return result
+    } catch(e){
+        console.log(e)
+        return e
+    }
+}
+
+export async function updateOrderFields(order, addressUpdated){
+    const client = intializeStitchClient()
+
+    try {
+        var result = await client.callFunction("updateOrder", [order._id.toString(), order, addressUpdated])
         return result
     } catch(e){
         console.log(e)

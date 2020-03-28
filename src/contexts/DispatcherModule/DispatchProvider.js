@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder, updateOrderFields } from '../../lib/StitchFunctions';
 import {toast} from 'react-toastify'
 
 const DispatchProvider = props => {
@@ -53,21 +53,33 @@ const DispatchProvider = props => {
     const updateOrder = async () => {
         if(!orderChanges) return
         if(orderChanges.driver === '' || orderChanges.driver) { //process driver change with assignOrder api
-            var prom = await assignOrder(selectedOrder._id, orderChanges.driver.id ? orderChanges.driver.id : '')
+            let prom = await assignOrder(selectedOrder._id, orderChanges.driver.email ? orderChanges.driver.email : '')
             if(prom.status === '400') {
-                console.log(prom)
-            } else {
-                console.log(prom)
+                toast('We had an issue updating the order. Please try again later.')
             }
         }
 
         if(orderChanges.status){
-            var prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
+            let prom = await updateOrderStatus(selectedOrder._id, orderChanges.status)
             if(prom.status === '400') {
-
+                toast('We had an issue updating the order. Please try again later.')
+                return
             }
         }
 
+        const addressChanged = orderChanges.address ? true : false
+        let newFormData = {...selectedOrder}
+
+        Object.keys(orderChanges).forEach((key) => {
+            newFormData[key] = orderChanges[key]
+        })
+
+        let updateProm = await updateOrderFields(newFormData ,addressChanged)
+
+        if(updateProm.status === '400') {
+            toast('We had an issue updating the order. Please try again later.')
+            return
+        }
 
         toast('Order successfully updated!')
         await getOrdersForDispatcher()

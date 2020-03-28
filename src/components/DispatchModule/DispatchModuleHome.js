@@ -57,8 +57,8 @@ export default function DispatchModuleHome(props){
             </nav>
 
             {isAuthenticated && user && orders ? 
-                <div className="col-12 d-flex pl-0" style={{marginTop:60,maxHeight:'50vh'}}>
-                    <div style={{paddingLeft:20,paddingRight:20,minWidth:'25rem'}}>
+                <div className="col-12 d-flex pl-0 flex-wrap" style={{marginTop:60,maxHeight:'50vh'}}>
+                    <div className="col-12 col-md-4 col-xl-3" style={{paddingLeft:20,paddingRight:20}}>
                         <div className={{width:'100%'}}>
                             <div className="form-row border-bottom" style={{paddingBottom:5}}>
                                 <span className="pb-0 lead pt-1 pb-1">Order Filters</span>
@@ -102,14 +102,14 @@ export default function DispatchModuleHome(props){
                             </div>
                         </div>
                     </div>
-                    <div style={{width:'100%'}}>
+                    <div style={{paddingTop:20}} className={selectedOrder ? 'col-xl-6 col-md-6' : 'col-xl-9 col-md-8'}>
                         <MarkerInfoWindowGmapsObj setSelectedOrder={setSelectedOrder} orders={filteredOrders} selectedOrder={selectedOrder}/>
                     </div>
                     
                     {selectedOrder ? 
-                        <div className="col-3" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
+                        <div className="col-3 col-xl-3 col-md-2" style={{fontSize:12,paddingLeft:0,paddingRight:0}}>
                             <form className="col-12">
-                                <div className="form-row border-bottom" style={{paddingBottom:5}}>
+                                <div className="form-row border-bottom d-flex flex-nowrap" style={{paddingBottom:5}}>
                                     <span className="pb-0 lead pt-1 pb-1">{selectedOrder.type.charAt(0)}{selectedOrder.type.slice(1).toLowerCase()} Details</span>
                                     <span className="ml-auto mt-2"><X className="hover" onClick={() => setSelectedOrder(false)}/></span>
                                 </div>
@@ -124,7 +124,7 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={(e) => setOrderChanges({...orderChanges, driver: e.target.value == '' ? '' : JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontSize:14}} >{drivers && [{name: ''}, ...drivers].map(driver => {
@@ -134,7 +134,7 @@ export default function DispatchModuleHome(props){
                                             <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.id == setFormValue('assignedToDriver')) ? drivers.find(a => a.id == setFormValue('assignedToDriver')).name : ''}</span>
                                         }
                                     </div>
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Status</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead ' : 'custom-select no-border lead'} style={{display:'block',fontSize:'1rem'}} >{['PENDING','IN PROGRESS','COMPLETED','CANCELLED','ERROR/ACTION'].map(status => {
@@ -146,14 +146,14 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Address</b></label>
-                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'block',fontWeight:600}} value={setFormValue('address')}></input>
+                                        <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'inline',fontWeight:600,width:200,wordWrap:'break-word'}} value={setFormValue('address')}></input>
                                     </div>
-                                    <div className='lead' className="form-group col-6 mb-0">
+                                    <div className='lead' className="form-group col-12 col-xl-6 mb-0">
                                         <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
                                         {orderChanges.enabled ? 
-                                            <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontWeight:600,color:'black'}} >{user.customData.zipcodes.map(zipcode => {
+                                            <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.map(zipcode => {
                                                 return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
                                             })}</select>
                                         : 
@@ -162,7 +162,7 @@ export default function DispatchModuleHome(props){
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>{selectedOrder.type === 'DONATION' ? 'Pickup Time' : 'Delivery Time'}</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, time: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select text-dark lead' : 'custom-select no-border text-dark lead'} style={{display:'block',fontSize:'1rem'}} >{['morning', 'afternoon', 'evening'].map(time => {
@@ -172,13 +172,13 @@ export default function DispatchModuleHome(props){
                                             <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{setFormValue('time').charAt(0).toUpperCase()}{setFormValue('time').slice(1)}</span>
                                         }
                                     </div>
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Phone Number</b></label>
                                         <input onChange={e => setOrderChanges({...orderChanges, phoneNumber: e.target.value})} className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" value={setFormValue('phoneNumber')}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
-                                    <div className="form-group col-6 mb-0">
+                                    <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Date Created</b></label>
                                         <input type="text" className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} disabled={true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" defaultValue={`${new Date(selectedOrder.dateCreated).toLocaleDateString()} ${new Date(selectedOrder.dateCreated).toLocaleTimeString()}`}></input>
                                     </div>
