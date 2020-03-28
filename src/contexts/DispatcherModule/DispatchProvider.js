@@ -11,6 +11,7 @@ const DispatchProvider = props => {
     const [statusFilter, setStatusFilter] = useState(false)
     const [orderChanges, setOrderChanges] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const getOrdersForDispatcher = async (notify) =>{
         try{
@@ -91,6 +92,7 @@ const DispatchProvider = props => {
         await getOrdersForDispatcher()
         setSelectedOrder(await getOrder(selectedOrder._id))
         setLoading(false)
+        setShowConfirmModal(false)
     }
 
     return (
@@ -104,7 +106,8 @@ const DispatchProvider = props => {
                     statusFilter: statusFilter,
                     drivers: drivers,
                     orderChanges: orderChanges,
-                    loading: loading
+                    loading: loading,
+                    showConfirmModal: showConfirmModal
                 },
                 // expose functions here
                 getOrdersForDispatcher: (bool) => getOrdersForDispatcher(bool),
@@ -115,7 +118,8 @@ const DispatchProvider = props => {
                 setDrivers: () => setDrivers(),
                 setOrderChanges: (bool) => setOrderChanges(bool),
                 setFormValue: (str) => setFormValue(str),
-                updateOrder: () => updateOrder()
+                updateOrder: () => updateOrder(),
+                setShowConfirmModal: (bool) => setShowConfirmModal(bool)
             }}
         >
             {props.children}
