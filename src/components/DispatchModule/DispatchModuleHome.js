@@ -97,7 +97,7 @@ export default function DispatchModuleHome(props){
                                 <RefreshCw onClick={() => getOrdersForDispatcher(true)} className="hover brand" style={{marginTop:'.40rem',marginLeft:'1rem'}}/>
                             </div>
                             <div style={{maxHeight:'60vh',overflowY:'auto'}} className="mt-2">
-                                {orders && filteredOrders.map(order => {
+                                {orders && filteredOrders.length > 0 && filteredOrders.map(order => {
                                     return (
                                         <li style={{fontSize:12,paddingRight:0,paddingBottom:'.25rem'}} class={`d-flex list-group-item order-list text-center pl-0 pr-0 pt-2 pb-1 ${selectedOrder._id ? order._id.toString() == selectedOrder._id.toString() ? 'active-order': "" : ''}`} onClick={() => {
                                             setSelectedOrder(order)
@@ -110,6 +110,9 @@ export default function DispatchModuleHome(props){
                                         </li>
                                     )
                                 })}
+                                {orders && filteredOrders.length === 0 ? 
+                                    <span className="col-10 mr-auto ml-auto lead">No orders found.</span>
+                                : ''}
                             </div>
                         </div>
                     </div>
@@ -122,7 +125,10 @@ export default function DispatchModuleHome(props){
                             <form className="col-12">
                                 <div className="form-row border-bottom d-flex flex-nowrap" style={{paddingBottom:5}}>
                                     <span className="pb-0 lead pt-1 pb-1">{selectedOrder.type.charAt(0)}{selectedOrder.type.slice(1).toLowerCase()} Details</span>
-                                    <span className="ml-auto mt-2"><X className="hover" onClick={() => setSelectedOrder(false)}/></span>
+                                    <span className="ml-auto mt-2"><X className="hover" onClick={() => {
+                                        setSelectedOrder(false)
+                                        setOrderChanges(false)
+                                    }}/></span>
                                 </div>
                                 <div className="form-row row pr-0 pl-0" style={{paddingTop:10}}>
                                     <div className="form-group col-12 col-xl-6 mb-1 mt-1">
