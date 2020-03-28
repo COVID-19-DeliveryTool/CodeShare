@@ -233,7 +233,7 @@ export default function RequestModuleHome(props) {
                 <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
                     <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
                         <div className="col-12 text-center">
-                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Confirm your request.</span>
+                            <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Is everything correct?</span>
                         </div>
                         <div className="col-12 row" style={{marginTop:25}}>
                             <div className="col-12 col-xl-5 mr-auto ml-auto">
