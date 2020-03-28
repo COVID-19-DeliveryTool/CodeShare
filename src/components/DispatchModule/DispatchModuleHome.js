@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import Loading from '../Loading'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
@@ -19,7 +20,7 @@ export default function DispatchModuleHome(props){
         if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
     }, [isAuthenticated, user, orders, drivers])
 
-    if(!user || !orders || !drivers) return <div>Loading</div>
+    if(!user || !orders || !drivers) return <Loading/>
 
     function applyFilters(orders){
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
