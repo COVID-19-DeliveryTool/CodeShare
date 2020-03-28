@@ -5,6 +5,7 @@ import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCirc
 import {logUserOut} from '../../lib/StitchFunctions'
 import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
+import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
 
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading } = props.dispatchContext.state
@@ -38,6 +39,13 @@ export default function DispatchModuleHome(props){
         }
 
         return false
+    }
+
+    function timeSince(date){
+        var hoursSince = differenceInHours(new Date(), new Date(date))
+        if(hoursSince < 1) return `${differenceInMinutes(new Date(), new Date(date))} minutes ago`
+        if(hoursSince > 24) return `${differenceInDays(new Date(), new Date(date))} days ago`
+        return `${hoursSince} hours ago`
     }
 
     if(orders) filteredOrders = applyFilters(orders)
@@ -76,7 +84,7 @@ export default function DispatchModuleHome(props){
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Status</label>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><Circle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'ASSIGNED' ? '' : 'ASSIGNED')} class={`${statusFilter === 'ASSIGNED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
+                                    <button onClick={() => setStatusFilter(statusFilter === 'IN PROGRESS' ? '' : 'IN PROGRESS')} class={`${statusFilter === 'IN PROGRESS' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><CheckCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'CANCELLED' ? '' : 'CANCELLED')} class={`${statusFilter === 'CANCELLED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><XCircle/></button>
                                     <button onClick={() => setStatusFilter(statusFilter === 'ERROR/ACTION' ? '' : 'ERROR/ACTION')} class={`${statusFilter === 'ERROR/ACTION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><AlertCircle/></button>
@@ -97,6 +105,7 @@ export default function DispatchModuleHome(props){
                                             <span className={order.type === "REQUEST" ? 'request-type ml-1 mr-1' : 'donation-type  ml-1 mr-1'}>{order.type.charAt(0).toUpperCase()}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.status}</span>
                                             <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{order.firstName} {order.lastName}</span>
+                                            <span className="ml-2 mt-2 text-left" style={{width:'33%'}}>{timeSince(order.dateCreated)}</span>
                                         </li>
                                     )
                                 })}
