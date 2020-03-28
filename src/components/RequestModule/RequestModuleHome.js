@@ -83,7 +83,7 @@ export default function RequestModuleHome(props) {
                                     <input required={true} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" name='phoneNumber' type="range" value={formData.householdNum} onChange={(e) => {
                                         document.getElementById('peopleInHousehold').innerText = e.target.value
                                         setFormData({...formData, householdNum: e.target.value})
-                                     }} className="custom-range" min="0" max="10" id="customRange2"></input>
+                                     }} className="custom-range" min="1" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
                                     {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>

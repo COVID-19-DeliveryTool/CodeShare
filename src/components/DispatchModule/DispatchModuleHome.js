@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import Loading from '../Loading'
+import ConfirmChangesModal from './ConfirmChangesModal'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
@@ -8,8 +9,8 @@ import {toast} from 'react-toastify'
 import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
 
 export default function DispatchModuleHome(props){
-    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading } = props.dispatchContext.state
-    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder } = props.dispatchContext
+    const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading, showConfirmModal } = props.dispatchContext.state
+    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder, setShowConfirmModal } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
@@ -34,7 +35,7 @@ export default function DispatchModuleHome(props){
             if(driver.name === '') return true
         }
 
-        if(selectedOrder && selectedOrder.assignedToDriver === driver.id){
+        if(selectedOrder && selectedOrder.assignedToDriver === driver.email){
             return true
         }
 
@@ -138,10 +139,10 @@ export default function DispatchModuleHome(props){
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={(e) => setOrderChanges({...orderChanges, driver: e.target.value == '' ? '' : JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontSize:14}} >{drivers && [{name: ''}, ...drivers].map(driver => {
-                                                return <option value={driver.name === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
+                                                return <option value={driver.email === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
                                             })}</select>
                                         : 
-                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.id == setFormValue('assignedToDriver')) ? drivers.find(a => a.id == setFormValue('assignedToDriver')).name : ''}</span>
+                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.email == setFormValue('assignedToDriver')) ? drivers.find(a => a.email == setFormValue('assignedToDriver')).name : ''}</span>
                                         }
                                     </div>
                                     <div className="form-group col-12 col-xl-6 mb-0">
@@ -208,12 +209,12 @@ export default function DispatchModuleHome(props){
                                 <div className="form-row mt-2">
                                     <div className="form-group col-12">
                                         <label className='lead text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Additional Info</b></label>
-                                        <textarea className={orderChanges.enabled ? 'form-control' : 'form-control no-border'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" defaultValue={selectedOrder.additionalInfo}></textarea>
+                                        <textarea onChange={e => setOrderChanges({...orderChanges, additionalInfo: e.target.value})} className={orderChanges.enabled ? 'form-control' : 'form-control no-border'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" value={selectedOrder.additionalInfo}></textarea>
                                     </div>
                                 </div>
                                 <div className="form-row pl-0">
                                     <div className="form-group col-12">
-                                        {orderChanges.enabled && !loading && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={updateOrder}>Save Order</button>}
+                                        {orderChanges.enabled && Object.keys(orderChanges).length > 1 && !loading && <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0" onClick={() => setShowConfirmModal(true)}>Save Order</button>}
                                         {orderChanges.enabled && loading &&  
                                             <button type="button" className="btn btn-outline-brand col-12 ml-0 mr-0">
                                                 <Spinner animation="border" role="status">
@@ -229,6 +230,10 @@ export default function DispatchModuleHome(props){
                         </div>
                     : ''}
                 </div>
+            : ''}
+
+            {showConfirmModal ? 
+                <ConfirmChangesModal {...props}/>
             : ''}
 
             {!isAuthenticated ? 
