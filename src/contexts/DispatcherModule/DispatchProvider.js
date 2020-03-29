@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder, updateOrderFields, establishMongoDbConnection } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder, updateOrderFields } from '../../lib/StitchFunctions';
 import {toast} from 'react-toastify'
 
 const DispatchProvider = props => {
@@ -8,7 +8,7 @@ const DispatchProvider = props => {
     const [drivers, setDrivers] = useState(false)
     const [selectedOrder, setSelectedOrder] = useState(false)
     const [typeFilter, setTypeFilter] = useState(false)
-    const [statusFilter, setStatusFilter] = useState(false)
+    const [statusFilter, setStatusFilter] = useState([])
     const [orderChanges, setOrderChanges] = useState(false)
     const [loading, setLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
@@ -28,8 +28,7 @@ const DispatchProvider = props => {
     const getDriversForDispatcher = async () => {
         try {
             const prom = await getDrivers()
-            if(prom.status === '200') setDrivers(prom.data)    
-            console.log(prom.data)
+            if(prom.status === '200') setDrivers(prom.data)
         } catch(e) {
             
         }
@@ -82,8 +81,7 @@ const DispatchProvider = props => {
         })
 
         let updateProm = await updateOrderFields(newFormData ,addressChanged)
-
-        if(updateProm.status === '400') {
+        if(updateProm.status === '400' || updateProm.errorCode) {
             toast('We had an issue updating the order. Please try again later.')
             setLoading(false)
             return

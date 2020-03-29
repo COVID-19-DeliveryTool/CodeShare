@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MenuBar from '../MenuBar'
 import ItemList from '../ItemList'
 import OrderDropOffTime from '../Order/OrderDropOffTime'
@@ -9,7 +9,7 @@ export default function RequestModuleHome(props) {
     const {step, loading, formData, errors, showModal} = props.requestContext.state; // provider state values
     const { setShowModal, submitRequest, stepOneIsValid, stepTwoIsValid, stepThreeIsValid, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3, setErrors} = props.requestContext; // provider functions
 
-    if (step == 1) {
+    if (step === 1) {
         return (
             <main>
                 <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
@@ -36,47 +36,37 @@ export default function RequestModuleHome(props) {
                         <form>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="15" required={true} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" value={formData.firstName} className="form-control lead" id="inputEmail4" placeholder="First Name"></input>
-                                    {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
+                                    <input maxLength="15" required={true} onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" value={formData.firstName} className={`form-control lead ${errors.firstName ? 'is-invalid' : ''}`} id="inputEmail4" placeholder="First Name"></input>
                                 </div>
                                 <div  className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="15" required={true} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.lastName} className="form-control" id="inputPassword4" placeholder="Last Name"></input>
-                                    {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
+                                    <input maxLength="15" required={true} onChange={(e) => {setFormData({...formData, lastName: e.target.value})}} name='lastName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.lastName} className={`form-control lead ${errors.lastName ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Last Name"></input>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="12" required={true} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.phoneNumber} className="form-control" id="inputPassword4" placeholder="Phone Number"></input>
-                                    {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
+                                    <input maxLength="12" required={true} onChange={(e) => {setFormData({...formData, phoneNumber: e.target.value})}} name='phoneNumber' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.phoneNumber} className={`form-control lead ${errors.phoneNumber ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Phone Number"></input>
                                 </div>
                                 <div  className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="30" required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.emailAddress} className="form-control" id="inputPassword4" placeholder="Email Address"></input>
-                                    {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
+                                    <input maxLength="30" required={true} onChange={(e) => {setFormData({...formData, emailAddress: e.target.value})}} name='emailAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="email" value={formData.emailAddress} className={`form-control lead ${errors.emailAddress ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Email Address"></input>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="75" required={true} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.address} className="form-control" id="inputPassword4" placeholder="Address"></input>
-                                    {errors.address && <p style={{ color: 'red', marginBottom: 0 }}>{errors.address.message || errors.address.type}</p>}
+                                    <input maxLength="75" required={true} onChange={(e) => {setFormData({...formData, address: e.target.value})}} name='streetAddress' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.address} className={`form-control lead ${errors.address ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Address"></input>
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="6" required={true} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.zipcode} className="form-control" id="inputPassword4" placeholder="Zip Code"></input>
-                                    {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
+                                    <input maxLength="6" required={true} name='zipCode' onChange={(e) => {setFormData({...formData, zipcode: e.target.value})}} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" value={formData.zipcode} className={`form-control lead ${errors.zipcode ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Zip Code"></input>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group mr-auto ml-auto col-xl-4 col-md-8 mr-auto ml-auto text-center">
                                     <span className="text-center" style={{ fontWeight: 'bolder', fontSize: '2rem' }} type="number" id="peopleInHousehold">{formData.householdNum}</span>
-                                    <input required={true} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" name='phoneNumber' type="range" value={formData.householdNum} onChange={(e) => {
-                                        document.getElementById('peopleInHousehold').innerText = e.target.value
-                                        setFormData({...formData, householdNum: e.target.value})
-                                     }} className="custom-range" min="1" max="10" id="customRange2"></input>
+                                    <input required={true} onChange={e => setFormData({...formData, householdNum: e.target.value})} name="peopleInHousehold" type="range" value={formData.householdNum} className="custom-range" min="1" max="10" id="customRange2"></input>
                                     <label className='lead'>People in Household</label>
-                                    {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
                                 </div>
                             </div>
 
-                            {!loading && <button onClick={validateStep1} type="button" disabled={stepOneIsValid()} className="col-xl-8 col-12 mr-auto ml-auto btn mt-4 btn-primary-hover">Continue</button>}
+                            {!loading && <button onClick={validateStep1} type="button" className="col-xl-8 col-12 mr-auto ml-auto btn mt-4 btn-primary-hover">Continue</button>}
                         </form>
                     </div>
                 </div>
@@ -84,7 +74,7 @@ export default function RequestModuleHome(props) {
         )
     }
 
-    if (step == 2) {
+    if (step === 2) {
         return (
             <main>
                 <MenuBar setStep={setStep} goBackTo={1}/>
@@ -106,5 +96,5 @@ export default function RequestModuleHome(props) {
 
     if (step === 3) return <OrderDropOffTime type={'request'} setStep={setStep} validateStep3={validateStep3} setFormData={setFormData} formData={formData} stepThreeIsValid={stepThreeIsValid} showModal={showModal} setShowModal={setShowModal} submitRequest={submitRequest} loading={loading} errors={errors} setErrors={setErrors}/>
 
-    if(step == 4) return <OrderCompleteLandingPage setStep={setStep} type={'request'}/>
+    if(step === 4) return <OrderCompleteLandingPage setStep={setStep} type={'request'}/>
 }

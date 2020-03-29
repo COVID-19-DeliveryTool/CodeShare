@@ -2,6 +2,7 @@ import React from 'react'
 import {ArrowLeftCircle} from 'react-feather'
 
 export default function Error(props){
+    console.log(props)
     var { errors } = props.globalContext.state
 
     return (

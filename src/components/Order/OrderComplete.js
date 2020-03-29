@@ -1,77 +1,60 @@
 import React, {useEffect, useState} from 'react';
+import queryString from 'query-string'
 import Loading from '../Loading'
-import {useHistory} from 'react-router-dom';
-import {ArrowLeftCircle} from 'react-feather';
+import MenuBar from '../MenuBar'
 import {completeOrder} from '../../lib/StitchFunctions';
 import StayNeighborBrand from '../StayNeighborBrand'
 import './OrderComplete.scss';
 
 const OrderComplete = props => {
-    let history = useHistory();
-    const [orderUpdateStatus, setOrderUpdateStatus] = useState(null)
-    const orderId = history.location.pathname.split('/').pop();
-
-    useEffect(() => {
-        if(orderUpdateStatus === null && orderId != '') orderCompletion(orderId)
-    },[orderUpdateStatus])
+    const [requestIds, setRequestIds] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [orderUpdateStatus, setOrderUpdateStatus] = useState(false)
 
     const orderCompletion = async () => {
-        let res = await completeOrder(orderId);
-        setOrderUpdateStatus(res)
+        let res = await completeOrder(requestIds.orderId, requestIds.did)
     }
 
-    if(orderUpdateStatus === null && (orderId !== '' && orderId != 'complete')) return <Loading/>
+    useEffect(() => {
+        if(requestIds === null) getRequestIds()
+        if(requestIds && requestIds.orderId && requestIds.did) console.log('there')
+    })
+
+    function getRequestIds(){
+        var queryParams = queryString.parse(window.location.search)
+        if(!queryParams.orderId || !queryParams.did) setRequestIds(false)
+        else setRequestIds(queryParams)
+    }
+
+    if(requestIds === null) return <Loading/>
 
     return (
         <main className='order-complete'>
-            <nav className="navbar fixed-top col-12" style={{backgroundColor: '#6F2C8E', paddingBottom: 15}}>
-                <div className="col-12 mt-2 mr-auto">
-                    <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => props.history.push('/')}/>
-                    <span style={{fontSize: 18, color: 'white'}} href="#">StayNeighbor</span>
-                </div>
-            </nav>
-
+            <MenuBar/>
             <StayNeighborBrand/>
 
-            {orderId === '' || orderId === 'complete' ? 
-                <div className="col-10 mr-auto ml-auto mt-4" >
-                    <div className='col-12 text-center'>
-                        <span className='lead text-center mr-auto ml-auto' style={{fontSize:'1.75rem'}}><b>Sorry, we were unable to find this order.</b></span>
-                    </div>
-                </div>
-            : ''}
-
-            {orderUpdateStatus && orderUpdateStatus.status === '200' ? 
+            {requestIds === false ? 
                 <div className="col-10 mr-auto ml-auto">
-                    <div style={{marginTop: 100}}>
-                        <div className='col-12'>
-                            <h1 style={{marginBottom: 90}}><b>Order</b> #{orderId}</h1>
-                            <div className='row'>
-                                <div className='col-6'>
-                                    <p><label>Status</label>: <b>{orderUpdateStatus.status}</b></p>
-                                    <p><label>Message</label>: <b>{orderUpdateStatus.message}</b></p>
-                                </div>
-                                <div className='col-6'>
-                                </div>
-                            </div>
+                    <div className='col-12 mt-4'>
+                        <div className='col-6 mr-auto ml-auto text-center lead'>
+                            <span>We're sorry, we had trouble loading this order.  Please verify the link and try again.</span>
+                        </div>
+                        <div className='col-6'>
                         </div>
                     </div>
                 </div>
             : ''}
 
-            {orderUpdateStatus && orderUpdateStatus.status === '400' ? 
+            {requestIds.orderId && requestIds.did ? 
                 <div className="col-10 mr-auto ml-auto">
-                    <div style={{marginTop: 100}}>
-                        <div className='col-12'>
-                            <h1 style={{marginBottom: 90}}><b>Order</b> #{orderId}</h1>
-                            <div className='row'>
-                                <div className='col-6'>
-                                    <p><label>Status</label>: <b>{orderUpdateStatus.status}</b></p>
-                                    <p><label>Message</label>: <b>{orderUpdateStatus.message}</b></p>
-                                </div>
-                                <div className='col-6'>
-                                </div>
-                            </div>
+                    <div className='col-12 mt-4 pt-4'>
+                        <div className='col-6 mr-auto ml-auto text-center lead'>
+                            <span>Please click the buttom below to mark the order as complete.  The recipient will receive a confirmation email.</span>
+                        </div>
+                    </div>
+                    <div className="col-12 mt-4 pt-4">
+                        <div className='col-6 mr-auto ml-auto text-center'>
+                            <button type="button" className="btn btn-lg btn-outline-brand">Complete Order</button>
                         </div>
                     </div>
                 </div>
