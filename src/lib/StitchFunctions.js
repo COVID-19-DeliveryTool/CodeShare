@@ -11,7 +11,7 @@ function getDb(){
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor'
 }
 
-function establishMongoDbConnection(){
+export function establishMongoDbConnection(){
     //get our default app client
     const client = intializeStitchClient()
 

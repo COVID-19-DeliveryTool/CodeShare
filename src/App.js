@@ -5,10 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from './components/Home'
 import RequestModule from './components/RequestModule/RequestModuleHome'
 import DonationModule from './components/DonationModule/DonationModuleHome'
-import DispatchModule from './components/Dispatch'
 import Error from './components/Error'
-import GoogleMaps from './components/GoogleMaps/GoogleMap'
-import MarkerInfoWindowGmapsObj from './components/GoogleMaps/MarkerInfoWindowGmapsObj'
 import OrderComplete from './components/Order/OrderComplete';
 import './css/App.css';
 import './css/bootstrap.min.css'
@@ -42,7 +39,7 @@ function App() {
           <Route exact={true} path="/donate" render={(props) => <DonationContext.Consumer>{donationContext => (<DonationModule globalContext={globalContext} donationContext={donationContext} {...props}/>)}</DonationContext.Consumer>}/>
           <Route exact={true} path="/dispatcher" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<DispatchModuleHome globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
           <Route exact={true} path="/error" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<Error globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
-          <Route exact path='/order/complete/:uuid' render={props => <OrderComplete globalContext={globalContext}/>}/>
+          <Route exact path='/order/complete/:uuid?' render={props => <OrderComplete globalContext={globalContext}/>}/>
         </Switch>
       </BrowserRouter>
       )}

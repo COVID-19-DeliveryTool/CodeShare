@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DispatchContext from './DispatchContext';
-import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder, updateOrderFields } from '../../lib/StitchFunctions';
+import { getOrders, getDrivers, assignOrder, updateOrderStatus, getOrder, updateOrderFields, establishMongoDbConnection } from '../../lib/StitchFunctions';
 import {toast} from 'react-toastify'
 
 const DispatchProvider = props => {
@@ -12,16 +12,23 @@ const DispatchProvider = props => {
     const [orderChanges, setOrderChanges] = useState(false)
     const [loading, setLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [watcherSet, setWatcherSet] = useState(false)
 
     const getOrdersForDispatcher = async (notify) =>{
         try{
             const prom = await getOrders()
             if(prom.status === '200') setOrders(prom.data.sort((a, b) => a.dateCreated < b.dateCreated))
             if(notify) toast('Orders updated!')
+            if(loading) setLoading(false)
         } catch(e){
             console.log(e)
             //set error into global state?
         }
+    }
+
+    async function checkSelectedOrder(){
+        console.log(selectedOrder)
+        setSelectedOrder(await getOrder(selectedOrder._id))
     }
 
     const getDriversForDispatcher = async () => {
@@ -119,7 +126,8 @@ const DispatchProvider = props => {
                 setOrderChanges: (bool) => setOrderChanges(bool),
                 setFormValue: (str) => setFormValue(str),
                 updateOrder: () => updateOrder(),
-                setShowConfirmModal: (bool) => setShowConfirmModal(bool)
+                setShowConfirmModal: (bool) => setShowConfirmModal(bool),
+                setLoading: (bool) => setLoading(bool)
             }}
         >
             {props.children}
