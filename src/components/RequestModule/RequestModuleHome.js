@@ -12,7 +12,7 @@ export default function RequestModuleHome(props) {
     if (step === 1) {
         return (
             <main>
-                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                     {/* <div className="col-2">
                         <Home className="mr-auto mt-2" style={{color:'white'}}/>
                     </div> */}

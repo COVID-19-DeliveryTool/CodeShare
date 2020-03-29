@@ -8,9 +8,9 @@ export default function ConfirmChangesModal(props){
 
     return (
         <Modal style={{paddingTop:75}} size='lg' show={showConfirmModal} onHide={() => {}}>
-            <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
+            <Modal.Body style={{borderTop:'10px solid #781CB2'}}>
                 <div className="form-row border-bottom col-12 mr-auto ml-auto">
-                        <span className="mr-auto ml-auto" style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Please confirm your changes.</span>
+                        <span className="mr-auto ml-auto" style={{fontSize:20,fontWeight:600,color:"#781CB2",letterSpacing:'.025rem'}}>Please confirm your changes.</span>
                         <span onClick={() => setShowConfirmModal(false)} className="float-right mt-2"><X className="hover"/></span>
                 </div>
                 <div className="col-12 row">

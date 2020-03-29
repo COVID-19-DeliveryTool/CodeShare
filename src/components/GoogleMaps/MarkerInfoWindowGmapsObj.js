@@ -92,12 +92,14 @@ class MarkerInfoWindowGmapsObj extends Component {
           onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps, this.props.orders, this.props)}
         >
           {this.props.orders.map((order, index) => {
+            const selected = this.props.selectedOrder && this.props.selectedOrder._id.toString() === order._id.toString();
             return (
               <Marker
                 key={index}
                 text={order.type}
                 lat={Number(order.geometry.lat)}
                 lng={Number(order.geometry.long)}
+                selected={selected}
                 onClick={() => this.props.setSelectedOrder(order)}
               />
             )

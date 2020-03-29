@@ -67,7 +67,7 @@ export default function DispatchModuleHome(props){
 
     return (
         <main>
-            <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6F2C8E', paddingBottom: 15 }}>
+            <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                 <div className="col-12 mt-2 mr-auto">
                     <ArrowLeftCircle color="white" className="mr-3 hover" onClick={() => props.history.push('/')} />
                     <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
