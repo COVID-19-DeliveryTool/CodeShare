@@ -1,4 +1,4 @@
-import {Stitch,RemoteMongoClient,AnonymousCredential,GoogleRedirectCredential, BSON} from 'mongodb-stitch-browser-sdk'
+import {Stitch,RemoteMongoClient,GoogleRedirectCredential,FunctionCredential} from 'mongodb-stitch-browser-sdk'
 
 function getAppId(){
     if(process.env.NODE_ENV !== 'development') return 'stayneighbor-bjuma'
@@ -41,11 +41,10 @@ export function intializeStitchClient(){
     }
 }
 
-export async function anonymousUserLogin(){
+export async function functionUserLogin(){
     try {
         var client = intializeStitchClient()
-        var auth = await client.auth.loginWithCredential(new AnonymousCredential)
-        console.log(auth)
+        await client.auth.loginWithCredential(new FunctionCredential({}))
     } catch(e) {
         return e
     }
@@ -68,12 +67,11 @@ export async function putOrder(body){
     try{
         //get our default app client
         const client = intializeStitchClient()
-        if(!client.auth.isLoggedIn) await anonymousUserLogin()
+        if(client.auth.isLoggedIn) await client.auth.logout()
+        await functionUserLogin()
 
         var result = await client.callFunction("createOrder", [body]);
         logUserOut()
-        // if(result && result.status !== '200') return result
-        // else return true
         return result
     } catch(e){
         return {errorCode: '002', errorMessage: e.toString()}
@@ -116,7 +114,6 @@ export async function getUserInfo(){
     var user = await db.collection('user_data').findOne({user_id: client.auth.user.id})
 
     if(!user) return false
-
     return {...client.auth.currentUser, customData: {...user}}
 
     //return intializeStitchClient().auth.currentUser
@@ -184,15 +181,14 @@ export async function getOrder(orderId){
     }
 }
 
-export async function completeOrder(orderId){
+export async function completeOrder(orderId, driverId){
     try {
-
         const client = intializeStitchClient()
         //Non logged in drivers should be able to complete
-        if(!client.auth.isLoggedIn) await anonymousUserLogin()
+        if(client.auth.isLoggedIn) await client.auth.logout()
+        await functionUserLogin()
 
-        return await client.callFunction("completeOrder", [orderId.toString()]);
-
+        return await client.callFunction("completeOrder", [orderId.toString(), driverId.toString()]);
     } catch(e){
         console.log(e);
         return e

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal,Button,Spinner} from 'react-bootstrap'
+import {Modal,Spinner} from 'react-bootstrap'
 import {X} from 'react-feather'
 
 export default function ConfirmChangesModal(props){
@@ -23,7 +23,7 @@ export default function ConfirmChangesModal(props){
                             </thead>
                             <tbody>
                             {Object.keys(orderChanges).map((change) => {
-                                if(change === 'enabled') return
+                                if(change === 'enabled') return false
                                 var originalValue = selectedOrder[change]
                                 var updatedValue = orderChanges[change]
 

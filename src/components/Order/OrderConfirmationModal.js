@@ -3,7 +3,7 @@ import {Modal,Spinner} from 'react-bootstrap'
 import {AlertTriangle} from 'react-feather'
 
 export default function OrderConfirmationModal(props){
-    const {showModal, setStep, setShowModal, formData, type, loading, submitRequest, errors, setErrors} = props
+    const {showModal, setStep, setShowModal, formData, type, loading, submitRequest, errors} = props
     return (
         <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
             <Modal.Body style={{borderTop:'10px solid #781CB2'}}>
@@ -42,7 +42,7 @@ export default function OrderConfirmationModal(props){
                                 )
                             })}
                             {formData.freeTextItems.map(item => {
-                                if(item == '') return
+                                if(item === '') return false
                                 return (
                                     <li className="ml-3 lead" style={{fontSize:14}}>{item}</li>
                                 )

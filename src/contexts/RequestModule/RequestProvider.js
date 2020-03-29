@@ -33,7 +33,53 @@ const RequestProvider = props => {
     }
 
     const validateStep1 = (values) => {
-        setStep(2)
+        var valid = true
+        var validationErrors = {...errors}
+
+        if((!formData.firstName || formData.firstName == '' || !formData.firstName.match(/[a-z,A-Z]/gi))){
+            if(!errors.firstName) validationErrors.firstName=true
+            valid = false
+        } else {
+            if(errors.firstName) validationErrors.firstName = false
+        }
+
+        if((!formData.lastName || formData.lastName == '' || !formData.lastName.match(/[a-z,A-Z]/gi))){
+            if(!errors.lastName) validationErrors.lastName=true
+            valid = false
+        } else {
+            if(errors.lastName) validationErrors.lastName = false
+        }
+
+        if((!formData.phoneNumber || formData.phoneNumber == '' || !formData.phoneNumber.match(/^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/g))){
+            if(!errors.phoneNumber) validationErrors.phoneNumber=true
+            valid = false
+        } else {
+            if(errors.phoneNumber) validationErrors.phoneNumber = false
+        }
+
+        if((!formData.emailAddress || formData.emailAddress == '' || !formData.emailAddress.match(/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/g))){
+            if(!errors.emailAddress) validationErrors.emailAddress=true
+            valid = false
+        } else {
+            if(errors.emailAddress) validationErrors.emailAddress = false
+        }
+
+        if((!formData.address || formData.address == '' || !formData.address.match(/\d{1,3}.?\d{0,3}\s[a-zA-Z]{2,30}\s[a-zA-Z]{2,15}/g))){
+            if(!errors.address) validationErrors.address=true
+            valid = false
+        } else {
+            if(errors.address) validationErrors.address = false
+        }
+
+        if((!formData.zipcode || formData.zipcode == '' || !formData.zipcode.match(/^^\d{5}$/g))){
+            if(!errors.zipcode) validationErrors.zipcode=true
+            valid = false
+        } else {
+            if(errors.zipcode) validationErrors.zipcode = false
+        }
+
+        setErrors(validationErrors)
+        if(valid) setStep(2)
     };
 
     const validateStep2 = () => {
@@ -46,7 +92,8 @@ const RequestProvider = props => {
         setShowModal(true)
     }
 
-    const submitRequest = async() => {
+    const submitRequest = async(values) => {
+        console.log(values)
         // todo handle dropoff time validation
         setLoading(true);
         // format put request data

@@ -7,7 +7,7 @@ import ItemList from '../ItemList'
 
 export default function DonationModuleHome(props) {
     const {step, loading, showModal, formData, errors} = props.donationContext.state; // provider state values
-    const { stepOneIsValid, stepTwoIsValid, stepThreeIsValid, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3, setShowModal, submitDonation, setErrors} = props.donationContext; // provider functions
+    const { stepTwoIsValid, stepThreeIsValid, setLoading, setFormData, setStep, validateStep1, validateStep2, validateStep3, setShowModal, submitDonation, setErrors} = props.donationContext; // provider functions
 
     if (step === 1) {
         return (
@@ -33,36 +33,30 @@ export default function DonationModuleHome(props) {
                         <form>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="15" onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className="form-control" id="inputEmail4" placeholder="First Name" value={formData.firstName}></input>
-                                    {errors.firstName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.firstName.message || errors.firstName.type}</p>}
+                                    <input maxLength="15" onChange={(e) => {setFormData({...formData, firstName: e.target.value})}} name='firstName' style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="name" className={`form-control lead ${errors.firstName ? 'is-invalid' : ''}`} id="inputEmail4" placeholder="First Name" value={formData.firstName}></input>
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="15" name='lastName' onChange={(e) => setFormData({...formData, lastName: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Last Name" value={formData.lastName}></input>
-                                    {errors.lastName && <p style={{ color: 'red', marginBottom: 0 }}>{errors.lastName.message || errors.lastName.type}</p>}
+                                    <input maxLength="15" name='lastName' onChange={(e) => setFormData({...formData, lastName: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className={`form-control lead ${errors.lastName ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Last Name" value={formData.lastName}></input>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="12" name='phoneNumber' onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Phone Number" value={formData.phoneNumber}></input>
-                                    {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
+                                    <input maxLength="12" name='phoneNumber' onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className={`form-control lead ${errors.phoneNumber ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Phone Number" value={formData.phoneNumber}></input>
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="25" name='emailAddress' onChange={(e) => setFormData({...formData, emailAddress: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Email Address" value={formData.emailAddress}></input>
-                                    {errors.phoneNumber && <p style={{ color: 'red', marginBottom: 0 }}>{errors.phoneNumber.message || errors.phoneNumber.type}</p>}
+                                    <input maxLength="25" name='emailAddress' onChange={(e) => setFormData({...formData, emailAddress: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className={`form-control lead ${errors.emailAddress ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Email Address" value={formData.emailAddress}></input>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group ml-auto col-xl-4 col-md-6">
-                                    <input maxLength="30" name='streetAddress' onChange={(e) => setFormData({...formData, address: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Street Address" value={formData.address}></input>
-                                    {errors.streetAddress && <p style={{ color: 'red', marginBottom: 0 }}>{errors.streetAddress.message || errors.streetAddress.type}</p>}
+                                    <input maxLength="30" name='streetAddress' onChange={(e) => setFormData({...formData, address: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className={`form-control lead ${errors.address ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Street Address" value={formData.address}></input>
                                 </div>
                                 <div className="form-group mr-auto col-xl-4 col-md-6">
-                                    <input maxLength="6" name='zipCode' onChange={(e) => setFormData({...formData, zipcode: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className="form-control" id="inputPassword4" placeholder="Zip Code" value={formData.zipcode}></input>
-                                    {errors.zipCode && <p style={{ color: 'red', marginBottom: 0 }}>{errors.zipCode.message || errors.zipCode.type}</p>}
+                                    <input maxLength="6" name='zipCode' onChange={(e) => setFormData({...formData, zipcode: e.target.value})} style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} type="text" className={`form-control lead ${errors.zipcode ? 'is-invalid' : ''}`} id="inputPassword4" placeholder="Zip Code" value={formData.zipcode}></input>
                                 </div>
                             </div>
 
-                            {!loading && <button onClick={() => validateStep1()} disabled={stepOneIsValid()} type="button" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto btn-primary-hover ml-auto col-12 btn mt-4">Continue</button>}
+                            {!loading && <button onClick={() => validateStep1()} type="button" style={{ backgroundColor: "rgb(158, 69, 183)", color: 'white' }} className="col-xl-8 mr-auto btn-primary-hover ml-auto col-12 btn mt-4">Continue</button>}
                         </form>
                     </div>
                 </div>
@@ -72,7 +66,7 @@ export default function DonationModuleHome(props) {
 
     if (step === 2) return (
         <main>
-            <MenuBar goBackTo={1}/>
+            <MenuBar goBackTo={1} setStep={setStep}/>
             <div className="col-11 mr-auto ml-auto">
                 <div className="text-center" style={{ marginTop: '5rem', color: "rgb(158, 69, 183)", fontFamily: 'sans-serif', fontSize: 28, fontWeight: 'bold' }}>
                     What can you donate?

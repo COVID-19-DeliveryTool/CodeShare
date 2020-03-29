@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import { isEmpty } from 'lodash';
+import React, { Component } from 'react';
 import Marker from './Marker'
 
 // examples:
@@ -7,41 +6,6 @@ import GoogleMap from './GoogleMap';
 
 // consts: [34.0522, -118.2437]
 var last = null
-var selected = false
-var records = ''
-// var records = [
-//   {
-//     name: "Home",
-//     types: ['Request'],
-//     geometry: {
-//       location: {
-//         lat: 34.23,
-//         lng: -77.94
-//       }
-//     },
-//     address: '2131 S 17th Street'
-//   },
-//   {
-//     name: "Home1",
-//     types: ['Donation'],
-//     geometry: {
-//       location: {
-//         lat: 34.148562,
-//         lng: -77.935982
-//       }
-//     }
-//   },
-//   {
-//     name: "Home2",
-//     types: ['Request'],
-//     geometry: {
-//       location: {
-//         lat: 34.206362,
-//         lng: -77.922413
-//       }
-//     }
-//   }
-// ]
 
 const getInfoWindowString = place => `
     <div>
@@ -52,95 +16,6 @@ const getInfoWindowString = place => `
         ${place.type}
       </div>
     </div>`
-
-
-
-
-// Refer to https://github.com/google-map-react/google-map-react#use-google-maps-api
-// const handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selectedMarker) => {
-//   this.setState({gMap: map, gMaps: maps})
-//   return
-
-
-// const markers = [{}];
-// const infowindows = [];
-
-// var places = [
-//   {
-//     name: "Home",
-//     types: ['Request'],
-//     geometry: {
-//       location: {
-//         lat: 34.23,
-//         lng: -77.94
-//       }
-//     },
-//     address: '2131 S 17th Street'
-//   },
-//   {
-//     name: "Home1",
-//     types: ['Donation'],
-//     geometry: {
-//       location: {
-//         lat: 34.148562,
-//         lng: -77.935982
-//       }
-//     }
-//   },
-//   {
-//     name: "Home2",
-//     types: ['Request'],
-//     geometry: {
-//       location: {
-//         lat: 34.206362,
-//         lng: -77.922413
-//       }
-//     }
-//   }
-// ]
-
-// for using a custom image as a marker
-// var image = {
-//   url: 'https://cdn4.iconfinder.com/data/icons/contact-us-19/48/35-512.png',
-//   scaledSize: new maps.Size(25, 25),
-// }
-
-// places.forEach((place) => {
-//   markers.push(new maps.Marker({
-//     position: {
-//       lat: Number(place.geometry.lat),
-//       lng: Number(place.geometry.long),
-//     },
-//     map,
-//     data: place,
-//     // icon: image,
-//     icon: place.type === 'REQUEST' ? {
-//       path: maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-//       strokeColor: 'red',
-//       scale: 5
-//     } : {
-//         path: maps.SymbolPath.FORWARD_CLOSED_ARROW,
-//         strokeColor: 'blue',
-//         scale: 5
-//       },
-//   }));
-
-//   infowindows.push(new maps.InfoWindow({
-//     content: getInfoWindowString(place),
-//   }));
-// });
-
-// markers.slice(1).forEach((marker, i) => {
-//   marker.addListener('click', () => {
-//     infowindows[i].open(map, marker)
-//     props.setSelectedOrder(marker.data)
-//     if (last) last.close()
-//     last = infowindows[i]
-//   })
-// });
-// console.log(markers)
-// records = markers.slice(1)
-//};
 
 class MarkerInfoWindowGmapsObj extends Component {
   constructor(props) {
@@ -154,12 +29,7 @@ class MarkerInfoWindowGmapsObj extends Component {
     };
   }
 
-  updateSelectedMarker(item) {
-    //this.setState({selectedMarker: item})
-  }
-
   handleApiLoaded = (map, maps, places, props, updateSelectedMarker, selectedMarker) => {
-    console.log(map)
     this.setState({ gMap: map, gMaps: maps })
     return
   }
@@ -209,7 +79,7 @@ class MarkerInfoWindowGmapsObj extends Component {
   }
 
   render() {
-    if (this.props.selectedOrder && this.props.selectedOrder != this.state.selectedMarker) this.setState({ selectedMarker: this.props.selectedOrder })
+    if (this.props.selectedOrder && this.props.selectedOrder !== this.state.selectedMarker) this.setState({ selectedMarker: this.props.selectedOrder })
     const defaultCenter = { lat: 34.23, lng: -77.94 };
     const coordinates = this.props.selectedOrder ? { lat: Number(this.props.selectedOrder.geometry.lat), lng: Number(this.props.selectedOrder.geometry.long) } : defaultCenter;
     return (

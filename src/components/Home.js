@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import StayNeighborBrand from './StayNeighborBrand'
 import { ChevronRight } from 'react-feather'
 
@@ -30,7 +30,7 @@ export default function Home(props) {
 
                 <nav className="navbar fixed-bottom" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                     <div className="mr-auto ml-auto">
-                        <a onClick={() => window.location.replace('https://www.stayneighbor.com')} style={{ fontSize: 11, color: 'white' }} href="#">StayNeighbor is a community-built platform.  <b style={{ color: 'yellow' }}>GET INVOLVED</b></a>
+                        <a href="https://www.stayneighbor.com" onClick={() => window.location.replace('https://www.stayneighbor.com')} style={{ fontSize: 11, color: 'white' }}>StayNeighbor is a community-built platform.  <b style={{ color: 'yellow' }}>GET INVOLVED</b></a>
                     </div>
                 </nav>
             </div>

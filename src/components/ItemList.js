@@ -12,7 +12,7 @@ export default function ItemList(props){
                     <div className="form-group col-xl-6 col-12 mr-auto ml-auto">
                         <ul className="list-group list-group-flush">
                             {itemList.map(item => {
-                                var itemIndex = formData.items.findIndex(a => a.value == item.value)
+                                var itemIndex = formData.items.findIndex(a => a.value === item.value)
                                 if (formData.items && itemIndex > -1) {
                                     var itemsList = [...formData.items]
                                     itemsList.splice(itemIndex, 1)

@@ -2,15 +2,16 @@ import React, {useEffect} from 'react'
 import Loading from '../Loading'
 import ConfirmChangesModal from './ConfirmChangesModal'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
-import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
+import { ArrowLeftCircle , LogOut , X  , RefreshCw, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
 import {logUserOut} from '../../lib/StitchFunctions'
 import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
 import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
+import Error from '../Error'
 
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading, showConfirmModal } = props.dispatchContext.state
-    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder, setShowConfirmModal } = props.dispatchContext
+    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, setShowConfirmModal } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
@@ -20,13 +21,15 @@ export default function DispatchModuleHome(props){
         if(isAuthenticated && !user) getUser()
         if(isAuthenticated && user && !orders) getOrdersForDispatcher()
         if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
-    }, [isAuthenticated, user, orders, drivers])
+    })
 
+
+    if(errors.login) return <Error {...props}/>
     if(!user || !orders || !drivers) return <Loading/>
 
     function applyFilters(orders){
         if(typeFilter) orders = orders.filter(a => a.type === typeFilter)
-        if(statusFilter) orders = orders.filter(a => a.status === statusFilter)
+        if(statusFilter.length > 0) orders = orders.filter(a => statusFilter.includes(a.status))
         return orders
     }
 
@@ -47,6 +50,17 @@ export default function DispatchModuleHome(props){
         if(hoursSince < 1) return `${differenceInMinutes(new Date(), new Date(date))} minutes ago`
         if(hoursSince > 24) return `${differenceInDays(new Date(), new Date(date))} days ago`
         return `${hoursSince} hours ago`
+    }
+
+    function addRemoveFilter(status){
+        var statusIndex = statusFilter.findIndex(a => a === status)
+        if(statusIndex > -1){
+            var filters = [...statusFilter]
+            filters.splice(statusIndex, 1)
+            setStatusFilter(filters)
+        } else {
+            setStatusFilter([...statusFilter, status])
+        }
     }
 
     if(orders) filteredOrders = applyFilters(orders)
@@ -75,21 +89,21 @@ export default function DispatchModuleHome(props){
                             </div>
                             <div>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Type</label>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={() => setTypeFilter(typeFilter === 'REQUEST' ? '' : 'REQUEST')} type="button" class={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests</button>
-                                    <button onClick={() => setTypeFilter(typeFilter === 'DONATION' ? '' : 'DONATION')} type="button" class={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations</button>
+                                <div className="btn-group" role="group" aria-label="Basic example">
+                                    <button onClick={() => setTypeFilter(typeFilter === 'REQUEST' ? '' : 'REQUEST')} type="button" className={`${typeFilter === 'REQUEST' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Requests</button>
+                                    <button onClick={() => setTypeFilter(typeFilter === 'DONATION' ? '' : 'DONATION')} type="button" className={`${typeFilter === 'DONATION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}>Donations</button>
                                     <X onClick={() => setTypeFilter(false)} style={{marginTop:'.40rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
                             <div>
                                 <label style={{width:'100%',fontSize:'.9rem'}} className="mb-0 pb-0 ml-2 lead">Status</label>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button onClick={() => setStatusFilter(statusFilter === 'PENDING' ? '' : 'PENDING')} type="button" class={`${statusFilter === 'PENDING' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><Circle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'IN PROGRESS' ? '' : 'IN PROGRESS')} class={`${statusFilter === 'IN PROGRESS' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'COMPLETED' ? '' : 'COMPLETED')} class={`${statusFilter === 'COMPLETED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><CheckCircle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'CANCELLED' ? '' : 'CANCELLED')} class={`${statusFilter === 'CANCELLED' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><XCircle/></button>
-                                    <button onClick={() => setStatusFilter(statusFilter === 'ERROR/ACTION' ? '' : 'ERROR/ACTION')} class={`${statusFilter === 'ERROR/ACTION' ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><AlertCircle/></button>
-                                    <X onClick={() => setStatusFilter(false)} style={{marginTop:'.40rem',color:"grey"}} className="hover ml-1"/>
+                                <div className="btn-group" role="group" aria-label="Basic example">
+                                    <button onClick={() => addRemoveFilter('PENDING')} type="button" className={`${statusFilter.includes('PENDING') ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><Circle/></button>
+                                    <button onClick={() => addRemoveFilter('IN PROGRESS')} className={`${statusFilter.includes('IN PROGRESS') ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><PlayCircle/></button>
+                                    <button onClick={() => addRemoveFilter('COMPLETED')} className={`${statusFilter.includes('COMPLETED') ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><CheckCircle/></button>
+                                    <button onClick={() => addRemoveFilter('CANCELLED')} className={`${statusFilter.includes('CANCELLED') ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><XCircle/></button>
+                                    <button onClick={() => addRemoveFilter('ERROR/ACTION')} className={`${statusFilter.includes('ERROR/ACTION') ? 'btn-active-brand' : ''} btn btn-sm btn-outline-brand mr-0`} style={{fontSize:'.8rem'}}><AlertCircle/></button>
+                                    <X onClick={() => setStatusFilter([])} style={{marginTop:'.40rem',color:"grey"}} className="hover ml-1"/>
                                 </div>
                             </div>
                             <div className="form-row border-bottom" style={{paddingBottom:5}}>
@@ -99,7 +113,7 @@ export default function DispatchModuleHome(props){
                             <div style={{maxHeight:'60vh',overflowY:'auto'}} className="mt-2">
                                 {orders && filteredOrders.length > 0 && filteredOrders.map(order => {
                                     return (
-                                        <li style={{fontSize:12,paddingRight:0,paddingBottom:'.25rem'}} class={`d-flex list-group-item order-list text-center pl-0 pr-0 pt-2 pb-1 ${selectedOrder._id ? order._id.toString() == selectedOrder._id.toString() ? 'active-order': "" : ''}`} onClick={() => {
+                                        <li key={order._id.toString()} style={{fontSize:12,paddingRight:0,paddingBottom:'.25rem'}} className={`d-flex list-group-item order-list text-center pl-0 pr-0 pt-2 pb-1 ${selectedOrder._id ? order._id.toString() === selectedOrder._id.toString() ? 'active-order': "" : ''}`} onClick={() => {
                                             setSelectedOrder(order)
                                             setOrderChanges(false)
                                         }}>
@@ -136,7 +150,7 @@ export default function DispatchModuleHome(props){
                                         <span style={{display:'block',fontSize:'.9rem'}} className={selectedOrder.type === "REQUEST" ? 'request-type-details lead' : 'donation-type-details lead'}>{selectedOrder.type}</span>
                                     </div>
                                     <div className="form-group col-12 col-xl-6">
-                                        <label for="exampleInputEmail1" className="lead mb-0" style={{fontSize:'.9rem'}}><b>Name</b></label>
+                                        <label htmlFor="exampleInputEmail1" className="lead mb-0" style={{fontSize:'.9rem'}}><b>Name</b></label>
                                         <span className="lead" type="email" style={{display:'block',fontWeight:400}} aria-describedby="emailHelp">{selectedOrder.firstName} {selectedOrder.lastName}</span>
                                     </div>
                                 </div>
@@ -144,15 +158,15 @@ export default function DispatchModuleHome(props){
                                     <div className="form-group col-12 col-xl-6 mb-0">
                                         <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} or="exampleInputEmail1"><b>Assigned To</b></label>
                                         {orderChanges.enabled ? 
-                                            <select onChange={(e) => setOrderChanges({...orderChanges, driver: e.target.value == '' ? '' : JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontSize:14}} >{drivers && [{name: ''}, ...drivers].map(driver => {
-                                                return <option value={driver.email === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
+                                            <select onChange={(e) => setOrderChanges({...orderChanges, driver: e.target.value === '' ? '' : JSON.parse(e.target.value)})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{display:'block',fontSize:14}} >{drivers && [{name: ''}, ...drivers].map(driver => {
+                                                return <option key={driver.id} value={driver.email === '' ? '' : JSON.stringify(driver)} selected={deriveDriverName(driver)}>{driver.name}</option>
                                             })}</select>
                                         : 
-                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.email == setFormValue('assignedToDriver')) ? drivers.find(a => a.email == setFormValue('assignedToDriver')).name : ''}</span>
+                                            <span style={{display:'block',fontWeight:600,fontSize:'1rem'}} className={'lead'}>{drivers.find(a => a.email === setFormValue('assignedToDriver')) ? drivers.find(a => a.email === setFormValue('assignedToDriver')).name : ''}</span>
                                         }
                                     </div>
                                     <div className="form-group col-12 col-xl-6 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Status</b></label>
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Status</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, status: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead ' : 'custom-select no-border lead'} style={{display:'block',fontSize:'1rem'}} >{['PENDING','IN PROGRESS','COMPLETED','CANCELLED','ERROR/ACTION'].map(status => {
                                                 return <option selected={setFormValue('status') === status ? true : false}>{status}</option>
@@ -164,11 +178,11 @@ export default function DispatchModuleHome(props){
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group col-12 col-xl-6 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Address</b></label>
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Address</b></label>
                                         <input onChange={e => setOrderChanges({...orderChanges, address: e.target.value})} className={orderChanges.enabled ? 'lead form-control' : 'lead form-control no-border'} disabled={orderChanges.enabled ? false : true} style={{display:'inline',fontWeight:600,width:200,wordWrap:'break-word'}} value={setFormValue('address')}></input>
                                     </div>
-                                    <div className='lead' className="form-group col-12 col-xl-6 mb-0">
-                                        <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Zip Code</b></label>
+                                    <div className="lead form-group col-12 col-xl-6 mb-0">
+                                        <label className="lead label-half text-secondary" style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Zip Code</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, zipcode: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select lead' : 'custom-select no-border lead'} style={{fontWeight:600,color:'black'}} >{user.customData.zipcodes.sort().map(zipcode => {
                                                 return <option selected={setFormValue('zipcode') === zipcode ? true : false}>{zipcode}</option>
@@ -180,7 +194,7 @@ export default function DispatchModuleHome(props){
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group col-12 col-xl-6 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>{selectedOrder.type === 'DONATION' ? 'Pickup Time' : 'Delivery Time'}</b></label>
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>{selectedOrder.type === 'DONATION' ? 'Pickup Time' : 'Delivery Time'}</b></label>
                                         {orderChanges.enabled ? 
                                             <select onChange={e => setOrderChanges({...orderChanges, time: e.target.value})} disabled={orderChanges.enabled ? false : true} className={orderChanges.enabled ? 'custom-select text-dark lead' : 'custom-select no-border text-dark lead'} style={{display:'block',fontSize:'1rem'}} >{['morning', 'afternoon', 'evening'].map(time => {
                                                 return <option selected={setFormValue('time') === time ? true : false}>{time.charAt(0).toUpperCase()}{time.slice(1)}</option>
@@ -190,20 +204,20 @@ export default function DispatchModuleHome(props){
                                         }
                                     </div>
                                     <div className="form-group col-12 col-xl-6 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Phone Number</b></label>
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Phone Number</b></label>
                                         <input onChange={e => setOrderChanges({...orderChanges, phoneNumber: e.target.value})} className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" value={setFormValue('phoneNumber')}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group col-12 col-xl-6 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Date Created</b></label>
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Date Created</b></label>
                                         <input type="text" className={orderChanges.enabled ? 'form-control text-dark' : 'form-control no-border text-dark'} disabled={true} style={{fontWeight:600,display:'block'}} aria-describedby="emailHelp" defaultValue={`${new Date(selectedOrder.dateCreated).toLocaleDateString()} ${new Date(selectedOrder.dateCreated).toLocaleTimeString()}`}></input>
                                     </div>
                                 </div>
                                 <div className="form-row">
                                     <div className="form-group col-12 mb-0">
-                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Items</b></label>
-                                        <ul class="list-group flex-md-row flex-wrap ml-3">
+                                        <label className='lead label-half text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Items</b></label>
+                                        <ul className="list-group flex-md-row flex-wrap ml-3">
                                             {selectedOrder.items.map((item, index) => {
                                                 return (
                                                     <li key={index} className="context-list lead" style={{width:'50%',fontWeight:600,fontSize:'1rem'}}>{item.name}</li>
@@ -214,7 +228,7 @@ export default function DispatchModuleHome(props){
                                 </div>
                                 <div className="form-row mt-2">
                                     <div className="form-group col-12">
-                                        <label className='lead text-secondary' style={{fontSize:'.9rem'}} for="exampleInputEmail1"><b>Additional Info</b></label>
+                                        <label className='lead text-secondary' style={{fontSize:'.9rem'}} htmlFor="exampleInputEmail1"><b>Additional Info</b></label>
                                         <textarea onChange={e => setOrderChanges({...orderChanges, additionalInfo: e.target.value})} className={orderChanges.enabled ? 'form-control' : 'form-control no-border'} type="text" disabled={orderChanges.enabled ? false : true} style={{fontWeight:600,display:'block',fontSize:'.9rem',width:'100%'}} aria-describedby="emailHelp" value={selectedOrder.additionalInfo}></textarea>
                                     </div>
                                 </div>
