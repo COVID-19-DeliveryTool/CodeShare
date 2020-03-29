@@ -51,6 +51,18 @@
   text-align: center;
 }
 
+.refresh-ccw{
+  animation: rotation 1000ms infinite linear;
+}
+
+@keyframes rotation {
+  from{
+    transform: rotate(0deg);
+  } to {
+    transform: rotate((359deg))
+  }
+}
+
 .donation-type-details{
   background-color: #3fb94c;
   font-weight: 600 !important;
