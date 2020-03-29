@@ -6,9 +6,9 @@ export default function OrderConfirmationModal(props){
     const {showModal, setStep, setShowModal, formData, type, loading, submitRequest, errors, setErrors} = props
     return (
         <Modal style={{paddingTop:75}} size='lg' show={showModal} onHide={() => {}}>
-            <Modal.Body style={{borderTop:'10px solid #6f2c8e'}}>
+            <Modal.Body style={{borderTop:'10px solid #781CB2'}}>
                 <div className="col-12 text-center">
-                    <span style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Is everything correct?</span>
+                    <span style={{fontSize:20,fontWeight:600,color:"#781CB2",letterSpacing:'.025rem'}}>Is everything correct?</span>
                 </div>
                 <div className="col-12 row" style={{marginTop:25}}>
                     <div className="col-12 col-xl-5 mr-auto ml-auto">
@@ -17,7 +17,7 @@ export default function OrderConfirmationModal(props){
                             <div onClick={() => {
                                 setStep(1)
                                 setShowModal(false)
-                                }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                }} className="col-6 text-right ml-0 lead hover" style={{color:'#781CB2',fontSize:13,fontWeight:'600'}}>Edit</div>
                         </div>
                         <div>
                             <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.firstName} {formData.lastName}</li>
@@ -33,7 +33,7 @@ export default function OrderConfirmationModal(props){
                             <div onClick={() => {
                                 setStep(2)
                                 setShowModal(false)
-                                }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                }} className="col-6 text-right ml-0 lead hover" style={{color:'#781CB2',fontSize:13,fontWeight:'600'}}>Edit</div>
                         </div>
                         <div>
                             {formData.items.map(item => {
@@ -57,7 +57,7 @@ export default function OrderConfirmationModal(props){
                                 <div onClick={() => {
                                     setStep(3)
                                     setShowModal(false)
-                                    }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                    }} className="col-6 text-right ml-0 lead hover" style={{color:'#781CB2',fontSize:13,fontWeight:'600'}}>Edit</div>
                                 </div>
                             <div>
                             <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.dropoff ? `${formData.dropoff.label} (${formData.dropoff.time})` : ''}</li>
@@ -69,7 +69,7 @@ export default function OrderConfirmationModal(props){
                                 <div onClick={() => {
                                     setStep(3)
                                     setShowModal(false)
-                                    }} className="col-6 text-right ml-0 lead hover" style={{color:'#6f2c8e',fontSize:13,fontWeight:'600'}}>Edit</div>
+                                    }} className="col-6 text-right ml-0 lead hover" style={{color:'#781CB2',fontSize:13,fontWeight:'600'}}>Edit</div>
                                 </div>
                             <div>
                             <span className="lead" style={{listStyleType:'none',fontSize:14,border:0}} disabled={true}>{formData.additionalInfo}</span>

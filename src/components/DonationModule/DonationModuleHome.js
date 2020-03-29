@@ -12,7 +12,7 @@ export default function DonationModuleHome(props) {
     if (step === 1) {
         return (
             <main>
-                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+                <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                     <div className="col-12 mt-2 mr-auto">
                         <ArrowLeftCircle color="white" className="mr-3 underline-hover" onClick={() => props.history.push('/')} />
                         <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
@@ -88,5 +88,5 @@ export default function DonationModuleHome(props) {
 
     if (step === 3) return <OrderDropOffTime type={'donation'} setStep={setStep} validateStep3={validateStep3} setFormData={setFormData} formData={formData} stepThreeIsValid={stepThreeIsValid} showModal={showModal} setShowModal={setShowModal} submitRequest={submitDonation} loading={loading} errors={errors} setErrors={setErrors}/>
 
-    if(step == 4) return <OrderCompleteLandingPage {...props} setStep={setStep} type={'donation'}/>
+    if(step === 4) return <OrderCompleteLandingPage {...props} setStep={setStep} type={'donation'}/>
 }

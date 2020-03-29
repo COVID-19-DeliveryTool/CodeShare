@@ -6,7 +6,7 @@ import { ChevronRight } from 'react-feather'
 export default function Home(props) {
     return (
         <main>
-            <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+            <nav className="navbar fixed-top col-12" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                 <div className="col-12 mt-2 mr-auto">
                     <span style={{ fontSize: 18, color: 'white' }} href="#">StayNeighbor</span>
                 </div>
@@ -28,7 +28,7 @@ export default function Home(props) {
                     <p onClick={() => props.history.push('/dispatcher')} className="lead underline-hover" style={{ fontSize: '1.25rem', color: 'rgb(158, 69, 183)', paddingTop: 10, fontWeight: 400 }}>Dispatchers  <ChevronRight size={18} /></p>
                 </div>
 
-                <nav className="navbar fixed-bottom" style={{ backgroundColor: '#6f2c8e', paddingBottom: 15 }}>
+                <nav className="navbar fixed-bottom" style={{ backgroundColor: '#781CB2', paddingBottom: 15 }}>
                     <div className="mr-auto ml-auto">
                         <a onClick={() => window.location.replace('https://www.stayneighbor.com')} style={{ fontSize: 11, color: 'white' }} href="#">StayNeighbor is a community-built platform.  <b style={{ color: 'yellow' }}>GET INVOLVED</b></a>
                     </div>
