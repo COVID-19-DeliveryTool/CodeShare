@@ -58,7 +58,8 @@ export default function ConfirmChangesModal(props){
                                 var updatedValue = orderChanges[change]
 
                                 if(change === 'driver') {
-                                    originalValue = selectedOrder[change].name
+                                    if(!selectedOrder[change]) originalValue = ''
+                                    else originalValue = selectedOrder[change].name
                                     updatedValue = orderChanges[change].name
                                 }
 
