@@ -12,36 +12,6 @@ export default function ConfirmChangesModal(props){
                 <div className="form-row border-bottom col-12 mr-auto ml-auto">
                         <span className="mr-auto ml-auto" style={{fontSize:20,fontWeight:600,color:"#6f2c8e",letterSpacing:'.025rem'}}>Please confirm your changes.</span>
                         <span onClick={() => setShowConfirmModal(false)} className="float-right mt-2"><X className="hover"/></span>
-                    </div>
-                <div className="col-12 row d-flex ml-2 mr-2" style={{marginTop:25}}>
-                    {orderChanges.driver === '' || orderChanges.driver ? 
-                        <div className="col-12 col-xl-5">
-                            <div className="border-bottom pb-1 row">
-                                <div className='col-12 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Assignment Changes</div>
-                            </div>
-                            <div>
-                                {/* <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.firstName} {formData.lastName}</li>
-                                <li className="mb-1 lead" style={{listStyleType:'none',fontSize:14}}>{formData.address}</li>
-                                <li className="mb-3 lead" style={{listStyleType:'none',fontSize:14}}>{formData.zipcode}</li>
-                                <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.phoneNumber}</li>
-                                <li className="lead" style={{listStyleType:'none',fontSize:14}}>{formData.emailAddress}</li> */}
-                            </div>
-                        </div>
-                    : ''}
-                    {orderChanges.status ?
-                        <div className="col-12 col-xl-5">
-                            <div className="border-bottom pb-1 row">
-                                <div className='col-12 mr-0 lead' style={{fontSize:15,fontWeight:'600'}}>Status Changes</div>
-                            </div>
-                            <div>
-                                {/* {formData.items.map(item => {
-                                    return (
-                                        <li className="ml-3 lead" style={{fontSize:14}}>{item.value}</li>
-                                    )
-                                })} */}
-                            </div>
-                        </div>
-                    : ''}
                 </div>
                 <div className="col-12 row">
                     <div className="col-12">
@@ -65,7 +35,7 @@ export default function ConfirmChangesModal(props){
 
                                 return (
                                     <tr>
-                                        <td>{change}</td>
+                                        <td>{change.charAt(0).toUpperCase()}{change.slice(1)}</td>
                                         <td>{originalValue}</td>
                                         <td>{updatedValue}</td>
                                     </tr>

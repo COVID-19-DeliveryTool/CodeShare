@@ -5,10 +5,8 @@ export const dropoff = [
 ];
 
 export const itemList = [
-    { id: 1, label: 'Toilet Paper', value: 'toilet paper' },
-    { id: 2, label: 'Paper Towels', value: 'paper towels' },
-    { id: 3, label: 'Milk', value: 'milk' },
-    { id: 4, label: 'Eggs', value: 'eggs' },
-    { id: 5, label: 'Batteries - AA', value: 'batteries aa' },
-    { id: 6, label: 'Batteries - AAA', value: 'batters aaa' }
+    { id: 1, label: 'Food', value: 'food' },
+    { id: 2, label: 'Personal Hygiene', value: 'personal hygiene' },
+    { id: 3, label: 'Water', value: 'water' },
+    { id: 4, label: 'PPE', value: 'ppe' }
 ];

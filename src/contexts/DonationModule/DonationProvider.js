@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import DonationContext from './DonationContext';
-import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { putOrder } from '../../lib/StitchFunctions';
 
 const DonationProvider = props => {
-    var { register, errors, clearError, handleSubmit } = useForm();
     const [step, setStep] = useState(1);
-    var [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({})
+    const [loading, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({ 
-        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null });
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null, freeTextItems: [''] });
 
 
     const stepOneIsValid = () => {
@@ -44,6 +43,7 @@ const DonationProvider = props => {
     };
 
     const validateStep3 = async () => {
+        setErrors({})
         setShowModal(true)
     };
 
@@ -54,12 +54,25 @@ const DonationProvider = props => {
         const formattedData = formatRequest();
         const response = await putOrder(formattedData);
         setLoading(false);
+        setErrors({})
+
         if(response.status === '200'){
             toast('Donation submitted successfully!')
+            setFormData({firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], dropoff: null, freeTextItems: [''] })
             setStep(4)
             setShowModal(false)
         } else {
-            toast(response.message);
+            if(response.status === '409'){
+                setErrors({...errors, address: 'Address is not valid.'})
+                toast('We could validate this address, please double check.');
+            } else {
+                if(response.message.indexOf('does not exist') > -1){
+                    setErrors({...errors, address: 'Address is not valid.'})
+                    toast('We could not validate this address, please double check.', {autoClose:10000});
+                } else {
+                    toast(response.message);
+                }
+            }
         }
     }
 
@@ -74,7 +87,7 @@ const DonationProvider = props => {
         body.zipcode = formData.zipcode;
         body.time = formData.dropoff.id;
         body.type = 'DONATION';
-        body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
+        body.items = [...formData.items.map(item => ({name: item.value, quantity: 1})), ...formData.freeTextItems.map(item => ({name: item, quantity: 1}))]
         body.additionalInfo =formData.additionalInfo;
         return body;
     };
@@ -92,12 +105,10 @@ const DonationProvider = props => {
                 },
                 // put functions you want to expose here
                 setStep: (num) => setStep(num),
+                setErrors: (obj) => setErrors(obj),
                 setLoading: (bool) => setLoading(bool),
                 setShowModal: (bool) => setShowModal(bool),
                 setFormData: (data) => setFormData(data),
-                register: () => register(),
-                clearError: () => clearError(),
-                handleSubmit: (e) => handleSubmit(e),
                 stepOneIsValid: () => stepOneIsValid(),
                 stepTwoIsValid: () => stepTwoIsValid(),
                 stepThreeIsValid: () => stepThreeIsValid(),

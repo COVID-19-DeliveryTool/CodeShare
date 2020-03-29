@@ -3,14 +3,14 @@ import Loading from '../Loading'
 import ConfirmChangesModal from './ConfirmChangesModal'
 import MarkerInfoWindowGmapsObj from '../GoogleMaps/MarkerInfoWindowGmapsObj'
 import { ArrowLeftCircle , LogOut , X , User , RefreshCw, Edit, Circle, PlayCircle, CheckCircle, XCircle, AlertCircle } from 'react-feather'
-import {logUserOut, watcher} from '../../lib/StitchFunctions'
+import {logUserOut} from '../../lib/StitchFunctions'
 import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
 import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
 
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading, showConfirmModal } = props.dispatchContext.state
-    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder, setShowConfirmModal, setLoading } = props.dispatchContext
+    const { getOrdersForDispatcher, setSelectedOrder, setTypeFilter, setStatusFilter, setOrderChanges, getDriversForDispatcher, setFormValue, updateOrder, setShowConfirmModal } = props.dispatchContext
     var { isAuthenticated, user, errors } = props.globalContext.state
     var { checkAuthStatus, getUser, setIsAuthenticated } = props.globalContext
     var filteredOrders = []
@@ -94,10 +94,7 @@ export default function DispatchModuleHome(props){
                             </div>
                             <div className="form-row border-bottom" style={{paddingBottom:5}}>
                                 <span className="pb-0 lead pt-1 pb-1">Order List</span>
-                                <RefreshCw onClick={() => {
-                                    getOrdersForDispatcher(true)
-                                }} className="hover brand" style={{marginTop:'.40rem',marginLeft:'1rem'}}/>
-                                
+                                <RefreshCw onClick={() => getOrdersForDispatcher(true)} className="hover brand" style={{marginTop:'.40rem',marginLeft:'1rem'}}/>
                             </div>
                             <div style={{maxHeight:'60vh',overflowY:'auto'}} className="mt-2">
                                 {orders && filteredOrders.length > 0 && filteredOrders.map(order => {

@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
-import { useForm } from 'react-hook-form';
 import RequestContext from './RequestContext';
 import { toast } from 'react-toastify';
 import { putOrder } from '../../lib/StitchFunctions';
 
 const RequestProvider = props => {
-    const { register, errors, clearError, handleSubmit } = useForm();
+    const [errors, setErrors] = useState({})
     const [showModal, setShowModal] = useState(false)
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({ 
-        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], freeTextItems: [''], dropoff: null, householdNum: 1 });
+        firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], freeTextItems: [''], dropoff: null, householdNum: 1 })
 
     const stepOneIsValid = () => {
         if(!formData.firstName) return true
@@ -34,7 +33,6 @@ const RequestProvider = props => {
     }
 
     const validateStep1 = (values) => {
-        // todo handle address validation logic
         setStep(2)
     };
 
@@ -44,6 +42,7 @@ const RequestProvider = props => {
     };
 
     const validateStep3 = async() => {
+        setErrors({})
         setShowModal(true)
     }
 
@@ -52,17 +51,28 @@ const RequestProvider = props => {
         setLoading(true);
         // format put request data
         const formattedData = formatRequest();
-        console.log(formattedData)
         const response = await putOrder(formattedData);
         setLoading(false);
+        setErrors({})
 
         if(response.status === '200'){
             toast('Request submitted successfully!')
             setFormData({ 
                 firstName: '', lastName: '', phoneNumber: '', emailAddress: '', additionalInfo: '', address: '', zipcode: '', items: [], freeTextItems: [''], dropoff: null, householdNum: 0 })
             setStep(4)
+            setShowModal(false)
         } else {
-            toast(response.message);
+            if(response.status === '409'){
+                setErrors({...errors, address: 'Address is not valid.'})
+                toast('We could validate this address, please double check.');
+            } else {
+                if(response.message.indexOf('does not exist') > -1){
+                    setErrors({...errors, address: 'Address is not valid.'})
+                    toast('We could not validate this address, please double check.', {autoClose:10000});
+                } else {
+                    toast(response.message);
+                }
+            }
         }
     };
 
@@ -77,9 +87,9 @@ const RequestProvider = props => {
         body.zipcode = formData.zipcode;
         body.time = formData.dropoff.id;
         body.type = 'REQUEST';
-        body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
+        body.items = [...formData.items.map(item => ({name: item.value, quantity: 1})), ...formData.freeTextItems.map(item => ({name: item, quantity: 1}))]
         body.additionalInfo = formData.additionalInfo;
-        body.householdNum = formData.householdNum.toString();
+        body.householdNum = formData.householdNum;
         return body; 
     };
 
@@ -95,12 +105,10 @@ const RequestProvider = props => {
                     // state values you want to expose go here
                 },
                 setStep: (num) => setStep(num),
+                setErrors: (obj) => setErrors(obj),
                 setLoading: (bool) => setLoading(bool),
                 setFormData: (data) => setFormData(data),
                 setShowModal: (bool) => setShowModal(bool),
-                register: () => register(),
-                clearError: () => clearError(),
-                handleSubmit: (e) => handleSubmit(e),
                 validateStep1: () => validateStep1(),
                 stepOneIsValid: () => stepOneIsValid(),
                 stepTwoIsValid: () => stepTwoIsValid(),
