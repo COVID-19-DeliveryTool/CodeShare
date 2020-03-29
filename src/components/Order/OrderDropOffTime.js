@@ -5,7 +5,7 @@ import {dropoff} from '../../data/orders.js'
 import OrderConfirmationModal from './OrderConfirmationModal'
 
 export default function OrderDropOffTime(props){
-    const {setStep, validateStep3, setFormData, formData, loading, stepThreeIsValid, showModal, setShowModal, submitRequest, type, errors, setErrors} = props
+    const {setStep, validateStep3, setFormData, formData, loading, stepThreeIsValid, showModal, setShowModal, submitRequest, type, errors} = props
 
     return (
         <main>
@@ -48,8 +48,9 @@ export default function OrderDropOffTime(props){
                             <textarea maxLength="500" style={{ backgroundColor: "rgba(158, 69, 183, 0.14)" }} onChange={e => setFormData({...formData, additionalInfo: e.target.value})} placeholder="Enter any special instructions for our driver, e.g. ring doorbell, leave at front desk, etc.." value={formData.additionalInfo} className="form-control text-black" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                     </div>
-
-                    <button type="button" onClick={validateStep3} disabled={stepThreeIsValid()} className="btn col-12 mt-4 btn-primary-hover">Continue</button>
+                    <div className="form-row">
+                        <button type="button" onClick={validateStep3} disabled={stepThreeIsValid()} className="btn w-100 mt-4 btn-primary-hover">Continue</button>
+                    </div>
                 </form>
             </div>
             <OrderConfirmationModal errors={errors} showModal={showModal} setStep={setStep} setShowModal={setShowModal} formData={formData} type={type} loading={loading} submitRequest={submitRequest}/>

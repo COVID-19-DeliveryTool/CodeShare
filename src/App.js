@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter,Route,Redirect,Switch} from 'react-router-dom'
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Home from './components/Home'
@@ -39,7 +39,7 @@ function App() {
           <Route exact={true} path="/donate" render={(props) => <DonationContext.Consumer>{donationContext => (<DonationModule globalContext={globalContext} donationContext={donationContext} {...props}/>)}</DonationContext.Consumer>}/>
           <Route exact={true} path="/dispatcher" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<DispatchModuleHome globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
           <Route exact={true} path="/error" render={(props) => <DispatchContext.Consumer>{dispatchContext => (<Error globalContext={globalContext} dispatchContext={dispatchContext} {...props}/>)}</DispatchContext.Consumer>}/>
-          <Route exact path='/order/complete/:uuid?' render={props => <OrderComplete globalContext={globalContext}/>}/>
+          <Route exact path='/order' render={props => <OrderComplete globalContext={globalContext}/>}/>
         </Switch>
       </BrowserRouter>
       )}
