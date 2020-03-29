@@ -12,7 +12,6 @@ const DispatchProvider = props => {
     const [orderChanges, setOrderChanges] = useState(false)
     const [loading, setLoading] = useState(false)
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const [watcherSet, setWatcherSet] = useState(false)
 
     const getOrdersForDispatcher = async (notify) =>{
         try{
@@ -24,11 +23,6 @@ const DispatchProvider = props => {
             console.log(e)
             //set error into global state?
         }
-    }
-
-    async function checkSelectedOrder(){
-        console.log(selectedOrder)
-        setSelectedOrder(await getOrder(selectedOrder._id))
     }
 
     const getDriversForDispatcher = async () => {

@@ -52,6 +52,7 @@ const RequestProvider = props => {
         setLoading(true);
         // format put request data
         const formattedData = formatRequest();
+        console.log(formattedData)
         const response = await putOrder(formattedData);
         setLoading(false);
 
@@ -78,7 +79,7 @@ const RequestProvider = props => {
         body.type = 'REQUEST';
         body.items = formData.items.map(item => ({name: item.value, quantity: 1}));
         body.additionalInfo = formData.additionalInfo;
-        body.householdNum = formData.householdNum;
+        body.householdNum = formData.householdNum.toString();
         return body; 
     };
 
