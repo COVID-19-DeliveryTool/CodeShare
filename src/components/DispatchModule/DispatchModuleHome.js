@@ -7,7 +7,7 @@ import {logUserOut} from '../../lib/StitchFunctions'
 import {Spinner} from 'react-bootstrap'
 import {toast} from 'react-toastify'
 import {differenceInHours, differenceInDays, differenceInMinutes} from 'date-fns'
-import Error from '../Error'
+import LoginError from '../LoginError'
 
 export default function DispatchModuleHome(props){
     const { orders, selectedOrder, typeFilter, statusFilter, orderChanges, drivers, loading, showConfirmModal } = props.dispatchContext.state
@@ -18,13 +18,13 @@ export default function DispatchModuleHome(props){
 
     useEffect(() => {
         checkAuthStatus()
-        if(isAuthenticated && !user) getUser()
+        if(isAuthenticated && user === null) getUser()
         if(isAuthenticated && user && !orders) getOrdersForDispatcher()
         if(isAuthenticated && user && orders && !drivers) getDriversForDispatcher()
     })
 
+    if(errors.login) return <LoginError/>
 
-    if(errors.login) return <Error {...props}/>
     if(!user || !orders || !drivers) return <Loading/>
 
     function applyFilters(orders){
