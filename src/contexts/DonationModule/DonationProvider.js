@@ -133,7 +133,8 @@ const DonationProvider = props => {
         body.time = formData.dropoff.id;
         body.type = 'DONATION';
         body.items = [...formData.items.map(item => ({name: item.value, quantity: 1})), ...formData.freeTextItems.map(item => ({name: item, quantity: 1}))]
-        body.additionalInfo =formData.additionalInfo;
+        body.additionalInfo = formData.additionalInfo
+        body.householdNum = "0"
         return body;
     };
 
